@@ -1,0 +1,107 @@
+{% extends "hyperkitty/base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load compress %}
+{% load browserid %}
+{% load staticfiles %}
+
+
+{% block title %}
+{% trans 'Login' %} - {{ app_name|title }}
+{% endblock %}
+
+{% block additional_stylesheets %}
+<link rel="stylesheet" media="all" href="{% static 'browserid/persona-buttons.css' %}">
+{% endblock additional_stylesheets %}
+
+{% block content %}
+
+<div id="login">
+
+
+<ul class="social-login list-unstyled">
+    {% csrf_token %}  {# necessary to set the token in a cookie #}
+    <!-- Persona first -->
+    {% browserid_info %}
+    <li class="browserid">
+        {% browserid_login text="Login using Persona" color='blue' next=next %}
+    </li>
+    <!-- then other backends from social_auth -->
+    {% for backend in social_backends %}
+        <li class="{{ backend }}">
+        {% if backend == "browserid" %}
+            <form method="post"
+                  action="{% url 'social:complete' "browserid" %}?next={{ next }}">
+                {% csrf_token %}
+                <input type="hidden" name="assertion" value="" />
+                <a rel="nofollow" id="browserid" href="#" class="disabled"
+                   title="{% trans 'Wait for it...' %}"><img
+                   src="{% static 'hyperkitty/img/login/persona-large-disabled.png' %}"
+                   alt="{% trans 'Login using Persona' %}" /></a>
+            </form>
+        {% elif backend == "openid" %}
+            <a class="socialaccount_provider openid" title="OpenID" href="#"><img
+               src="{% static 'hyperkitty/img/login/openid.png' %}" alt="OpenID" /></a>
+            <form method="post" class="form-inline openid"
+                  action="{% url 'social:begin' "openid" %}?next={{ next }}">
+                {% csrf_token %}
+                <div class="input-append">
+                <input type="text" class="input-large" name="openid_identifier"
+                       placeholder="OpenID URL" />
+                <button type="submit" class="btn">{% trans "Login with OpenID" %}</button>
+                </div>
+            </form>
+        {% else %}
+            <a title="{{ backend|title }}" class="socialaccount_provider {{ backend }}"
+               href="{% url 'social:begin' backend=backend %}?next={{ next }}"><img
+               src="{% static 'hyperkitty/img/login/'|add:backend|add:'.png' %}"
+               alt="{{ backend|title }}" /></a>
+        {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+
+{% if use_internal_auth %}
+
+<h2>{% trans "Login with username and password" %}</h2>
+
+<form action="{{ request.path }}?next={{ next|urlencode }}"
+      method="post" class="form-horizontal">
+    {% crispy form %}
+</form>
+
+{% else %}
+
+<p class="text-center text-info">
+{% trans "This website only lets you log in using one of these external authentication services. Check with your service for lost passwords or other login help." %}
+</p>
+
+{% endif %}
+
+
+</div>
+
+{% endblock %}
+
+{% block additionaljs %}
+<!-- Include BrowserID JavaScript -->
+<script src="https://login.persona.org/include.js"></script>
+{% compress js %}
+<script type="text/javascript" src="{% static 'browserid/api.js' %}"></script>
+<script type="text/javascript" src="{% static 'browserid/browserid.js' %}"></script>
+{% endcompress %}
+<script type="text/javascript">
+    $(function() {
+        // OpenID
+        $('a.openid').click(function(e) {
+            e.preventDefault();
+            $("form.openid").slideToggle("fast")
+                .filter(":visible")
+                .find("input[name='openid_identifier']").focus();
+        });
+    });
+    var username = document.getElementById('id_username');
+    if (username) { username.focus(); }
+</script>
+{% endblock additionaljs %}
