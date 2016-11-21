@@ -1,0 +1,42 @@
+Source: mailman3-hyperkitty
+Section: mail
+Priority: optional
+Maintainer: Pierre-Elliott Bécue <becue@crans.org>
+Build-Depends: cssmin (>= 0.2.0),
+               debhelper (>= 9),
+               dh-python,
+               python-dateutil,
+               python-dev (>= 2.6),
+               python-django (>= 1.6),
+               python-djangorestframework (>= 3.0.0),
+               python-django-compressor (>= 1.3),
+               python-django-crispy-forms (>= 1.4.0),
+               python-django-extensions (>= 1.3.7),
+               python-django-haystack (>= 2.1.0),
+               python-enum34 (>= 1.0),
+               python-lockfile,
+               python-networkx (>= 1.9.1),
+               python-rjsmin (>= 1.0.6),
+               python-setuptools,
+               python-social-auth (>= 0.2.3),
+               python-sphinx,
+               python-tz (>= 2012),
+Standards-Version: 3.9.7
+Homepage: http://www.list.org/
+Vcs-Browser: https://github.com/P-EB/mailman3-hyperkitty
+Vcs-Git: https://github.com/P-EB/mailman3-hyperkitty.git -b master
+X-Python-Version: >= 2.6
+
+# django-gravatar2
+# robot-detection
+# django-paintstore
+# django-browserid
+
+Package: mailman3-hyperkitty
+Architecture: any
+Depends: mailman3-client, ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
+Recommends: nginx, uwsgi
+Description: Web user interface to access GNU Mailman archives
+ The hyperkitty Django app provides a web user interface
+ to access GNU Mailman archives, and manage it. This
+ interface uses django, and requires some configuration.
