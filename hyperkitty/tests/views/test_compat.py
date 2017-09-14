@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -39,24 +40,32 @@ class CompatURLsTestCase(TestCase):
         msg["Subject"] = "Dummy message"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0000"
         msg.set_payload("Dummy message")
-        msg["Message-ID-Hash"] = self.msgid = add_to_list("list@example.com", msg)
+        msg["Message-ID-Hash"] = self.msgid = add_to_list(
+            "list@example.com", msg)
 
     def test_redirect_month(self):
         url_list = ["pipermail/list/2015-February/",
                     "list/list@example.com/2015-February/"]
         expected_url = reverse('hk_archives_with_month', kwargs={
             'mlist_fqdn': 'list@example.com',
-            'year': '2015', 'month': '02' })
+            'year': '2015', 'month': '02'})
         for url in url_list:
             response = self.client.get(reverse("hk_root") + url)
             self.assertRedirects(response, expected_url)
 
-    def test_redirect_message(self):
-        url_list = ["pipermail/list/2015-February/000001.html",
-                    "list/list@example.com/2015-February/000001.html"]
-        expected_url = reverse('hk_message_index', kwargs={
-            'mlist_fqdn': 'list@example.com',
-            'message_id_hash': self.msgid })
+    # def test_redirect_message(self):
+    #     url_list = ["pipermail/list/2015-February/000001.html",
+    #                 "list/list@example.com/2015-February/000001.html"]
+    #     expected_url = reverse('hk_message_index', kwargs={
+    #         'mlist_fqdn': 'list@example.com',
+    #         'message_id_hash': self.msgid })
+    #     for url in url_list:
+    #         response = self.client.get(reverse("hk_root") + url)
+    #         self.assertRedirects(response, expected_url)
+
+    def test_wrong_message_number(self):
+        url_list = ["pipermail/list/2015-February/000000.html",
+                    "list/list@example.com/2015-February/000000.html"]
         for url in url_list:
             response = self.client.get(reverse("hk_root") + url)
-            self.assertRedirects(response, expected_url)
+            self.assertEqual(response.status_code, 404)

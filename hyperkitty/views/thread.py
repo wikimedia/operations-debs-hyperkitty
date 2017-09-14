@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -32,24 +33,25 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import RequestContext, loader
+from django.template import loader
 from django.utils.timezone import utc
 from django.utils.translation import gettext as _
 from haystack.query import SearchQuerySet
 
-from hyperkitty.models import Tag, Tagging, Favorite, LastView, Thread, MailingList
-from hyperkitty.views.forms import AddTagForm, ReplyForm
+from hyperkitty.models import (
+    Tag, Tagging, Favorite, LastView, Thread, MailingList)
+from hyperkitty.forms import AddTagForm, ReplyForm
 from hyperkitty.lib.utils import stripped_subject
-from hyperkitty.lib.view_helpers import (get_months, get_category_widget,
-        check_mlist_private, get_posting_form)
+from hyperkitty.lib.view_helpers import (
+    get_months, get_category_widget, check_mlist_private, get_posting_form)
 
 
 REPLY_RE = re.compile(r'^(re:\s*)*', re.IGNORECASE)
 
-def _get_thread_replies(request, thread, limit, offset=1):
+
+def _get_thread_replies(request, thread, limit, offset=0):
     '''
     Get and sort the replies for a thread.
-    By default, offset = 1 to skip the original message.
     '''
     if not thread:
         raise Http404
@@ -62,7 +64,11 @@ def _get_thread_replies(request, thread, limit, offset=1):
 
     mlist = thread.mailinglist
     initial_subject = stripped_subject(mlist, thread.starting_email.subject)
-    emails = list(thread.emails.order_by(sort_mode)[offset:offset+limit])
+    emails = list(thread.emails.filter(
+            thread_order__isnull=False
+        ).exclude(
+            pk=thread.starting_email.pk
+        ).order_by(sort_mode)[offset:offset+limit])
     for email in emails:
         # Extract all the votes for this message
         if request.user.is_authenticated():
@@ -71,7 +77,7 @@ def _get_thread_replies(request, thread, limit, offset=1):
             email.myvote = None
         # Threading position
         if sort_mode == "thread_order":
-            email.level = email.thread_depth - 1 # replies start ragged left
+            email.level = email.thread_depth - 1  # replies start ragged left
             if email.level > 5:
                 email.level = 5
             elif email.level < 0:
@@ -91,7 +97,6 @@ def _get_thread_replies(request, thread, limit, offset=1):
 @check_mlist_private
 def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
     ''' Displays all the email for a given thread identifier '''
-    # pylint: disable=unused-argument
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
     thread = get_object_or_404(Thread, mailinglist=mlist, thread_id=threadid)
     starting_email = thread.starting_email
@@ -129,7 +134,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
                 thread=thread, user=request.user)
         if not created:
             last_view = last_view_obj.view_date
-            last_view_obj.save() # update timestamp
+            last_view_obj.save()  # update timestamp
     # get the number of unread messages
     if last_view is None:
         if request.user.is_authenticated():
@@ -191,11 +196,12 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
 @check_mlist_private
 def replies(request, mlist_fqdn, threadid):
     """Get JSON encoded lists with the replies and the participants"""
-    chunk_size = 6 # must be an even number, or the even/odd cycle will be broken
-    offset = int(request.GET.get("offset", "1"))
+    # chunk_size must be an even number, or the even/odd cycle will be broken.
+    chunk_size = 6
+    offset = int(request.GET.get("offset", "0"))
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
-    thread = get_object_or_404(Thread,
-        mailinglist__name=mlist_fqdn, thread_id=threadid)
+    thread = get_object_or_404(
+        Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
     # Last view
     last_view = request.GET.get("last_view")
     if last_view:
@@ -212,11 +218,12 @@ def replies(request, mlist_fqdn, threadid):
                                              limit=chunk_size)
 
     replies_tpl = loader.get_template('hyperkitty/ajax/replies.html')
-    replies_html = replies_tpl.render(RequestContext(request, context))
-    response = {"replies_html": replies_html,
-                "more_pending": False,
-                "next_offset": None,
-               }
+    replies_html = replies_tpl.render(context, request)
+    response = {
+        "replies_html": replies_html,
+        "more_pending": False,
+        "next_offset": None,
+        }
     if len(context["replies"]) == chunk_size:
         response["more_pending"] = True
         response["next_offset"] = offset + chunk_size
@@ -230,8 +237,8 @@ def tags(request, mlist_fqdn, threadid):
     if not request.user.is_authenticated():
         return HttpResponse('You must be logged in to add a tag',
                             content_type="text/plain", status=403)
-    thread = get_object_or_404(Thread,
-        mailinglist__name=mlist_fqdn, thread_id=threadid)
+    thread = get_object_or_404(
+        Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
 
     if request.method != 'POST':
         raise SuspiciousOperation
@@ -247,7 +254,7 @@ def tags(request, mlist_fqdn, threadid):
         tagname = request.POST.get('tag')
     else:
         raise SuspiciousOperation
-    tagnames = [ t.strip() for t in re.findall(r"[\w'_ -]+", tagname) ]
+    tagnames = [t.strip() for t in re.findall(r"[\w'_ -]+", tagname)]
     for tagname in tagnames:
         if action == "add":
             tag = Tag.objects.get_or_create(name=tagname)[0]
@@ -265,14 +272,13 @@ def tags(request, mlist_fqdn, threadid):
 
     # Now refresh the tag list
     tpl = loader.get_template('hyperkitty/threads/tags.html')
-    html = tpl.render(RequestContext(request, {
-            "thread": thread,
-            }))
+    html = tpl.render({"thread": thread}, request)
 
-    response = {"tags": [ t.name for t in thread.tags.distinct() ],
+    response = {"tags": [t.name for t in thread.tags.distinct()],
                 "html": html}
     return HttpResponse(json.dumps(response),
                         content_type='application/javascript')
+
 
 @check_mlist_private
 def suggest_tags(request, mlist_fqdn, threadid):
@@ -287,9 +293,9 @@ def suggest_tags(request, mlist_fqdn, threadid):
             name__istartswith=term)
     else:
         tags_db = Tag.objects.all()
-    tag_names = [ t.encode("utf-8") for t in
-             tags_db.exclude(name__in=current_tags
-                ).values_list("name", flat=True)[:20] ]
+    tag_names = [
+        t.encode("utf-8") for t in tags_db.exclude(
+            name__in=current_tags).values_list("name", flat=True)[:20]]
     return HttpResponse(json.dumps(tag_names),
                         content_type='application/javascript')
 
@@ -303,8 +309,8 @@ def favorite(request, mlist_fqdn, threadid):
     if request.method != 'POST':
         raise SuspiciousOperation
 
-    thread = get_object_or_404(Thread,
-        mailinglist__name=mlist_fqdn, thread_id=threadid)
+    thread = get_object_or_404(
+        Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
     if request.POST["action"] == "add":
         Favorite.objects.get_or_create(thread=thread, user=request.user)
     elif request.POST["action"] == "rm":
@@ -323,8 +329,8 @@ def set_category(request, mlist_fqdn, threadid):
     if request.method != 'POST':
         raise SuspiciousOperation
 
-    thread = get_object_or_404(Thread,
-        mailinglist__name=mlist_fqdn, thread_id=threadid)
+    thread = get_object_or_404(
+        Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
     category, category_form = get_category_widget(request)
     if not category and thread.category:
         thread.category = None
@@ -344,7 +350,7 @@ def set_category(request, mlist_fqdn, threadid):
 
 @check_mlist_private
 def reattach(request, mlist_fqdn, threadid):
-    if not request.user.is_staff:
+    if not request.user.is_staff and not request.user.is_superuser:
         return HttpResponse('You must be a staff member to reattach a thread',
                             content_type="text/plain", status=403)
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
@@ -361,19 +367,22 @@ def reattach(request, mlist_fqdn, threadid):
         if not parent_tid:
             parent_tid = request.POST.get("parent-manual")
         if not parent_tid or not re.match(r"\w{32}", parent_tid):
-            messages.warning(request,
+            messages.warning(
+                request,
                 "Invalid thread id, it should look "
                 "like OUAASTM6GS4E5TEATD6R2VWMULG44NKJ.")
             return render(request, template_name, context)
         if parent_tid == threadid:
-            messages.warning(request,
+            messages.warning(
+                request,
                 "Can't re-attach a thread to itself, check your thread ID.")
             return render(request, template_name, context)
         try:
             parent = Thread.objects.get(
                 mailinglist=thread.mailinglist, thread_id=parent_tid)
         except Thread.DoesNotExist:
-            messages.warning(request,
+            messages.warning(
+                request,
                 "Unknown thread, check your thread ID.")
             return render(request, template_name, context)
         try:
@@ -406,12 +415,12 @@ def reattach_suggest(request, mlist_fqdn, threadid):
     suggested_threads = []
     for msg in emails:
         sugg_thread = msg.object.thread
-        if sugg_thread not in suggested_threads \
-            and sugg_thread.thread_id != threadid:
+        if (sugg_thread not in suggested_threads and
+                sugg_thread.thread_id != threadid):
             suggested_threads.append(sugg_thread)
 
     context = {
-        'mlist' : mlist,
+        'mlist': mlist,
         'suggested_threads': suggested_threads[:10],
     }
     return render(request, "hyperkitty/ajax/reattach_suggest.html", context)

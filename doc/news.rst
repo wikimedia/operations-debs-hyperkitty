@@ -2,6 +2,42 @@
 News / Changelog
 ================
 
+
+1.1.1
+=====
+(2017-08-04)
+
+- Fix the Javascript in the overview page
+- Make two Django commands compatible with Django >= 1.10
+- Fix sorting in the MailingList's cache value
+- Don't show emails before they have been analyzed
+- Fix slowdown with PostgreSQL on some overview queries
+
+
+1.1.0
+=====
+(2017-05-26)
+
+- Add an async task system, check out the installation documentation to run the necessary commands.
+- Support Django < 1.11 (support for 1.11 will arrive soon, only a dependency is not compatible).
+- Switch to the Allauth login library
+- Performance optimizations.
+- Better REST API.
+- Better handling of email sender names.
+- Improve graphic design.
+
+
+1.0.3
+=====
+(2015-11-15)
+
+- Switch from LESS to Sass
+- Many graphical improvements
+- The SSLRedirect middleware is now optional
+- Add an "Export to mbox" feature
+- Allow choosing the email a reply or a new message will be sent as
+
+
 0.9.6
 =====
 (2015-03-16)

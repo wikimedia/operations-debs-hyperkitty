@@ -6,8 +6,8 @@
 {% load staticfiles %}
 
 
-{% block title %}
-{{ subject }} - {{ mlist.display_name|default:mlist.name|escapeemail }} - {{ app_name|title }}
+{% block head_title %}
+{{ subject }} - {{ mlist.display_name|default:mlist.name }} - {{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -119,8 +119,8 @@
 
             <div class="col-sm-3">
                 <div class="anchor-link">
-                        <a id="stats"></a>
-                    </div>
+                    <a id="stats"></a>
+                </div>
                 {% include 'hyperkitty/threads/right_col.html' %}
             </div>
 
@@ -144,9 +144,8 @@
         setup_category();
         setup_tags();
         setup_favorites();
-        setup_emails_list();
         // Hide quotes by default in the thread view
-        fold_quotes();
+        fold_quotes("div.container");
         // Load the replies
         update_thread_replies("{% url 'hk_thread_replies' threadid=thread.thread_id mlist_fqdn=mlist.name %}?sort={{sort_mode}}&last_view={{last_view|date:'U'}}");
         setup_unreadnavbar("#unreadnavbar");

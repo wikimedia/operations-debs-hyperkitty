@@ -1,0 +1,11 @@
+[Unit]
+Description=HyperKitty async tasks runner
+After=network.target remote-fs.target
+
+[Service]
+ExecStart=/usr/bin/django-admin qcluster --pythonpath /path/to/project --settings settings
+User=apache
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

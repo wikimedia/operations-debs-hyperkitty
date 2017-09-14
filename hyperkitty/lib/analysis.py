@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2011-2012 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2011-2017 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,16 +26,19 @@ Author: Aurelien Bompard <abompard@fedoraproject.org>
 from __future__ import absolute_import, unicode_literals
 
 import networkx as nx
+from django.db import transaction
 
 
 def compute_thread_order_and_depth(thread):
+    # Emails must be saved, there will be DB queries in this function.
     graph = nx.DiGraph()
-    thread_pos = {"d": 0, "o": 0} # depth, order
+    thread_pos = {"d": 0, "o": 0}  # depth, order
+
     def walk_successors(msgid):
         obj = graph.node[msgid]["obj"]
         obj.thread_depth = thread_pos["d"]
         obj.thread_order = thread_pos["o"]
-        obj.save()
+        obj.save(update_fields=["thread_depth", "thread_order"])
         thread_pos["d"] += 1
         thread_pos["o"] += 1
         for succ in sorted(graph.successors(msgid),
@@ -49,4 +52,5 @@ def compute_thread_order_and_depth(thread):
             if not nx.is_directed_acyclic_graph(graph):
                 # I don't want reply loops in my graph, thank you very much
                 graph.remove_edge(email.parent_id, email.id)
-    walk_successors(thread.starting_email.id)
+    with transaction.atomic():
+        walk_successors(thread.starting_email.id)

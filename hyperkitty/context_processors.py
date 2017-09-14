@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -20,31 +20,19 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-# pylint: disable=unused-argument
-
 from django.conf import settings
-from django.shortcuts import resolve_url
 from hyperkitty import VERSION
 
-def export_settings(request):
-    exports = ["APP_NAME", "USE_MOCKUPS", "USE_INTERNAL_AUTH"]
-    extra_context = dict(
-        (name.lower(), getattr(settings, name)) for name in exports)
-    extra_context["HYPERKITTY_VERSION"] = VERSION
-    # Login and logout URLs can be view names since Django 1.6
-    extra_context["login_url"]  = resolve_url(settings.LOGIN_URL)
-    extra_context["logout_url"] = resolve_url(settings.LOGOUT_URL)
+
+def common(request):
+    extra_context = {}
+    extra_context.update(export_settings(request))
     return extra_context
 
 
-from django.core.urlresolvers import reverse, NoReverseMatch
-
-def postorius_info(request):
-    postorius_url = False
-    if "postorius" in settings.INSTALLED_APPS:
-        try:
-            postorius_url = reverse("postorius.views.list_index")
-            postorius_url = postorius_url.rstrip("/")
-        except NoReverseMatch:
-            pass
-    return {"postorius_installed": postorius_url }
+def export_settings(request):
+    exports = ["USE_MOCKUPS"]
+    extra_context = dict(
+        (name.lower(), getattr(settings, name, None)) for name in exports)
+    extra_context["HYPERKITTY_VERSION"] = VERSION
+    return extra_context

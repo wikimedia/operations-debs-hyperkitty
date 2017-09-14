@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load hk_generic %}
+{% load gravatar %}
+
+{% for poster in mlist.top_posters %}
+<div class="maker row">
+    <div class="inline-block maker-id col-tn-1">
+        #{{forloop.counter}}
+    </div>
+    <div class="inline-block gravatar col-tn-3 col-xs-4 col-md-3">
+        {% gravatar poster.address 120 %}
+        <br />
+    </div>
+    <div class="gravatar-details inline-block col-tn-7 col-xs-6 col-md-7">
+        <ul class="list-unstyled">
+            <li><span class="maker-name">
+                {% if poster.mailman_id %}
+                <a href="{% url 'hk_public_user_profile' user_id=poster.mailman_id %}"
+                   title="{% trans "See the profile" %}"
+                    >{{ poster.name|escapeemail }}</a>
+                {% else %}
+                    {{ poster.name|escapeemail }}
+                {% endif %}
+            </span></li>
+            <li><span class="score">{{ poster.count }}</span> {% trans "posts" %}</li>
+        </ul>
+    </div>
+</div>
+{% empty %}
+<p>{% trans "No posters this month (yet)." %}</p>
+{% endfor %}

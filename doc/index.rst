@@ -34,7 +34,7 @@ more sophisticated than the current archiver can deliver on. Mailman3 is the
 currently under active development and it offers a pluggable architecture where
 multiple archivers can be plugged to the core without too much pain.
 
-Some of drawbacks of Pipermail :
+Some of the drawbacks of Pipermail :
 
 - It does not support stable URLs.
 - It has scalability issues (it was not suitable for organizations working with

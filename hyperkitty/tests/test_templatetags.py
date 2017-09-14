@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -26,6 +27,7 @@ from hyperkitty.tests.utils import TestCase
 from hyperkitty.templatetags.hk_generic import snip_quoted
 from hyperkitty.templatetags.hk_haystack import nolongterms
 
+
 class SnipQuotedTestCase(TestCase):
 
     quotemsg = "[SNIP]"
@@ -37,11 +39,13 @@ On Fri, 09.11.12 11:27, Someone wrote:
 &gt; This is the second quoted line
 This is the response.
 """
-        expected = """
+        expected = (
+            """
 On Fri, 09.11.12 11:27, Someone wrote:
-<div class="quoted-switch"><a style="font-weight:normal" href="#">%s</a></div><div class="quoted-text"> This is the first quoted line
+<div class="quoted-switch"><a style="font-weight:normal" href="#">%s</a>"""
+            """</div><div class="quoted-text"> This is the first quoted line
  This is the second quoted line </div>This is the response.
-""" % self.quotemsg
+""") % self.quotemsg
         result = snip_quoted(contents, self.quotemsg)
         self.assertEqual(result, expected)
 
@@ -58,13 +62,15 @@ class HaystackTestCase(TestCase):
         self.assertEqual(nolongterms(text), "dummy sentence")
 
     def test_nolongterms_xmlescape(self):
-        # the long term itself is < 240, but it's the XML-escaped value that counts
+        # the long term itself is < 240, but it's the XML-escaped value that
+        # counts
         long_term = "x" * 237
         text = "dummy <%s> sentence" % long_term
         self.assertEqual(nolongterms(text), "dummy sentence")
 
     def test_nolongterms_xmlescape_amperstand(self):
-        # the long term itself is < 240, but it's the XML-escaped value that counts
+        # the long term itself is < 240, but it's the XML-escaped value that
+        # counts
         long_term = "&" * 60
         text = "dummy %s sentence" % long_term
         self.assertEqual(nolongterms(text), "dummy sentence")
@@ -84,7 +90,8 @@ class HaystackTestCase(TestCase):
         self.assertEqual(nolongterms(text), "dummy sentence")
 
     def test_nolongterms_encoding(self):
-        # the long term itself is < 240, but it's the utf8-encoded value that counts
+        # the long term itself is < 240, but it's the utf8-encoded value that
+        # counts
         long_term = "é" * 121
         text = "dummy %s sentence" % long_term
         self.assertEqual(nolongterms(text), "dummy sentence")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+ * Copyright (C) 2012-2012 by the Free Software Foundation, Inc.
  *
  * This file is part of HyperKitty.
  *
@@ -52,9 +52,7 @@ function vote(elem) {
         dataType: "json",
         data: data,
         success: function(response) {
-            var newcontent = $(response.html);
-            form.replaceWith(newcontent);
-            setup_vote(newcontent); // re-bind events
+            form.replaceWith($(response.html));
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert(jqXHR.responseText);
@@ -63,55 +61,11 @@ function vote(elem) {
 }
 
 
-function setup_vote(baseElem) {
-    if (!baseElem) {
-        baseElem = document;
-    }
-    $(baseElem).find("a.vote").click(function(e) {
+function setup_vote() {
+    $("div.container").on("click", "a.vote", function(e) {
         e.preventDefault();
         vote(this);
     });
-}
-
-
-
-/*
- * New messages (or replies)
- */
-
-function setup_attachments(baseElem) {
-    if (!baseElem) {
-        baseElem = document;
-    }
-    function add_attach_form (e) {
-        e.preventDefault();
-        var form = $(this).parents("form").first();
-        // Clone the attachment template
-        var cur_att_count = form.find(".attach-files input").length;
-        form.find(".attach-files-template")
-            .clone().removeClass("attach-files-template")
-            .appendTo(form.find(".attach-files"))
-            .find("input").each(function() {
-                // Suffix the name and id properties with the index number to
-                // make them unique
-                var elem = $(this);
-                $.each(["name", "id"], function(_i, attr) {
-                    elem.attr(attr, elem.attr(attr) + "_" + (cur_att_count+1));
-                });
-            });
-        form.find(".attach-files span a").click(function (e) {
-            e.preventDefault();
-            $(this).parent().remove();
-            if (form.find(".attach-files input").length === 0) {
-                form.find(".attach-files-add").hide();
-                form.find(".attach-files-first").show();
-            };
-        });
-        form.find(".attach-files-first").hide();
-        form.find(".attach-files-add").show();
-    }
-    $(baseElem).find(".attach-files-add").click(add_attach_form);
-    $(baseElem).find(".attach-files-first").click(add_attach_form);
 }
 
 
@@ -260,7 +214,7 @@ function ajax_chart(url, elements, props) {
     if (elements.find("svg.chart-data")) {
         elements.find("svg.chart-data").remove();
     }
-    $.ajax({
+    return $.ajax({
         dataType: "json",
         url: url,
         success: function(data) {
@@ -286,13 +240,15 @@ function ajax_chart(url, elements, props) {
  * Misc.
  */
 
-function setup_disabled_tooltips(baseElem) {
-    if (!baseElem) {
-        baseElem = document;
-    }
-    $(baseElem).find("a.disabled").tooltip().click(function (e) {
-        e.preventDefault();
-    });
+function setup_tooltips() {
+    // Setup tooltips
+    $("body").tooltip({selector: '[data-toggle="tooltip"]'});
+    // Setup disabled tooltips
+    $("body")
+        .tooltip({selector: "a.disabled"})
+        .on("click", "a.disabled", function(e) {
+            e.preventDefault();
+        });
 }
 
 function setup_flash_messages() {
@@ -316,21 +272,30 @@ function setup_back_to_top_link(offset, duration) {
     })
 }
 
-function setup_send_as(baseElem) {
-    $(baseElem).find(".send-as .send-as-default").click(function(e) {
+function setup_send_as() {
+    $("div.container").on("click", ".send-as-default", function(e) {
         e.preventDefault();
         var select = $(this).next();
         $(this).hide();
         select.show();
     });
-    $(baseElem).find(".send-as select").each(function() {
-        if ($(this).find("option").length < 2) {
-            $(this).closest(".send-as").hide();
+}
+
+function setup_expander() {
+    $('span.expander').expander({
+        slicePoint: 500,
+        userCollapseText : '\n[View Less]',
+        expandText : '\n[View More]',
+        beforeExpand: function() {
+            $(this).removeClass("collapsed");
+            $(this).addClass("expanded");
+        },
+        onCollapse: function() {
+            $(this).removeClass("expanded");
+            $(this).addClass("collapsed");
         }
     });
 }
-
-
 
 
 /*
@@ -339,6 +304,10 @@ function setup_send_as(baseElem) {
 
 $(document).ready(function() {
     setup_vote();
-    setup_disabled_tooltips();
+    setup_tooltips();
     setup_flash_messages();
+    setup_emails_list();
+    setup_send_as();
+    setup_expander();
+    setup_fixed_font();
 });

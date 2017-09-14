@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -20,8 +21,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-# pylint: disable=unnecessary-lambda
-
 from __future__ import absolute_import, print_function, unicode_literals
 
 import datetime
@@ -29,18 +28,18 @@ import uuid
 from email.message import Message
 from traceback import format_exc
 
+from allauth.account.models import EmailAddress
 from mock import Mock
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.test.utils import override_settings
+from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 
 from hyperkitty.lib.utils import get_message_id_hash
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.lib.mailman import FakeMMList, FakeMMMember
-from hyperkitty.models import (LastView, MailingList, Thread,
-    Email, Favorite)
+from hyperkitty.models import (
+    LastView, MailingList, Thread, Email, Favorite)
 from hyperkitty.tests.utils import TestCase
-
 
 
 class AccountViewsTestCase(TestCase):
@@ -48,6 +47,8 @@ class AccountViewsTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             'testuser', 'test@example.com', 'testPass')
+        EmailAddress.objects.create(
+            user=self.user, verified=True, email='test@example.com')
 
     def _send_message(self):
         msg = Message()
@@ -59,15 +60,16 @@ class AccountViewsTestCase(TestCase):
 
     def test_login_page(self):
         # Try to access the login page
-        response = self.client.get(reverse("hk_user_login"))
+        response = self.client.get(reverse(settings.LOGIN_URL))
         self.assertEqual(response.status_code, 200)
 
     def test_redirect_to_login(self):
         # Try to access user profile (private data) without logging in
         response = self.client.get(reverse("hk_user_profile"))
-        self.assertRedirects(response,
-                "%s?next=%s" % (reverse('hk_user_login'),
-                                reverse("hk_user_profile")))
+        self.assertRedirects(
+            response,
+            "%s?next=%s" % (reverse(settings.LOGIN_URL),
+                            reverse("hk_user_profile")))
 
     def test_profile(self):
         self.client.login(username='testuser', password='testPass')
@@ -80,16 +82,19 @@ class AccountViewsTestCase(TestCase):
         response = self.client.get(reverse("hk_public_user_profile",
                                    args=[user_id.int]))
         self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Email addresses:")
 
     def test_public_profile_anonymous(self):
         user_id = uuid.uuid1()
         response = self.client.get(reverse("hk_public_user_profile",
                                    args=[user_id.int]))
         self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Email addresses:")
 
     def test_public_profile_as_oneself(self):
         user_id = uuid.uuid1()
-        self.mailman_client.get_list.side_effect = lambda name: FakeMMList(name)
+        self.mailman_client.get_list.side_effect = \
+            lambda name: FakeMMList(name)
         mm_user = Mock()
         self.mailman_client.get_user.side_effect = lambda name: mm_user
         mm_user.user_id = user_id.int
@@ -103,39 +108,42 @@ class AccountViewsTestCase(TestCase):
         self.assertContains(response, "This is you.", count=1)
         self.assertContains(response, "Edit your private profile", count=1)
 
-    @override_settings(USE_INTERNAL_AUTH=True)
+    def test_public_profile_as_superuser(self):
+        user_id = uuid.uuid1()
+        self.user.is_superuser = True
+        self.user.save()
+        self.client.login(username='testuser', password='testPass')
+        self.mailman_client.get_list.side_effect = \
+            lambda name: FakeMMList(name)
+        mm_user = Mock()
+        self.mailman_client.get_user.side_effect = lambda name: mm_user
+        mm_user.user_id = user_id.int
+        mm_user.created_on = None
+        mm_user.addresses = [
+            "some-user-1@example.com", "some-user-2@example.com",
+            ]
+        response = self.client.get(reverse("hk_public_user_profile",
+                                   args=[user_id.int]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Email addresses:", count=1)
+        self.assertContains(response, "some-user-1@example.com", count=1)
+        self.assertContains(response, "some-user-2@example.com", count=1)
+
     def test_registration_redirect(self):
         self.client.login(username='testuser', password='testPass')
         # If the user if already logged in, redirect to index page...
         # Don't let him register again
-        response = self.client.get(reverse('hk_user_registration'))
+        response = self.client.get(reverse('account_signup'))
         self.assertRedirects(response, reverse('hk_root'))
 
         # Access the user registration page after logging out and try to
         # register now
         self.client.logout()
-        response = self.client.get(reverse('hk_user_registration'))
+        response = self.client.get(reverse('account_signup'))
         self.assertEqual(response.status_code, 200)
-
-    @override_settings(USE_INTERNAL_AUTH=True)
-    def test_registration(self):
-        response = self.client.get(reverse('hk_user_registration'))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.post(reverse("hk_user_registration"),
-            {"email": "newtestuser@example.com",
-             "password1": "test", "password2": "test"})
-        self.assertRedirects(response, reverse('hk_root'))
-        response = self.client.get(reverse('hk_root'))
-        self.assertContains(response, "newtestuser@example.com")
 
     def test_votes(self):
         self.client.login(username='testuser', password='testPass')
-        #User.objects.create(user=self.user, mailman_id=str(uuid.uuid1()))
-        ## use a temp variable below because self.client.session is actually a
-        ## property which returns a new instance en each call :-/
-        #session = self.client.session
-        #session["user_id"] = uuid.uuid1()
-        #session.save()
         msg_hash = self._send_message()
         email = Email.objects.get(message_id="msg")
         email.vote(user=self.user, value=1)
@@ -146,13 +154,17 @@ class AccountViewsTestCase(TestCase):
             self.fail("Getting the votes should not fail if "
                       "the user has never voted yet\n%s" % format_exc())
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response,
+        self.assertContains(
+            response,
             '<a href="{}">Dummy message</a>'.format(
-                reverse("hk_message_index", args=("list@example.com", msg_hash)
-             )), count=2, html=True)
-        self.assertContains(response, 'action="{}">'.format(
-                reverse("hk_message_vote", args=("list@example.com", msg_hash)
-             )), count=2, html=False)
+                reverse(
+                    "hk_message_index", args=("list@example.com", msg_hash))
+                ), count=2, html=True)
+        self.assertContains(
+            response, 'action="{}">'.format(
+                reverse(
+                    "hk_message_vote", args=("list@example.com", msg_hash))
+                ), count=2, html=False)
         self.assertContains(response, "Dummy Sender", count=2, html=False)
 
     def test_favorites(self):
@@ -168,10 +180,12 @@ class AccountViewsTestCase(TestCase):
         response = self.client.get(reverse("hk_user_favorites"))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "No favorites yet")
-        self.assertContains(response,
+        self.assertContains(
+            response,
             '<a href="{}">Dummy message</a>'.format(
-                reverse("hk_thread", args=("list@example.com", threadid)
-            )), count=2, html=True)
+                reverse(
+                    "hk_thread", args=("list@example.com", threadid))
+                ), count=2, html=True)
         self.assertContains(response, "Dummy Sender", count=2, html=False)
 
     def test_posts(self):
@@ -181,16 +195,18 @@ class AccountViewsTestCase(TestCase):
         email.sender.mailman_id = "dummy_user_id"
         email.sender.save()
         response = self.client.get(
-            reverse("hk_user_posts", args=("dummy_user_id",))
-            + "?list=list@example.com")
+            reverse("hk_user_posts", args=("dummy_user_id",)) +
+            "?list=list@example.com")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Dummy content", count=1, html=False)
         self.assertContains(response, "Dummy Sender", count=5, html=False)
-        self.assertContains(response,
-            '<a name="{}" href="{}">Dummy message</a>'.format(msg_hash,
-                reverse("hk_message_index", args=("list@example.com", msg_hash)
-            )), count=1, html=True)
-
+        self.assertContains(
+            response,
+            '<a name="{}" href="{}">Dummy message</a>'.format(
+                msg_hash,
+                reverse(
+                    "hk_message_index", args=("list@example.com", msg_hash))
+                ), count=1, html=True)
 
 
 class LastViewsTestCase(TestCase):
@@ -229,12 +245,14 @@ class LastViewsTestCase(TestCase):
         response = self.client.get(reverse('hk_user_last_views'))
         self.assertContains(response, "<td>dummy@example.com</td>",
                             count=2, status_code=200, html=True)
-        self.assertContains(response,
+        self.assertContains(
+            response,
             '<a href="{}">Dummy message 2</a>'.format(
                 reverse("hk_thread", args=("list@example.com",
                                            get_message_id_hash("id2")))),
             count=2, status_code=200, html=True)
-        self.assertContains(response,
+        self.assertContains(
+            response,
             '<a href="{}">Dummy message 3</a>'.format(
                 reverse("hk_thread", args=("list@example.com",
                                            get_message_id_hash("id3")))),
@@ -248,9 +266,12 @@ class LastViewsTestCase(TestCase):
                         "list@example.com", threadid)))
             responses.append(response)
         # There's always one icon in the right column, so all counts are +1
-        self.assertContains(responses[0], "fa-envelope", count=2, status_code=200)
-        self.assertContains(responses[1], "fa-envelope", count=1, status_code=200)
-        self.assertContains(responses[2], "fa-envelope", count=2, status_code=200)
+        self.assertContains(
+            responses[0], "fa-envelope", count=2, status_code=200)
+        self.assertContains(
+            responses[1], "fa-envelope", count=1, status_code=200)
+        self.assertContains(
+            responses[2], "fa-envelope", count=2, status_code=200)
 
     def test_thread_list(self):
         now = datetime.datetime.now()
@@ -259,12 +280,17 @@ class LastViewsTestCase(TestCase):
         self.assertContains(response, "fa-envelope",
                             count=2, status_code=200)
 
-    def test_overview(self):
-        response = self.client.get(reverse('hk_list_overview', args=["list@example.com"]))
-        # 2 in recently active, 2 in most active
+    def test_overview_top_threads(self):
+        response = self.client.get(reverse(
+            'hk_list_overview_top_threads', args=["list@example.com"]))
         self.assertContains(response, "fa-envelope",
-                            count=4, status_code=200)
+                            count=2, status_code=200)
 
+    def test_overview_recent_threads(self):
+        response = self.client.get(reverse(
+            'hk_list_overview_recent_threads', args=["list@example.com"]))
+        self.assertContains(response, "fa-envelope",
+                            count=2, status_code=200)
 
 
 class SubscriptionsTestCase(TestCase):
@@ -272,7 +298,8 @@ class SubscriptionsTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             'testuser', 'testuser@example.com', 'testPass')
-        self.mailman_client.get_list.side_effect = lambda name: FakeMMList(name)
+        self.mailman_client.get_list.side_effect = \
+            lambda name: FakeMMList(name)
         self.mm_user = Mock()
         self.mailman_client.get_user.side_effect = lambda name: self.mm_user
         self.mm_user.user_id = uuid.uuid1().int
@@ -281,17 +308,34 @@ class SubscriptionsTestCase(TestCase):
     def test_get_subscriptions(self):
         mlist = MailingList.objects.create(name="test@example.com")
         self.mm_user.subscriptions = [
-            FakeMMMember("test@example.com", self.user.email),
+            FakeMMMember("test.example.com", self.user.email),
         ]
         self.client.login(username='testuser', password='testPass')
         response = self.client.get(reverse("hk_user_subscriptions"))
-        self.assertEqual(response.context["subscriptions"],
-            [{
+        self.assertEqual(
+            response.context["subscriptions"], [{
                 'first_post': None, 'posts_count': 0,
                 'likes': 0, 'dislikes': 0, 'likestatus': 'neutral',
-                'list_name': "test@example.com",
                 'mlist': mlist,
-                'all_posts_url': "%s?list=test@example.com"
-                        % reverse("hk_user_posts", args=[self.mm_user.user_id]),
+                'list_name': "test@example.com",
+                'all_posts_url':
+                    "%s?list=test@example.com"
+                    % reverse("hk_user_posts", args=[self.mm_user.user_id]),
             }])
         self.assertContains(response, "test@example.com", status_code=200)
+
+    def test_list_not_archived(self):
+        self.mm_user.subscriptions = [
+            FakeMMMember("test.example.com", self.user.email),
+        ]
+        self.client.login(username='testuser', password='testPass')
+        response = self.client.get(reverse("hk_user_subscriptions"))
+        self.assertContains(response, "test@example.com", status_code=200)
+        self.assertEqual(
+            response.context["subscriptions"], [{
+                'first_post': None, 'posts_count': 0,
+                'likes': 0, 'dislikes': 0, 'likestatus': 'neutral',
+                'mlist': None,
+                'all_posts_url': None,
+                'list_name': "test@example.com",
+            }])

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -22,62 +23,74 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
+import logging
 import shutil
 import tempfile
 from unittest import SkipTest
 
-import haystack
 import mailmanclient
-from mock import Mock, patch
-#from django import VERSION as DJANGO_VERSION
-from django.test import RequestFactory, TestCase as DjangoTestCase
+from django.apps import apps
 from django.conf import settings
 from django.contrib.messages.storage.cookie import CookieStorage
 from django.core.management import call_command
-#from django.core.cache import get_cache
+from django.db import connection
+from django.db.migrations import Migration, RunSQL, RunPython
+from django.db.migrations.executor import MigrationExecutor
+from django.test import (
+    RequestFactory, TestCase as DjangoTestCase, TransactionTestCase)
+from django_mailman3.lib.cache import cache
+from mock import Mock, patch
 
-from hyperkitty.lib.cache import cache
+
+def setup_logging(tmpdir):
+    formatter = logging.Formatter(fmt="%(message)s")
+    levels = ["debug", "info", "warning", "error"]
+    handlers = []
+    for level_name in levels:
+        log_path = os.path.join(tmpdir, "%s.log" % level_name)
+        handler = logging.FileHandler(log_path)
+        handler.setLevel(getattr(logging, level_name.upper()))
+        handler.setFormatter(formatter)
+        handlers.append(handler)
+    for logger_name in ["django", "hyperkitty"]:
+        logger = logging.getLogger(logger_name)
+        logger.propagate = False
+        logger.setLevel(logging.DEBUG)
+        del logger.handlers[:]
+        for handler in handlers:
+            logger.addHandler(handler)
 
 
 class TestCase(DjangoTestCase):
-    # pylint: disable=attribute-defined-outside-init
-
-    _override_settings = {
-        "TESTING": True,
-        "USE_MOCKUPS": False,
-        "COMPRESS_ENABLED": False,
-        "COMPRESS_PRECOMPILERS": (),
-        #"CACHES": {
-        #    'default': {
-        #        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        #    },
-        #},
-    }
 
     # Testcase classes can use this variable to add more overrides:
     override_settings = {}
 
-
     def _pre_setup(self):
         super(TestCase, self)._pre_setup()
+        self.tmpdir = tempfile.mkdtemp(prefix="hyperkitty-testing-")
+        # Logging
+        setup_logging(self.tmpdir)
         # Override settings
         self._old_settings = {}
-        override_settings = self._override_settings.copy()
-        override_settings.update(self.override_settings)
+        self._override_setting(
+            "STATIC_ROOT", os.path.join(self.tmpdir, "static"))
+        override_settings = self.override_settings.copy()
         for key, value in override_settings.items():
-            self._old_settings[key] = getattr(settings, key, None)
-            setattr(settings, key, value)
-        #if DJANGO_VERSION[:2] < (1, 7):
-        #    cache.backend = get_cache("default") # in 1.7 it's a proxy
-        #else:
-        #    from django.core.cache import caches
-        #    #print("~"*40, caches.all())
+            self._override_setting(key, value)
         self.mailman_client = Mock()
-        self.mailman_client.get_user.side_effect = mailmanclient.MailmanConnectionError()
-        self.mailman_client.get_list.side_effect = mailmanclient.MailmanConnectionError()
-        self._mm_client_patcher = patch("hyperkitty.lib.mailman.MailmanClient",
-                                        lambda *a: self.mailman_client)
+        self.mailman_client.get_user.side_effect = \
+            mailmanclient.MailmanConnectionError()
+        self.mailman_client.get_list.side_effect = \
+            mailmanclient.MailmanConnectionError()
+        self._mm_client_patcher = patch(
+            "django_mailman3.lib.mailman.MailmanClient",
+            lambda *a: self.mailman_client)
         self._mm_client_patcher.start()
+
+    def _override_setting(self, key, value):
+        self._old_settings[key] = getattr(settings, key, None)
+        setattr(settings, key, value)
 
     def _post_teardown(self):
         self._mm_client_patcher.stop()
@@ -87,54 +100,64 @@ class TestCase(DjangoTestCase):
                 delattr(settings, key)
             else:
                 setattr(settings, key, value)
-        #if DJANGO_VERSION[:2] < (1, 7):
-        #    cache.backend = get_cache("default")
+        shutil.rmtree(self.tmpdir)
         super(TestCase, self)._post_teardown()
 
 
 class SearchEnabledTestCase(TestCase):
-    # pylint: disable=attribute-defined-outside-init
 
     def _pre_setup(self):
         try:
-            import whoosh # pylint: disable=unused-variable
+            import whoosh  # flake8: noqa
         except ImportError:
             raise SkipTest("The Whoosh library is not available")
-        self.tmpdir = tempfile.mkdtemp(prefix="hyperkitty-testing-")
-        self.override_settings["HAYSTACK_CONNECTIONS"] = {
-            'default': {
-                'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-                'PATH': os.path.join(self.tmpdir, 'fulltext_index'),
-            },
-        }
-        #self.override_settings["HAYSTACK_SIGNAL_PROCESSOR"] = \
-        #    'haystack.signals.RealtimeSignalProcessor'
         super(SearchEnabledTestCase, self)._pre_setup()
-        # Connect to the backend using the new settings. Using the reload()
-        # method is not enough, because the settings are cached in the class
-        haystack.connections.connections_info = settings.HAYSTACK_CONNECTIONS
-        haystack.connections.reload("default")
-        haystack.signal_processor = haystack.signals.RealtimeSignalProcessor(
-            haystack.connections, haystack.connection_router)
         call_command('rebuild_index', interactive=False, verbosity=0)
 
     def _post_teardown(self):
-        haystack.signal_processor.teardown()
-        shutil.rmtree(self.tmpdir)
         super(SearchEnabledTestCase, self)._post_teardown()
 
 
+class MigrationTestCase(TransactionTestCase):
+    """
+    Inpired by https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations/
+    """
+
+    migrate_from = None
+    migrate_to = None
+
+    @property
+    def app(self):
+        return apps.get_containing_app_config(type(self).__module__).name
+
+    def _pre_setup(self):
+        super(MigrationTestCase, self)._pre_setup()
+        assert self.migrate_from and self.migrate_to, \
+            "TestCase '{}' must define migrate_from and migrate_to properties".format(type(self).__name__)
+        self.migrate_from = [(self.app, self.migrate_from)]
+        self.migrate_to = [(self.app, self.migrate_to)]
+        self.executor = MigrationExecutor(connection)
+        self.old_apps = self.executor.loader.project_state(self.migrate_from).apps
+        # Make non-reversible operations reversible.
+        for migration, _backwards in self.executor.migration_plan(self.migrate_from):
+            for operation in migration.operations:
+                if not operation.reversible:
+                    if isinstance(operation, RunPython):
+                        operation.reverse_code = lambda *a: None
+                    if isinstance(operation, RunSQL):
+                        operation.reverse_sql = []
+        # Reverse to the original migration.
+        self.executor.migrate(self.migrate_from)
+
+    def migrate(self):
+        """Run the migration to test and return the new apps."""
+        # Either reset the migration graph, or use a new instance of
+        # MigrationExecutor.
+        self.executor.loader.build_graph()
+        self.executor.migrate(self.migrate_to)
+        return self.executor.loader.project_state(self.migrate_to).apps
 
 
 def get_test_file(*fileparts):
     return os.path.join(os.path.dirname(__file__), "testdata", *fileparts)
 get_test_file.__test__ = False
-
-
-def get_flash_messages(response):
-    if "messages" not in response.cookies:
-        return []
-    dummy_request = RequestFactory().get("/")
-    dummy_request.COOKIES["messages"] = response.cookies["messages"].value
-    return list(CookieStorage(dummy_request))
-get_flash_messages.__test__ = False

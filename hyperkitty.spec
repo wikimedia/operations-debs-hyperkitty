@@ -1,46 +1,41 @@
 %global pypi_name HyperKitty
-#%%global prerel 1
+%global prerel 1
 
 Name:           hyperkitty
-Version:        1.0.3
+Version:        1.1.1
 Release:        %{?prerel:0.}1%{?dist}
 Summary:        A web interface to access GNU Mailman v3 archives
 
 License:        GPLv3
 URL:            https://gitlab.com/mailman/hyperkitty
-Source0:        http://pypi.python.org/packages/source/H/%{pypi_name}/%{pypi_name}-%{version}%{?prerel:dev}.tar.gz
+Source0:        http://pypi.python.org/packages/source/H/%{pypi_name}/%{pypi_name}-%{version}%{?prerel:.dev0}.tar.gz
 
-# To get SOURCE1:
-#   git clone https://gitlab.com/mailman/hyperkitty_standalone.git
-#   make sdist -C hyperkitty_standalone
-#   mv hyperkitty_standalone/dist/hyperkitty_standalone-%{version}.tar.gz .
-Source1:        hyperkitty_standalone-%{version}%{?prerel:dev}.tar.gz
-
+# Patch settings to use the FHS
+Patch0:         hyperkitty-fhs.patch
 
 BuildArch:      noarch
 
 BuildRequires:  python-devel
 BuildRequires:  python-sphinx
+BuildRequires:  systemd
 # Unit tests in %%check
-BuildRequires:  django-gravatar2
-BuildRequires:  django-rest-framework >= 2.2.0
-BuildRequires:  python-social-auth
-BuildRequires:  django-crispy-forms
+BuildRequires:  python-django-gravatar2
+BuildRequires:  python-django-q
+BuildRequires:  python-django-rest-framework >= 2.2.0
 BuildRequires:  python-django-compressor
 BuildRequires:  python-rjsmin
 BuildRequires:  sassc
 BuildRequires:  python-mailman-client
 BuildRequires:  python-robot-detection
 BuildRequires:  pytz
-BuildRequires:  django-paintstore
-BuildRequires:  django-browserid
-BuildRequires:  python-django >= 1.6
-BuildRequires:  python-django-south >= 1.0.0
+BuildRequires:  python-django-paintstore
+BuildRequires:  python-django >= 1.8
 BuildRequires:  python-dateutil
 BuildRequires:  python-networkx
 BuildRequires:  python-enum34
-BuildRequires:  python-django-haystack
+BuildRequires:  python-django-haystack >= 2.5.0
 BuildRequires:  python-django-extensions
+BuildRequires:  python-django-mailman3
 BuildRequires:  python-lockfile
 # Unit tests only
 BuildRequires:  python-beautifulsoup4
@@ -51,27 +46,25 @@ BuildRequires:  python-whoosh
 BuildRequires:  checkpolicy, selinux-policy-devel, /usr/share/selinux/devel/policyhelp
 BuildRequires:  hardlink
 
-Requires:       django-gravatar2
-Requires:       python-social-auth
-Requires:       django-rest-framework >= 2.2.0
-Requires:       django-crispy-forms
+%{?systemd_requires}
+Requires:       python-django-gravatar2
+Requires:       python-django-rest-framework >= 2.2.0
+Requires:       python-django-q
 Requires:       python-django-compressor
 Requires:       python-rjsmin
 Requires:       sassc
 Requires:       python-mailman-client
 Requires:       python-robot-detection
 Requires:       pytz
-Requires:       django-paintstore
-Requires:       django-browserid >= 0.10.1
-Requires:       python-django >= 1.6
-Requires:       python-django-south >= 1.0.0
+Requires:       python-django-paintstore
+Requires:       python-django >= 1.8
 Requires:       python-dateutil
 Requires:       python-networkx
 Requires:       python-enum34
-Requires:       python-django-haystack
+Requires:       python-django-haystack >= 2.5.0
 Requires:       python-django-extensions
+Requires:       python-django-mailman3
 Requires:       python-lockfile
-Requires:       numpy
 
 
 %description
@@ -99,17 +92,18 @@ This is the SELinux module for %{name}, install it if you are using SELinux.
 
 
 %prep
-%setup -q -n %{pypi_name}-%{version}%{?prerel:dev} -a 1
+%setup -q -n %{pypi_name}-%{version}%{?prerel:.dev0}
+%patch0 -p0
+
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
-mv hyperkitty_standalone-%{version}%{?prerel:dev} hyperkitty_standalone
 # remove shebang on manage.py
-sed -i -e '1d' hyperkitty_standalone/manage.py
+sed -i -e '1d' example_project/manage.py
 # remove executable permissions on wsgi.py
-chmod -x hyperkitty_standalone/wsgi.py
-# remove __init__.py in hyperkitty_standalone to prevent it from being
+chmod -x example_project/wsgi.py
+# remove __init__.py in example_project to prevent it from being
 # installed (find_package won't find it). It's empty anyway.
-rm -f hyperkitty_standalone/__init__.py
+rm -f example_project/__init__.py
 
 # SELinux
 mkdir SELinux
@@ -143,34 +137,28 @@ rm -rf %{buildroot}
 
 # Install the Django files
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}/sites/default
-cp -p hyperkitty_standalone/{manage,settings,urls,wsgi}.py \
+cp -p example_project/{manage,settings,urls,wsgi}.py \
     %{buildroot}%{_sysconfdir}/%{name}/sites/default/
-touch --reference hyperkitty_standalone/manage.py \
+touch --reference example_project/manage.py \
     %{buildroot}%{_sysconfdir}/%{name}/sites/default/__init__.py
 # Apache HTTPd config file
-mkdir -p %{buildroot}/%{_sysconfdir}/httpd/conf.d/
-sed -e 's,/path/to/hyperkitty_standalone/static,%{_localstatedir}/lib/%{name}/sites/default/static,g' \
-    -e 's,/path/to/hyperkitty_standalone,%{_sysconfdir}/%{name}/sites/default,g' \
-     hyperkitty_standalone/hyperkitty.apache.conf \
-     > %{buildroot}/%{_sysconfdir}/httpd/conf.d/hyperkitty.conf
-touch --reference hyperkitty_standalone/hyperkitty.apache.conf \
+install -p -m 644 -D example_project/apache.conf \
+     %{buildroot}/%{_sysconfdir}/httpd/conf.d/hyperkitty.conf
+touch --reference example_project/apache.conf \
     %{buildroot}/%{_sysconfdir}/httpd/conf.d/hyperkitty.conf
 # SQLite databases directory, static files and fulltext_index
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}/sites/default/static
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}/sites/default/db
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}/sites/default/fulltext_index
-sed -i -e 's,/path/to/rw,%{_localstatedir}/lib/%{name}/sites/default/db,g' \
-       -e 's,^BASE_DIR = .*$,BASE_DIR = "%{_localstatedir}/lib/%{name}/sites/default",g' \
-    %{buildroot}%{_sysconfdir}/%{name}/sites/default/settings.py
-touch --reference hyperkitty_standalone/settings.py \
-    %{buildroot}%{_sysconfdir}/%{name}/sites/default/settings.py
 # Cron jobs
 mkdir -p %{buildroot}%{_sysconfdir}/cron.d
-sed -e 's,/path/to/hyperkitty_standalone,%{_sysconfdir}/%{name}/sites/default,g' \
-    hyperkitty_standalone/crontab \
-    > %{buildroot}%{_sysconfdir}/cron.d/%{name}
-touch --reference hyperkitty_standalone/crontab \
+install -p -m 644 -D example_project/crontab \
     %{buildroot}%{_sysconfdir}/cron.d/%{name}
+# Logs
+mkdir -p %{buildroot}%{_localstatedir}/log/%{name}/
+# Systemd
+install -p -m 644 -D example_project/qcluster.service \
+    %{buildroot}%{_unitdir}/%{name}-qcluster.service
 
 # SELinux
 for selinuxvariant in %{selinux_variants}; do
@@ -183,10 +171,12 @@ done
 
 
 %check
-PYTHONPATH=`pwd`:`pwd`/hyperkitty_standalone %{_bindir}/django-admin test --settings=settings hyperkitty
+PYTHONPATH=`pwd` %{__python} example_project/manage.py test --settings=hyperkitty.tests.settings_test hyperkitty
 
 
 %post
+# Install the service file
+%systemd_post %{name}-qcluster.service
 # Build the static files cache
 %{_bindir}/django-admin collectstatic \
     --pythonpath=%{_sysconfdir}/%{name}/sites/default \
@@ -195,6 +185,11 @@ PYTHONPATH=`pwd`:`pwd`/hyperkitty_standalone %{_bindir}/django-admin test --sett
     --pythonpath=%{_sysconfdir}/%{name}/sites/default \
     --settings=settings &>/dev/null || :
 
+%preun
+%systemd_preun %{name}-qcluster.service
+
+%postun
+%systemd_postun_with_restart %{name}-qcluster.service
 
 %post selinux
 for selinuxvariant in %{selinux_variants}; do
@@ -221,6 +216,7 @@ fi
 %config(noreplace) %attr(640,root,apache) %{_sysconfdir}/%{name}/sites/default/settings.py
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 %config(noreplace) %{_sysconfdir}/cron.d/%{name}
+%{_unitdir}/*.service
 %{python_sitelib}/%{name}
 %{python_sitelib}/%{pypi_name}-*.egg-info
 %dir %{_localstatedir}/lib/%{name}
@@ -229,6 +225,7 @@ fi
 %dir %{_localstatedir}/lib/%{name}/sites/default/static
 %attr(755,apache,apache) %{_localstatedir}/lib/%{name}/sites/default/db
 %attr(755,apache,apache) %{_localstatedir}/lib/%{name}/sites/default/fulltext_index
+%attr(755,apache,apache) %{_localstatedir}/log/%{name}/
 
 %files selinux
 %defattr(-,root,root,0755)
@@ -237,6 +234,12 @@ fi
 
 
 %changelog
+* Fri May 26 2017 Aurelien Bompard <abompard@fedoraproject.org> - 1.1.0-1
+- version 1.1.0
+
+* Wed Aug 17 2016 Aurelien Bompard <abompard@fedoraproject.org> - 1.0.4-1
+- version 1.0.4
+
 * Mon Nov 25 2013 Aurelien Bompard <abompard@fedoraproject.org> - 0.1.7-0.1
 - add SELinux policy module, according to:
   http://fedoraproject.org/wiki/SELinux_Policy_Modules_Packaging_Draft

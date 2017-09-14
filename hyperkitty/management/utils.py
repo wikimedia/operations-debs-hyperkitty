@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -62,7 +62,8 @@ def setup_logging(command, verbosity):
         debuglevel = logging.DEBUG
     else:
         debuglevel = logging.INFO
-    handler = DualStreamsHandler(stream_low=command.stdout, stream_high=command.stderr)
+    handler = DualStreamsHandler(
+        stream_low=command.stdout, stream_high=command.stderr)
     formatter = logging.Formatter(fmt='%(message)s')
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()

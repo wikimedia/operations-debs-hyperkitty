@@ -1,5 +1,6 @@
-#-*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -28,10 +29,10 @@ from django.http import Http404
 from django.utils.timezone import utc
 from django.utils.decorators import available_attrs
 from django.shortcuts import render
+from django_mailman3.lib.mailman import get_subscriptions
 
-from hyperkitty.models import ThreadCategory, MailingList, Profile
-from hyperkitty.views.forms import CategoryForm
-from hyperkitty.lib.cache import cache
+from hyperkitty.models import ThreadCategory, MailingList
+from hyperkitty.forms import CategoryForm
 from hyperkitty.lib.posting import get_sender
 
 
@@ -43,19 +44,16 @@ def get_months(mlist):
     :arg list_name, name of the mailing list in which this email
     should be searched.
     """
-    date_first = cache.get_or_set(
-        "MailingList:%s:first_date" % mlist.name,
-        lambda: mlist.emails.order_by("date"
-            ).values_list("date", flat=True).first(),
-        None)
-    if not date_first:
-        return {}
-    archives = {}
+    date_first = mlist.cached_values["first_date"]()
     now = datetime.datetime.now()
+    if not date_first:
+        # No messages on this list, return the current month.
+        return {now.year: [now.month]}
+    archives = {}
     year = date_first.year
     month = date_first.month
     while year < now.year:
-        archives[year] = range(1, 13)[(month -1):]
+        archives[year] = range(1, 13)[(month-1):]
         year = year + 1
         month = 1
     archives[now.year] = range(1, 13)[:now.month]
@@ -93,13 +91,15 @@ def get_category_widget(request, current_category=None):
     request.
     """
 
-    categories = [ (c.name, c.name.upper())
-                   for c in ThreadCategory.objects.all() ] \
-                 + [("", "no category")]
+    categories = [
+        (c.name, c.name.upper())
+        for c in ThreadCategory.objects.all()
+        ] + [("", "no category")]
     if request.method == "POST":
         category_form = CategoryForm(request.POST)
     else:
-        category_form = CategoryForm(initial={"category": current_category or ""})
+        category_form = CategoryForm(
+            initial={"category": current_category or ""})
     category_form["category"].field.choices = categories
 
     if request.method == "POST" and category_form.is_valid():
@@ -116,13 +116,6 @@ def get_category_widget(request, current_category=None):
     return category, category_form
 
 
-def show_mlist(mlist, request):
-    def get_domain(host):
-        return ".".join(host.split(".")[-2:])
-    return (get_domain(mlist.name.partition("@")[2])
-            == get_domain(request.get_host()))
-
-
 # View decorator: check that the list is authorized
 def check_mlist_private(func):
     @wraps(func, assigned=available_attrs(func))
@@ -136,9 +129,10 @@ def check_mlist_private(func):
         except MailingList.DoesNotExist:
             raise Http404("No archived mailing-list by that name.")
         if not is_mlist_authorized(request, mlist):
-            return render(request, "hyperkitty/errors/private.html", {
-                            "mlist": mlist,
-                          }, status=403)
+            return render(
+                request, "hyperkitty/errors/private.html", {
+                    "mlist": mlist,
+                }, status=403)
         return func(request, *args, **kwargs)
     return inner
 
@@ -146,17 +140,12 @@ def check_mlist_private(func):
 def is_mlist_authorized(request, mlist):
     if not mlist.is_private:
         return True
+    if request.user.is_superuser:
+        return True
     if not request.user.is_authenticated():
         return False
     # Private list and logged-in user: check subscriptions
-    try:
-        profile = Profile.objects.get(user_id=request.user.id)
-    except Profile.DoesNotExist:
-        # Create the profile if it does not exist. There's a signal receiver
-        # that creates it for new users, but HyperKitty may be added to an
-        # existing Django project with existing users.
-        profile = Profile.objects.create(user=request.user)
-    if mlist.name in profile.get_subscriptions().keys():
+    if mlist.list_id in get_subscriptions(request.user):
         return True
     else:
         return False
@@ -166,6 +155,6 @@ def get_posting_form(formclass, request, mlist, data=None):
     form = formclass(data, initial={
         "sender": get_sender(request, mlist)})
     if request.user.is_authenticated():
-        form.fields['sender'].choices = [ (a, a) for a in
-            request.user.hyperkitty_profile.addresses ]
+        form.fields['sender'].choices = [
+            (a, a) for a in request.user.hyperkitty_profile.addresses]
     return form

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,12 +26,14 @@ Update the full-text index
 from __future__ import absolute_import, print_function, unicode_literals
 
 from django_extensions.management.jobs import BaseJob
-from hyperkitty.jobs.update_index import run_with_lock
+
+from hyperkitty.lib.utils import run_with_lock
+from hyperkitty.search_indexes import update_index
 
 
 class Job(BaseJob):
     help = "Update the full-text index and clean old entries"
-    when = "daily"
+    when = "monthly"
 
     def execute(self):
-        run_with_lock(remove=True)
+        run_with_lock(update_index, remove=True)

@@ -2,10 +2,11 @@
 {% load i18n %}
 {% load gravatar %}
 {% load hk_generic %}
+{% load pagination %}
 
 
-{% block title %}
-{% trans "Search results for" %} "{{ query }}"{% if mlist %} - {{ mlist.display_name|default:mlist.name|escapeemail }} {% endif %} - {{ app_name|title }}
+{% block head_title %}
+{% trans "Search results for" %} "{{ query }}"{% if mlist %} - {{ mlist.display_name|default:mlist.name }} {% endif %} - {{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -35,12 +36,12 @@
 
             {% if mlist.display_name %}
             <span class="list-address hidden-tn hidden-xs hidden-sm col-md-4">
-                {{ mlist.name|escapeemail }}
+                {{ mlist.name }}
             </span>
             {% endif %}
             <ul class="list-unstyled list-stats col-tn-12 col-sm-6 col-md-4">
                 <li>
-                    <span class="icomoon discussion"></span>
+                    <span class="fa fa-comment"></span>
                     {{ emails.paginator.count }} {% trans "messages" %}
                 </li>
             </ul>
@@ -69,6 +70,13 @@
         </div>
 
 
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+        {% for error in form.q.errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+
         {% if query %}
             {% for email in emails %}
                 <!--<div class="search-result">-->
@@ -82,7 +90,7 @@
             <p style="font-style:italic;font-size:small;color:#ccc">{% trans "these are not the messages you are looking for" %}</p>
         {% endif %}
 
-        {% include "hyperkitty/paginator.html" with pager=emails notbydate=True %}
+        {% paginator emails %}
 
     </div>
 
@@ -93,20 +101,6 @@
 {% block additionaljs %}
 <script>
 $(document).ready(function() {
-    $('span.expander').expander({
-        slicePoint: 500,
-        userCollapseText : '\n[View Less]',
-        expandText : '\n[View More]',
-        beforeExpand: function() {
-            $(this).removeClass("collapsed");
-            $(this).addClass("expanded");
-        },
-        onCollapse: function() {
-            $(this).removeClass("expanded");
-            $(this).addClass("collapsed");
-        }
-    });
-
     // onchange event for sorting method select
     $('select#sort-search').change(function() {
         $(this).closest('form').submit();

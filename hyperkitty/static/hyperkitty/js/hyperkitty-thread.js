@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+ * Copyright (C) 2012-2012 by the Free Software Foundation, Inc.
  *
  * This file is part of HyperKitty.
  *
@@ -153,19 +153,18 @@ function setup_favorites() {
  * Replies
  */
 
-function setup_emails_list(baseElem) {
-    if (!baseElem) {
-        baseElem = document;
-    }
+function setup_emails_list() {
     // Attachements
-    $(baseElem).find(".email-info .attachments-list a").tooltip({placement: "right"});
+    $("div.container").tooltip({
+            selector: ".email-info .attachments-list a",
+            placement: "right"
+    });
     // Quotes
-    $(baseElem).find('div.email-body .quoted-switch a')
-        .click(function(e) {
+    $("div.container").on("click", 'div.email-body .quoted-switch a', function(e) {
             e.preventDefault();
             $(this).parent().next(".quoted-text").slideToggle('fast');
         });
-    setup_replies(baseElem);
+    setup_replies();
 }
 
 function fold_quotes(baseElem) {
@@ -178,25 +177,24 @@ function fold_quotes(baseElem) {
     });
 }
 
-function setup_replies(baseElem) {
-    if (!baseElem) {
-        baseElem = document;
-    }
-    $(baseElem).find("a.reply").tooltip().click(function(e) {
-        if ($(this).hasClass("reply-mailto")) { return; }
-        e.preventDefault();
-        $(this).parent(".email-info").find(".reply-form").slideToggle("fast", function() {
-            if ($(this).css("display") === "block") {
-                $(this).find("textarea").focus();
-            }
+function setup_replies() {
+    $("body")
+        .tooltip({selector: "a.reply"})
+        .on("click", "a.reply", function(e) {
+            if ($(this).hasClass("reply-mailto")) { return; }
+            e.preventDefault();
+            $(this).parent(".email-info").find(".reply-form").slideToggle("fast", function() {
+                if ($(this).css("display") === "block") {
+                    $(this).find("textarea").focus();
+                }
+            });
         });
-    });
-    $(baseElem).find("a.reply-mailto").click(function(e) {
+    $("body").on("click", "a.reply-mailto", function(e) {
         // Close the reply form, we're going to use email software
         var replyform = $(this).parents(".reply-form").first().slideUp();
         return;
     });
-    $(baseElem).find(".reply-form button[type='submit']").click(function(e) {
+    $("body").on("click", ".reply-form button[type='submit']", function(e) {
         e.preventDefault();
         var button = $(this);
         var form = $(this).parents("form").first();
@@ -237,11 +235,11 @@ function setup_replies(baseElem) {
         });
         form_elements.prop("disabled", true);
     });
-    $(baseElem).find(".reply-form a.cancel").click(function(e) {
+    $("body").on("click", ".reply-form a.cancel", function(e) {
         e.preventDefault();
         $(this).parents(".reply-form").first().slideUp();
     });
-    $(baseElem).find(".reply-form a.quote").click(function(e) {
+    $("body").on("click", ".reply-form a.quote", function(e) {
         e.preventDefault();
         var quoted = $(this).parents(".email").first()
                         .find(".email-body").clone()
@@ -261,8 +259,8 @@ function setup_replies(baseElem) {
         textarea.focus();
     });
     function set_new_thread(checkbox) {
-        var this_form = checkbox.parents("form").first();
-        var subj = this_form.find("input[name='subject']").parents("p").first();
+        var this_form = checkbox.closest("form");
+        var subj = this_form.find("p.new-subject");
         if (checkbox.is(":checked")) {
             subj.slideDown("fast");
             subj.find("input").focus();
@@ -271,10 +269,9 @@ function setup_replies(baseElem) {
             this_form.find("textarea").focus();
         }
     }
-    $(baseElem).find(".reply-form input[name='newthread']").change(function() {
+    $("body").on("change", ".reply-form input[name='newthread']", function() {
         set_new_thread($(this));
-    }).change();
-    setup_send_as(baseElem);
+    });
 }
 
 function setup_unreadnavbar(element) {
@@ -326,11 +323,7 @@ function update_thread_replies(url) {
                 var newcontent = $(data.replies_html);
                 $(".replies").append(newcontent)
                              .append($(".replies .ajaxloader"));
-                // re-bind events
-                setup_emails_list(newcontent);
                 fold_quotes(newcontent);
-                setup_disabled_tooltips(newcontent);
-                setup_vote(newcontent);
                 // load the rest if applicable
                 if (data.more_pending) {
                     load_more(url+"&offset="+data.next_offset);
@@ -376,4 +369,14 @@ function setup_reattach() {
             }
         });
     }).submit();
+}
+
+
+/*
+ * Handle click on the "fixed-font" toggle.
+ */
+function setup_fixed_font() {
+    $(document).on("click", ".toggle-font", function() {
+        $(this).parents('.email').find('.email-body').toggleClass('fixed')
+    });
 }

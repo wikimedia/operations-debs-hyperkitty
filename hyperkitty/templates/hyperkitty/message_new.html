@@ -2,11 +2,11 @@
 {% load i18n %}
 {% load gravatar %}
 {% load hk_generic %}
-{% load crispy_forms_tags %}
+{% load bootstrap_tags %}
 
 
-{% block title %}
-{% trans "Create a new thread" %} - {{ mlist.display_name|default:mlist.name|escapeemail }} - {{ app_name|title }}
+{% block head_title %}
+{% trans "Create a new thread" %} - {{ mlist.display_name|default:mlist.name }} - {{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
         <div class="message-header">
             <h1>
                 {% trans "Create a new thread" %}
-                <small>{% trans 'in' %} {{ mlist.display_name|default:mlist.name|escapeemail }}</small>
+                <small>{% trans 'in' %} {{ mlist.display_name|default:mlist.name }}</small>
             </h1>
         </div>
 
@@ -28,21 +28,24 @@
             <form method="post" enctype="multipart/form-data"
                   action="{% url 'hk_message_new' mlist_fqdn=mlist.name %}">
 
-                {% comment "Crispy should take care of all that" %}
                 {% csrf_token %}
                 <ul class="list-unstyled">
                 {% for error in post_form.non_field_errors %}
-                    <li><i class="fa-li fa fa-times-circle"></i> {{ error }}</li>
+                    <li><i class="fa fa-li fa-times-circle"></i> {{ error }}</li>
                 {% endfor %}
                 </ul>
-                <div class="form-group {% if post_form.subject.errors %}has-error{% endif %}">
-                    {{ post_form.subject.label }}
-                    {{ post_form.subject }}
-                    <span class="help-block">{{ post_form.subject.errors }}</span>
-                </div>
-                {% endcomment %}
 
-                {% crispy post_form %}
+                {% for field in post_form.visible_fields %}
+                {% if field != post_form.sender %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field|add_form_control }}
+                    <span class="help-block">{{ field.errors }}</span>
+                </div>
+                {% endif %}
+                {% endfor %}
 
                 {% include "hyperkitty/fragments/send_as.html" with form=post_form %}
 
@@ -57,12 +60,4 @@
 
 </div>
 
-{% endblock %}
-
-{% block additionaljs %}
-<script type="text/javascript">
-    $(document).ready(function() {
-        setup_send_as($(".new-thread-form"));
-    });
-</script>
 {% endblock %}
