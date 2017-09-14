@@ -1,5 +1,9 @@
-mailman3-hyperkitty (1.0.3-1) unstable; urgency=low
+mailman3-hyperkitty (1.1.1-1) unstable; urgency=medium
 
+  [ Pierre-Elliott Bécue ]
   * Initial release (Closes: #799287)
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Tue, 08 Mar 2016 23:32:17 +0100
+  [ Jonas Meurer ]
+  * Import upstream version 1.1.1.
+
+ -- Jonas Meurer <mejo@debian.org>  Thu, 14 Sep 2017 14:25:12 +0200
