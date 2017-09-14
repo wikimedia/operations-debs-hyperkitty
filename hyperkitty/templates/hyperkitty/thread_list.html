@@ -2,10 +2,11 @@
 {% load i18n %}
 {% load gravatar %}
 {% load hk_generic %}
+{% load pagination %}
 
 
-{% block title %}
-{{ list_title }} - {{ mlist.display_name|default:mlist.name|escapeemail }} - {{ app_name|title }}
+{% block head_title %}
+{{ list_title }} - {{ mlist.display_name|default:mlist.name }} - {{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -35,12 +36,12 @@
             <ul class="list-unstyled list-stats thread-list-info col-tn-6 col-xs-8">
                 {% if participants_count %}
                 <li>
-                    <i class="icomoon participant"></i>
+                    <i class="fa fa-user"></i>
                     {{ participants_count }} {% trans "participants" %}
                 </li>
                 {% endif %}
                 <li>
-                    <i class="icomoon discussion"></i>
+                    <i class="fa fa-comment"></i>
                     {{ threads.paginator.count }} {% trans "discussions" %}
                 </li>
             </ul>
@@ -59,24 +60,7 @@
             <p>{% trans "Sorry no email threads could be found" %} {{ no_results_text }}.</p>
         {% endfor %}
 
-        {% include "hyperkitty/paginator.html" with pager=threads %}
-        <div class="paginator">
-        <form action="{{ request.path }}" method="get" class="form-inline">
-            <input type="hidden" name="page" value="{{ threads.number }}" />
-            {% trans 'Results per page:' %}</span>
-            <select name="count" class="form-control input-sm">
-                {% for count in per_page_options %}
-                    <option value="{{ count }}"
-                        {% if threads.paginator.per_page == count %}
-                        selected="selected"
-                        {% endif %}
-                        >{{ count }}
-                    </option>
-                {% endfor %}
-            </select>
-            <input type="submit" class="btn btn-sm" value="Go" />
-        </form>
-        </div>
+        {% paginator threads bydate=True %}
 
     </div>
 
@@ -88,9 +72,9 @@
 <script>
 $(document).ready(function() {
     $('span.expander').expander({
-        slicePoint: 500,
-        userCollapseText : '\n[View Less]',
-        expandText : '\n[View More]',
+        slicePoint: 100,
+        userCollapseText : '<br /><br /><a class="btn-expander"><i class="fa fa-minus-square-o" aria-label="View less"></i> View less</a>',
+        expandText : '<br /><a class="btn-expander"><i class="fa fa-plus-square-o" aria-label="View more"></i> View more</a>',
         beforeExpand: function() {
             $(this).removeClass("collapsed");
             $(this).addClass("expanded");
@@ -127,13 +111,6 @@ $(document).ready(function() {
             window.parent.location.href = url;
         });
     }
-
-    // Pagination: results per page
-    $('.paginator form').each(function() {
-        var form = $(this);
-        form.find("select").change(function() {form.submit();});
-        form.find("input[type='submit']").hide();
-    });
 
 });
 </script>

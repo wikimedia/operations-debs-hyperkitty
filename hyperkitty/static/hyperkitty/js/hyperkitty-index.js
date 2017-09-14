@@ -43,7 +43,7 @@ function setup_index(url_template) {
         var url = url_template
             .replace(/PLACEHOLDER@PLACEHOLDER/, listname)
             .replace(/PLACEHOLDER%40PLACEHOLDER/, listname);
-        ajax_chart(url, listrows.find("div.chart"), {height: 30});
+        return ajax_chart(url, listrows.find("div.chart"), {height: 30});
     }
 
     // Filter
@@ -53,20 +53,8 @@ function setup_index(url_template) {
             var cls = $(this).val();
             hide_by_class[cls] = $(this).prop("checked");
         });
-        var filter = null;
-        if ($(".filter-lists input[type=text]").length !== 0) {
-            // The field does not exist if there are only a few lists
-            filter = $.trim($(".filter-lists input[type=text]").val().toLowerCase());
-        }
         $("table.lists tr.list").each(function() {
-            var list_name = $.trim($(this).find("a.list-name").text());
-            var list_addr = $(this).attr("data-list-name");
             var must_hide = false;
-            // name filter
-            if (filter && list_name.indexOf(filter) === -1
-                       && list_addr.indexOf(filter) === -1) {
-                must_hide = true;
-            }
             // class filter
             for (cls in hide_by_class) {
                 if ($(this).hasClass(cls) && hide_by_class[cls]) {
@@ -82,23 +70,29 @@ function setup_index(url_template) {
         });
     }
     $(".hide-switches input").click(filter_lists);
-    var _filter_timeout = null;
-    $(".filter-lists input").change(function() {
-        clearTimeout(_filter_timeout)
-        // reset status according to the "hide" checkboxes
-        window.setTimeout(filter_lists, 500);
-    }).keyup(function() {
-        // fire the above change event after every letter
-        $(this).change();
-    }).focus();
     filter_lists(); // Filter on page load
+
+    // Find field
+    var find_field = $(".filter-lists input");
+    find_field.autocomplete({
+        minLength: 3,
+        source: "find-list",
+        select: function(event, ui) {
+            find_field.val(ui.item.value);
+            find_field.closest("form").submit();
+        },
+    });
 
     // Back to top link
     setup_back_to_top_link(220); // set offset to 220 for link to appear
 
     // Update list graphs for all lists
-    var list_rows = $(".all-lists table.lists tr.list");
+    var list_rows = $(".all-lists table.lists tr.list"),
+        deferred = $.Deferred();
+    deferred.resolve();
     $.each(list_names, function(index, list_name) {
-        show_ajax_chart(list_rows.filter('[data-list-name="' + list_name + '"]'));
+        deferred = deferred.then(function () {
+            return show_ajax_chart(list_rows.filter('[data-list-name="' + list_name + '"]'));
+        });
     });
 }

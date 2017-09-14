@@ -1,5 +1,6 @@
-#-*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #

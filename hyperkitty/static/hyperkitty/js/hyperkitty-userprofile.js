@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+ * Copyright (C) 2012-2012 by the Free Software Foundation, Inc.
  *
  * This file is part of HyperKitty.
  *

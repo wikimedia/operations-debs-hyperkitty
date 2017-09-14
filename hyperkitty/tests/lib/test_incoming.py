@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -27,6 +28,7 @@ from email import message_from_file
 
 from django.utils import timezone
 from django.db import IntegrityError
+from django_mailman3.lib.cache import cache
 
 from hyperkitty.models import MailingList, Email, Thread, Attachment
 from hyperkitty.lib.incoming import add_to_list, DuplicateMessage
@@ -69,7 +71,6 @@ class TestAddToList(TestCase):
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
-        #now = datetime.datetime.utcnow()
         now = timezone.now()
         try:
             add_to_list("example-list", msg)
@@ -104,7 +105,7 @@ class TestAddToList(TestCase):
         msg.set_payload("Dummy message")
         try:
             add_to_list("example-list", msg)
-        except IntegrityError, e:
+        except IntegrityError as e:
             self.fail(e)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
@@ -133,12 +134,13 @@ class TestAddToList(TestCase):
         msg.set_payload("Dummy message")
         try:
             add_to_list("example-list", msg)
-        except ValueError, e:
+        except ValueError as e:
             self.assertEqual(e.__class__.__name__, "ValueError")
         else:
             self.fail("No ValueError was raised")
-        self.assertEqual(0,
-            MailingList.objects.get(name="example-list").emails.count())
+        self.assertEqual(
+            MailingList.objects.get(name="example-list").emails.count(),
+            0)
 
     def test_duplicate_nonascii(self):
         msg = Message()
@@ -151,8 +153,9 @@ class TestAddToList(TestCase):
         self.assertTrue(mlist.emails.filter(message_id="dummy").exists())
         msg.replace_header("From", b"dummy-non-ascii\xc3\xa9@example.com")
         try:
-            self.assertRaises(DuplicateMessage, add_to_list, "example-list", msg)
-        except UnicodeDecodeError, e:
+            self.assertRaises(
+                DuplicateMessage, add_to_list, "example-list", msg)
+        except UnicodeDecodeError as e:
             self.fail("Died on a non-ascii header message: %s" % unicode(e))
         self.assertEqual(mlist.emails.count(), 1)
 
@@ -162,7 +165,7 @@ class TestAddToList(TestCase):
             msg = message_from_file(email_file)
         try:
             add_to_list("example-list", msg)
-        except IntegrityError, e:
+        except IntegrityError as e:
             self.fail(e)
         self.assertEqual(Email.objects.count(), 1)
         self.assertEqual(Attachment.objects.count(), 1)
@@ -184,6 +187,7 @@ class TestAddToList(TestCase):
         msg_t3_1["Message-ID"] = "<id3_1>"
         msg_t3_1.set_payload("Dummy message")
         add_to_list("example-list", msg_t3_1)
+
         # Check the neighbors
         def check_neighbors(thread, expected_prev, expected_next):
             thread_id = get_message_id_hash("<id%s_1>" % thread)
@@ -195,9 +199,9 @@ class TestAddToList(TestCase):
             if thread.next_thread:
                 next_th = thread.next_thread.thread_id
             expected_prev = expected_prev and \
-                    get_message_id_hash("<id%s_1>" % expected_prev)
+                get_message_id_hash("<id%s_1>" % expected_prev)
             expected_next = expected_next and \
-                    get_message_id_hash("<id%s_1>" % expected_next)
+                get_message_id_hash("<id%s_1>" % expected_next)
             # compare
             self.assertEqual(prev_th, expected_prev)
             self.assertEqual(next_th, expected_next)
@@ -228,12 +232,13 @@ class TestAddToList(TestCase):
         msg.set_payload("Dummy message")
         try:
             add_to_list("example-list", msg)
-        except IntegrityError, e:
+        except IntegrityError as e:
             self.fail(e)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
-        self.assertTrue(len(stored_msg.message_id) <= 255,
-                "Very long message-id headers are not truncated")
+        self.assertTrue(
+            len(stored_msg.message_id) <= 255,
+            "Very long message-id headers are not truncated")
 
     def test_long_message_id_reply(self):
         # Some message-ids are more than 255 chars long, we'll truncate them
@@ -272,11 +277,9 @@ class TestAddToList(TestCase):
                 msg["Message-ID"] = "<%s_%s>" % (name, num)
                 msg.set_payload("Dummy message")
                 add_to_list("example-list", msg)
-        #now = timezone.now()
-        #yesterday = now - datetime.timedelta(days=1)
         mlist = MailingList.objects.get(name="example-list")
-        result = [(p.name, p.address, p.count) for p in
-                   mlist.top_posters ]
+        result = [(p["name"], p["address"], p["count"]) for p in
+                  mlist.top_posters]
         self.assertEqual(expected, result)
 
     def test_get_sender_name(self):
@@ -287,7 +290,7 @@ class TestAddToList(TestCase):
         add_to_list("example-list", msg)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
-        self.assertEqual(stored_msg.sender.name, "Sender Name")
+        self.assertEqual(stored_msg.sender_name, "Sender Name")
 
     def test_no_sender_address(self):
         msg = Message()
@@ -300,7 +303,7 @@ class TestAddToList(TestCase):
             self.fail(e)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
-        self.assertEqual(stored_msg.sender.name, "Sender Name")
+        self.assertEqual(stored_msg.sender_name, "Sender Name")
         self.assertEqual(stored_msg.sender.address, "sendername@example.com")
 
     def test_no_sender_name_or_address(self):
@@ -314,7 +317,7 @@ class TestAddToList(TestCase):
             self.fail(e)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
-        self.assertEqual(stored_msg.sender.name, "")
+        self.assertEqual(stored_msg.sender_name, "")
         self.assertEqual(stored_msg.sender.address, "unknown@example.com")
 
     def test_get_sender_name_if_empty(self):
@@ -325,9 +328,9 @@ class TestAddToList(TestCase):
         add_to_list("example-list", msg)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
-        self.assertEqual(stored_msg.sender.name, "dummy@example.com")
+        self.assertEqual(stored_msg.sender_name, "dummy@example.com")
 
-    def test_update_sender_name(self):
+    def test_dont_update_sender_name(self):
         # This first part is equivalent to the test_get_sender_name test.
         msg = Message()
         msg["From"] = "Sender Name <dummy@example.com>"
@@ -336,7 +339,7 @@ class TestAddToList(TestCase):
         add_to_list("example-list", msg)
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
-        self.assertEqual(stored_msg.sender.name, "Sender Name")
+        self.assertEqual(stored_msg.sender_name, "Sender Name")
         # Send a second message with a different sender name
         msg = Message()
         msg["From"] = "Another Name <dummy@example.com>"
@@ -344,28 +347,10 @@ class TestAddToList(TestCase):
         msg.set_payload("Dummy message")
         add_to_list("example-list", msg)
         self.assertEqual(Email.objects.count(), 2)
-        stored_msg = Email.objects.get(message_id="dummy2")
-        self.assertEqual(stored_msg.sender.name, "Another Name")
-
-    def test_no_update_sender_name_if_empty(self):
-        # This first part is equivalent to the test_get_sender_name test.
-        msg = Message()
-        msg["From"] = "Sender Name <dummy@example.com>"
-        msg["Message-ID"] = "<dummy>"
-        msg.set_payload("Dummy message")
-        add_to_list("example-list", msg)
-        self.assertEqual(Email.objects.count(), 1)
-        stored_msg = Email.objects.all()[0]
-        self.assertEqual(stored_msg.sender.name, "Sender Name")
-        # Send a second message with an empty sender name
-        msg = Message()
-        msg["From"] = "dummy@example.com"
-        msg["Message-ID"] = "<dummy2>"
-        msg.set_payload("Dummy message")
-        add_to_list("example-list", msg)
-        self.assertEqual(Email.objects.count(), 2)
-        stored_msg = Email.objects.get(message_id="dummy2")
-        self.assertEqual(stored_msg.sender.name, "Sender Name")
+        stored_msg_2 = Email.objects.get(message_id="dummy2")
+        self.assertEqual(stored_msg_2.sender_name, "Another Name")
+        # The first sender_name hasn't changed.
+        self.assertEqual(stored_msg.sender_name, "Sender Name")
 
     def test_long_subject(self):
         msg = Message()
@@ -380,7 +365,6 @@ class TestAddToList(TestCase):
         self.assertEqual(Email.objects.count(), 1)
         stored_msg = Email.objects.all()[0]
         self.assertEqual(len(stored_msg.subject), 512)
-
 
     def test_orphans(self):
         # When a reply is received before the original message, it must be
@@ -400,6 +384,76 @@ class TestAddToList(TestCase):
         parent_msg.set_payload("First message")
         add_to_list("example-list", parent_msg)
         self.assertEqual(Email.objects.count(), 2)
-        orphan = Email.objects.get(id=orphan.id) # Refresh the instance
+        orphan = Email.objects.get(id=orphan.id)  # Refresh the instance
         parent = Email.objects.filter(message_id="msg1").first()
         self.assertEqual(orphan.parent_id, parent.id)
+
+    def test_archived_date(self):
+        msg = Message()
+        msg["From"] = "dummy@example.com"
+        msg["Subject"] = "Fake Subject"
+        msg["Message-ID"] = "<dummy>"
+        msg["Date"] = "Fri, 02 Nov 2012 16:07:54"
+        msg.set_payload("Fake Message")
+        msg.set_unixfrom("mail@example.com Mon Jul 21 11:59:48 2013")
+        add_to_list("example-list", msg)
+        self.assertEqual(Email.objects.count(), 1)
+        stored_msg = Email.objects.all()[0]
+        self.assertEqual(
+            stored_msg.archived_date,
+            datetime.datetime(2013, 7, 21, 11, 59, 48, tzinfo=timezone.utc))
+
+    def test_archived_date_unparseable(self):
+        msg = Message()
+        msg["From"] = "dummy@example.com"
+        msg["Subject"] = "Fake Subject"
+        msg["Message-ID"] = "<dummy>"
+        msg["Date"] = "Fri, 02 Nov 2012 16:07:54"
+        msg.set_payload("Fake Message")
+        msg.set_unixfrom("mail@example.com Something that cant be parsed")
+        add_to_list("example-list", msg)
+        self.assertEqual(Email.objects.count(), 1)
+        stored_msg = Email.objects.all()[0]
+        one_hour_ago = timezone.now() - datetime.timedelta(hours=1)
+        self.assertTrue(stored_msg.archived_date > one_hour_ago)
+
+    def test_rebuild_recent_threads_cache(self):
+        # The recent threads cache must be rebuilt when a new message arrives.
+        mlist = MailingList.objects.create(name="example-list")
+        cache.set("MailingList:example-list:recent_threads", [42])
+        cache.set("MailingList:example-list:recent_threads_count",
+                  "test-value")
+        msg = Message()
+        msg["From"] = "dummy@example.com"
+        msg["Subject"] = "Fake Subject"
+        msg["Message-ID"] = "<dummy>"
+        msg.set_payload("Fake Message")
+        m_hash = add_to_list("example-list", msg)
+        thread = Thread.objects.get(thread_id=m_hash)
+        cached_value = cache.get("MailingList:example-list:recent_threads")
+        self.assertListEqual(list(cached_value), [thread.id])
+        self.assertEqual(mlist.recent_threads[0].thread_id, m_hash)
+        self.assertEqual(
+            cache.get("MailingList:example-list:recent_threads_count"), 1)
+
+    def test_existing_thread(self):
+        msg = Message()
+        msg["From"] = "dummy@example.com"
+        msg["Subject"] = "Fake Subject"
+        msg["Message-ID"] = "<dummy>"
+        msg["Date"] = "Fri, 02 Nov 2012 16:07:54"
+        msg.set_payload("Fake Message")
+        # Create a thread with the same message_id
+        mlist = MailingList.objects.create(name="example-list")
+        thread = Thread.objects.create(
+            mailinglist=mlist, thread_id=get_message_id_hash("dummy"))
+        # Add the message
+        m_hash = add_to_list("example-list", msg)
+        self.assertEqual(m_hash, thread.thread_id)
+        self.assertEqual(thread.emails.count(), 1)
+        # Get the email
+        try:
+            email = Email.objects.get(message_id="dummy")
+        except Email.DoesNotExist:
+            self.fail("No email found by id")
+        self.assertEqual(email.thread, thread)

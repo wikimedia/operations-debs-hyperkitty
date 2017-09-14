@@ -27,26 +27,26 @@
         </a>
     </p>
 
-    {% if postorius_installed %}
-    <p>
-      <a class="btn btn-default btn-sm" href="{{ postorius_installed }}/{{ mlist.name }}">
-        <i class="fa fa-inbox"></i>
+    {% if 'postorius' in INSTALLED_APPS %}
+    <p class="postorius">
+      <a class="btn btn-default btn-sm" href="{% url 'list_summary' mlist.list_id %}">
+        <i class="fa fa-fw fa-inbox"></i>
         Manage subscription</a>
     </p>
     {% endif %}
 
-    <p>
+    <p class="thread-overview-details">
     <div>
-        <i class="icomoon discussion"></i>
+        <i class="fa fa-fw fa-comment"></i>
         {{ num_comments }} {% trans "comments" %}
     </div>
     <div>
-        <i class="icomoon participant"></i>
+        <i class="fa fa-fw fa-user"></i>
         {{ thread.participants_count }} {% trans "participants" %}
     </div>
     {% if user.is_authenticated %}
     <div>
-        <i class="fa fa-envelope"></i> {{ unread_count }} {% trans "unread" %}
+        <i class="fa fa-fw fa-envelope"></i> {{ unread_count }} {% trans "unread" %}
         <span class="hidden-sm"> {% trans "messages" %}</span>
     </div>
     {% endif %}
@@ -58,22 +58,31 @@
         <input type="hidden" name="action" value="{{ fav_action }}" />
         <p>
             <a href="#AddFav" class="notsaved{% if not user.is_authenticated %} disabled" title="{% trans 'You must be logged-in to have favorites.' %}{% endif %}">
-                <i class="fa fa-star"></i>{% trans "Add to favorites" %}</a>
+                <i class="fa fa-fw fa-star"></i>{% trans "Add to favorites" %}</a>
             <a href="#RmFav" class="saved">
-                <i class="fa fa-star"></i>{% trans "Remove from favorites" %}</a>
+                <i class="fa fa-fw fa-star"></i>{% trans "Remove from favorites" %}</a>
         </p>
     </form>
 
-    {% if user.is_staff %}
-    <p><i class="icon-resize-small"></i>
-       <a href="{% url 'hk_thread_reattach' mlist_fqdn=mlist.name threadid=thread.thread_id %}"
-          >{% trans "Reattach this thread" %}</a>
-    </p>
+    {% if user.is_staff or user.is_superuser %}
+    <div class="panel panel-danger">
+        <div class="panel-body">
+            <div><i class="fa fa-fw fa-plug"></i>
+               <a href="{% url 'hk_thread_reattach' mlist_fqdn=mlist.name threadid=thread.thread_id %}"
+                  >{% trans "Reattach this thread" %}</a>
+            </div>
+            <div><i class="fa fa-fw fa-trash"></i>
+               <a href="{% url 'hk_thread_delete' mlist_fqdn=mlist.name threadid=thread.thread_id %}"
+                  >{% trans "Delete this thread" %}</a>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
     <div id="tags">
         {% include 'hyperkitty/threads/tags.html' %}
     </div>
+    {% if user.is_authenticated %}
     <div id="add-tag">
         <form id="add-tag-form" name="addtag" method="post"
               action="{% url 'hk_tags' mlist_fqdn=mlist.name threadid=thread.thread_id %}"
@@ -83,6 +92,7 @@
             {{ addtag_form.as_p }}
         </form>
     </div>
+    {% endif %}
     {% cache 86400 thread_participants thread.id %}
     <div id="participants">
         <span id="participants_title">{% trans "participants" %}</span> ({{ thread.participants_count }})
@@ -90,7 +100,7 @@
             {% for participant in thread.participants|sort_by_name %}
             <li class="row">
                 <div class="participant-gravatar col-tn-2 col-sm-4 col-md-2">{% gravatar participant.address 48 %}</div>
-                <div class="participant-name col-tn-8">{{ participant.name|escapeemail }}</div>
+                <div class="participant-name col-tn-8">{{ participant.name|default:participant.address|escapeemail }}</div>
             </li>
             {% endfor %}
         </ul>

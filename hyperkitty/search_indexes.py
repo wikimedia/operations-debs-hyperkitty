@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -32,9 +32,13 @@ class EmailIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True)
     mailinglist = indexes.CharField(model_attr='mailinglist__name')
-    subject = indexes.CharField(model_attr='subject', boost=1.25)
+    subject = indexes.CharField(model_attr='subject', boost=1.25,
+                                use_template=True)
     date = indexes.DateTimeField(model_attr='date')
-    sender = indexes.CharField(model_attr='sender__name', boost=1.125)
+    sender = indexes.CharField(
+        model_attr='sender_name', null=True, boost=1.125)
+    tags = indexes.MultiValueField(
+        model_attr='thread__tags__name', null=True, boost=1.25)
     archived_date = indexes.DateTimeField(model_attr='archived_date')
 
     def get_model(self):
@@ -45,7 +49,8 @@ class EmailIndex(indexes.SearchIndex, indexes.Indexable):
 
     def load_all_queryset(self):
         # Pull other objects related to the Email in search results.
-        return self.get_model().objects.all().select_related("sender", "thread")
+        return self.get_model().objects.all().select_related(
+            "sender", "thread")
 
 
 def update_index(remove=False):
@@ -60,7 +65,7 @@ def update_index(remove=False):
     # Find the last email in the index:
     try:
         last_email = SearchQuerySet().latest('archived_date')
-    except Exception: # pylint: disable-msg=broad-except
+    except Exception:
         # Different backends can raise different exceptions unfortunately
         update_cmd.start_date = None
     else:
@@ -72,4 +77,11 @@ def update_index(remove=False):
     update_cmd.workers = 0
     update_cmd.commit = True
     update_cmd.remove = remove
+    try:
+        from haystack.management.commands.update_index import \
+            DEFAULT_MAX_RETRIES
+    except ImportError:
+        pass
+    else:
+        update_cmd.max_retries = DEFAULT_MAX_RETRIES
     update_cmd.update_backend("hyperkitty", "default")

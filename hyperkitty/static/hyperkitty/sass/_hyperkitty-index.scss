@@ -43,7 +43,7 @@ $headerNavPadding: 7px;
             margin-top: -3px;
         }
     }
-    nav {
+    nav.sort-mode {
         padding-top: 0;
         background-color: white;
         position: absolute;
@@ -146,6 +146,10 @@ $headerNavPadding: 7px;
         li:first-child {
             padding-right: 1em;
         }
+        li+li {
+            // Override setting in _hyperkitty-common.scss
+            padding-left: 0;
+        }
     }
     .participant {
         padding-left: 10px;
@@ -161,6 +165,9 @@ $headerNavPadding: 7px;
     tr.inactive {
         background-color: #eee;
        .list-name {
+            color: $subheadingColor;
+        }
+        ul.list-stats .fa {
             color: $subheadingColor;
         }
     }
@@ -233,4 +240,12 @@ $headerNavPadding: 7px;
             }
         }
     }
+}
+
+
+//=== Logo
+
+.all-lists .logo {
+    display: block;
+    margin: 50px auto 0 auto;
 }

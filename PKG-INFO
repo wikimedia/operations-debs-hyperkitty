@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: HyperKitty
-Version: 1.0.3
+Version: 1.1.1
 Summary: A web interface to access GNU Mailman v3 archives
 Home-page: https://gitlab.com/mailman/hyperkitty
 Author: HyperKitty Developers
@@ -9,6 +9,21 @@ License: GPLv3
 Description: ========================================
         HyperKitty - Archiver for GNU Mailman v3
         ========================================
+        
+        .. image:: https://gitlab.com/mailman/hyperkitty/badges/master/build.svg
+            :target: https://gitlab.com/mailman/hyperkitty/commits/master
+        
+        .. image:: https://gitlab.com/mailman/hyperkitty/badges/master/coverage.svg?job=coverage
+            :target: https://gitlab.com/mailman/hyperkitty/commits/master
+        
+        .. image:: https://readthedocs.org/projects/hyperkitty/badge/?version=latest
+            :target: https://hyperkitty.readthedocs.io
+        
+        .. image:: http://img.shields.io/pypi/v/hyperkitty.svg
+            :target: https://pypi.python.org/pypi/hyperkitty
+        
+        .. image:: http://img.shields.io/pypi/dm/hyperkitty.svg
+            :target: https://pypi.python.org/pypi/hyperkitty
         
         HyperKitty is an open source Django application under development. It aims to
         provide a web interface to access GNU Mailman v3 archives.
@@ -33,9 +48,14 @@ Description: ========================================
         If you need help with HyperKitty, want to keep up with progress, chat with
         developers, or ask any other questions about HyperKitty, you can hang out in the
         IRC channel: `#mailman on irc.freenode.net <https://webchat.freenode.net/?channels=mailman>`_.
-        You can also subscribe to our `mailing list <https://lists.fedorahosted.org/mailman/listinfo/hyperkitty-devel>`_.
+        You can also subscribe to our `mailing list <https://lists.fedorahosted.org/admin/lists/hyperkitty-devel.lists.fedorahosted.org/>`_ of developers.
         
         To report bugs, please create `a ticket here <https://gitlab.com/mailman/hyperkitty>`_ or contact us on IRC.
+        
+        About other links of feedback, please see below.
+        
+        - User mailing list: https://lists.mailman3.org/archives/list/mailman-users@mailman3.org/
+        - The "mailman" developers links: https://mail.python.org/mailman/listinfo/mailman-developers/
         
 Keywords: email
 Platform: UNKNOWN

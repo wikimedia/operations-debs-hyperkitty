@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,16 +22,29 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-import re
 import email.utils
+import errno
+import logging
+import os
+import os.path
+import re
 from base64 import b32encode
-from hashlib import sha1
-from email.header import decode_header
+from contextlib import contextmanager
 from datetime import timedelta
+from email.header import decode_header
+from hashlib import sha1
+from tempfile import gettempdir
 
-import dateutil.parser, dateutil.tz
+import dateutil.parser
+import dateutil.tz
+from django.conf import settings
+from django.db import connection
 from django.utils import timezone
+from lockfile import AlreadyLocked, LockFailed
+from lockfile.pidlockfile import PIDLockFile
 
+
+log = logging.getLogger(__name__)
 
 
 def get_message_id_hash(msg_id):
@@ -55,12 +68,14 @@ def get_message_id(message):
 
 
 IN_BRACKETS_RE = re.compile("[^<]*<([^>]+)>.*")
+
+
 def get_ref(message):
     """
     Returns the message-id of the reference email for a given message.
     """
-    if (not message.has_key("References")
-            and not message.has_key("In-Reply-To")):
+    if ("References" not in message and
+            "In-Reply-To" not in message):
         return None
     ref_id = message.get("In-Reply-To")
     if ref_id is not None:
@@ -111,13 +126,14 @@ def parsedate(datestring):
             abs(offset) > timedelta(hours=13):
         parsed = parsed.astimezone(timezone.utc)
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc) # make it aware
+        parsed = parsed.replace(tzinfo=timezone.utc)  # make it aware
     return parsed
 
 
 def header_to_unicode(header):
     """
-    See also: http://ginstrom.com/scribbles/2007/11/19/parsing-multilingual-email-with-python/
+    See also:
+    http://ginstrom.com/scribbles/2007/11/19/parsing-multilingual-email-with-python/
     """
     h_decoded = []
     for text, charset in decode_header(header):
@@ -143,20 +159,75 @@ def stripped_subject(mlist, subject):
     if not mlist.subject_prefix:
         return subject
     if subject.lower().startswith(mlist.subject_prefix.lower()):
-        subject = subject[len(mlist.subject_prefix) : ]
+        subject = subject[len(mlist.subject_prefix):]
     return subject
 
 
+# File-based locking
 
-import time
-from collections import defaultdict
-LASTTIME = None
-TIMES = defaultdict(list)
-def timeit(name):
-    global LASTTIME#, TIMES # pylint: disable=global-statement
-    now = time.time()
-    if LASTTIME is not None:
-        spent = now - LASTTIME
-        TIMES[name].append(spent)
-        print("{}: {}".format(name, spent))
-    LASTTIME = now
+def run_with_lock(fn, *args, **kwargs):
+    lock = PIDLockFile(getattr(
+        settings, "HYPERKITTY_JOBS_UPDATE_INDEX_LOCKFILE",
+        os.path.join(gettempdir(), "hyperkitty-jobs-update-index.lock")))
+    try:
+        lock.acquire(timeout=-1)
+    except AlreadyLocked:
+        if check_pid(lock.read_pid()):
+            log.warning("The job 'update_index' is already running")
+            return
+        else:
+            lock.break_lock()
+            lock.acquire(timeout=-1)
+    except LockFailed as e:
+        log.warning("Could not obtain a lock for the 'update_index' "
+                    "job (%s)", e)
+        return
+    try:
+        fn(*args, **kwargs)
+    except Exception as e:
+        log.exception("Failed to update the fulltext index: %s", e)
+    finally:
+        lock.release()
+
+
+def check_pid(pid):
+    """ Check For the existence of a unix pid. """
+    if pid is None:
+        return False
+    try:
+        os.kill(pid, 0)
+    except OSError as e:
+        if e.errno == errno.ESRCH:
+            # if errno !=3, we may just not be allowed to send the signal
+            return False
+    return True
+
+
+@contextmanager
+def pgsql_disable_indexscan():
+    # Sometimes PostgreSQL chooses a very inefficient query plan:
+    # https://pagure.io/fedora-infrastructure/issue/6164
+    if connection.vendor != "postgresql":
+        yield
+        return
+    with connection.cursor() as cursor:
+        cursor.execute("SET enable_indexscan = OFF")
+        try:
+            yield
+        finally:
+            cursor.execute("SET enable_indexscan = ON")
+
+
+# import time
+# from collections import defaultdict
+# LASTTIME = None
+# TIMES = defaultdict(list)
+#
+# def timeit(name):
+#     global LASTTIME
+#     now = time.time()
+#     if LASTTIME is not None:
+#         spent = now - LASTTIME
+#         TIMES[name].append(spent)
+#         print("{}: {}".format(name, spent))
+#     LASTTIME = now

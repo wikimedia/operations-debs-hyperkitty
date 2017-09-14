@@ -15,10 +15,10 @@
                 <span class="name">
                     {% if email.sender.mailman_id %}
                     <a href="{% url 'hk_public_user_profile' user_id=email.sender.mailman_id %}"
-                       title="{% blocktrans with name=email.sender.name|escapeemail|escape %}See the profile for {{ name }}{% endblocktrans %}"
-                       >{{email.sender.name|default:"(no name)"|escapeemail}}</a>
+                       title="{% blocktrans with name=email.sender_name|default:email.sender.address|escapeemail|escape %}See the profile for {{ name }}{% endblocktrans %}"
+                       >{{email.sender_name|default:email.sender.address|escapeemail}}</a>
                     {% else %}
-                       {{email.sender.name|default:"(no name)"|escapeemail}}
+                       {{email.sender_name|default:email.sender.address|escapeemail}}
                     {% endif %}
                 </span>
                 {% if use_mockups %}
@@ -27,12 +27,10 @@
                 {% endif %}
             </div>
         </div>
-        {% if is_new %}
-        <div class="right">
-            <i class="fa fa-envelope" title="{% trans 'Unread' %}"></i>
-        </div>
-        {% endif %}
         <div class="email-date right">
+            {% if is_new %}
+            <i class="fa fa-envelope" title="{% trans 'Unread' %}"></i>
+            {% endif %}
             {% ifchanged %}
             <span class="date hidden-tn">
                 {{email.date|date:"l, j F"}}
@@ -53,8 +51,12 @@
 
         </div>
         <div class="messagelink right">
-            (<a href="{% url 'hk_message_index' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}"
-                title="{{ email.subject }}">{% trans "permalink" %}</a>)
+            <span class="fa fa-font cursor-pointer toggle-font"
+                  title="{% trans "Display in fixed font" %}"
+                  data-toggle="tooltip" data-placement="bottom"></span>
+            <a href="{% url 'hk_message_index' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}"
+               title="{% trans "Permalink for this message" %}"
+               data-toggle="tooltip" data-placement="bottom"><i class="fa fa-link"></i></a>
         </div>
 
         {% if email.changed_subject %}
@@ -65,8 +67,8 @@
 
     </div> <!-- /email-header: gravatar, author-info, date, peramlink, changed_subject -->
 
-    <div class="email-body">
-        {{ email.content|snip_quoted|snip_pgp|wordwrap:90|urlizetrunc:76|escapeemail }}
+    <div class="email-body {% if email.display_fixed %}fixed{% endif %}">
+{{ email.content|snip_quoted|snip_pgp|wordwrap:90|urlizetrunc:76|escapeemaillinks }}
     </div>
 
     {% if unfolded and email.attachments.count %}
@@ -94,7 +96,7 @@
             {% trans "Reply" %}
         </a>
         {% else %}
-        <a class="reply reply-mailto" title="{% trans 'Login to reply online' %}"
+        <a class="reply reply-mailto" title="{% trans "Sign in to reply online" %}"
            href="mailto:{{ email.mailinglist.name }}?Subject={{ email.subject|reply_subject|urlencode }}&amp;In-Reply-To=&lt;{{ email.message_id|urlencode }}&gt;">
             <i class="fa fa-reply"></i>
             {% trans "Reply" %}
@@ -140,8 +142,8 @@
                 </ul>
                 {{ reply_form.non_field_errors }}
 
-                <p>{{ reply_form.subject }} {{ reply_form.subject.errors}}</p>
-                <p>{{ reply_form.message }} {{ reply_form.message.errors}}</p>
+                <p class="new-subject">{{ reply_form.subject }} {{ reply_form.subject.errors}}</p>
+                <p class="message-text">{{ reply_form.message }} {{ reply_form.message.errors}}</p>
 
                 {% include "hyperkitty/fragments/send_as.html" with form=reply_form %}
 

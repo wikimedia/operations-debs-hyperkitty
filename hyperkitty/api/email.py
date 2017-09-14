@@ -1,5 +1,5 @@
-#-*- coding: utf-8 -*-
-# Copyright (C) 2012-2015 by the Free Software Foundation, Inc.
+# -*- coding: utf-8 -*-
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -19,17 +19,19 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-# pylint: disable=no-init
-
 from __future__ import absolute_import, unicode_literals
 
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from rest_framework import serializers, generics
 
-from hyperkitty.models import Email, ArchivePolicy
-from .utils import MLChildHyperlinkedRelatedField
+from hyperkitty.models import Email, ArchivePolicy, MailingList
+from hyperkitty.lib.view_helpers import is_mlist_authorized
 from .sender import SenderSerializer
+from .utils import (
+    MLChildHyperlinkedRelatedField,
+    IsMailingListPublicOrIsMember,
+    )
 
 
 class EmailShortSerializer(serializers.HyperlinkedModelSerializer):
@@ -37,7 +39,8 @@ class EmailShortSerializer(serializers.HyperlinkedModelSerializer):
         view_name='hk_api_email_detail', read_only=True,
         lookup_field="message_id_hash", source="*")
     mailinglist = serializers.HyperlinkedRelatedField(
-        view_name='hk_api_mailinglist_detail', read_only=True, lookup_field="name")
+        view_name='hk_api_mailinglist_detail', read_only=True,
+        lookup_field="name", lookup_url_kwarg="mlist_fqdn")
     thread = MLChildHyperlinkedRelatedField(
         view_name='hk_api_thread_detail', read_only=True,
         lookup_field="thread_id")
@@ -48,34 +51,45 @@ class EmailShortSerializer(serializers.HyperlinkedModelSerializer):
         view_name='hk_api_email_detail', read_only=True,
         lookup_field="message_id_hash", many=True)
     sender = SenderSerializer()
-    likes = serializers.IntegerField(min_value=0)
-    dislikes = serializers.IntegerField(min_value=0)
 
     class Meta:
         model = Email
         fields = ("url", "mailinglist", "message_id", "message_id_hash",
-                  "thread", "sender", "subject", "date", "parent", "children",
-                  "likes", "dislikes")
+                  "thread", "sender", "sender_name", "subject", "date",
+                  "parent", "children",
+                  )
 
 
 class EmailSerializer(EmailShortSerializer):
+    votes = serializers.SerializerMethodField()
+
     class Meta:
         model = Email
-        fields = EmailShortSerializer.Meta.fields + ("content",)#, "attachments")
+        fields = EmailShortSerializer.Meta.fields + ("votes", "content",)
+
+    def get_votes(self, obj):
+        return obj.get_votes()
 
 
 class EmailList(generics.ListAPIView):
     """List emails"""
 
     serializer_class = EmailShortSerializer
+    ordering_fields = ("archived_date", "thread_order", "date")
 
     def get_queryset(self):
+        mlist = MailingList.objects.get(name=self.kwargs["mlist_fqdn"])
+        if not is_mlist_authorized(self.request, mlist):
+            raise PermissionDenied
         query = Email.objects.filter(
-                mailinglist__name=self.kwargs["mlist_fqdn"],
-            ).exclude(mailinglist__archive_policy=ArchivePolicy.private.value)
+                mailinglist__name=self.kwargs["mlist_fqdn"])
         if "thread_id" in self.kwargs:
-            query = query.filter(thread__thread_id=self.kwargs["thread_id"])
-        return query.order_by("-archived_date")
+            query = query.filter(
+                    thread__thread_id=self.kwargs["thread_id"]
+                ).order_by("thread_order")
+        else:
+            query = query.order_by("-archived_date")
+        return query
 
 
 class EmailListBySender(generics.ListAPIView):
@@ -85,8 +99,9 @@ class EmailListBySender(generics.ListAPIView):
 
     def get_queryset(self):
         return Email.objects.filter(
-                sender__address=self.kwargs["address"],
-            ).exclude(mailinglist__archive_policy=ArchivePolicy.private.value
+                sender__mailman_id=self.kwargs["mailman_id"],
+            ).exclude(
+                mailinglist__archive_policy=ArchivePolicy.private.value
             ).order_by("-archived_date")
 
 
@@ -94,12 +109,12 @@ class EmailDetail(generics.RetrieveAPIView):
     """Show an email"""
 
     serializer_class = EmailSerializer
+    permission_classes = [IsMailingListPublicOrIsMember]
 
     def get_object(self):
-        email = get_object_or_404(Email,
+        email = get_object_or_404(
+            Email,
             mailinglist__name=self.kwargs["mlist_fqdn"],
             message_id_hash=self.kwargs["message_id_hash"],
             )
-        if email.mailinglist.archive_policy == ArchivePolicy.private.value:
-            raise PermissionDenied
         return email

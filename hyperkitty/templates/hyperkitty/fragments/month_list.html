@@ -39,7 +39,13 @@
                     </a>
                 </h3>
             </div>
-            <div id="collapse{{forloop.counter0}}" class="panel-collapse {% if forloop.counter == 1 %}in{% else %}collapse{% endif %}">
+            <div id="collapse{{forloop.counter0}}" class="panel-collapse
+                {% if month %}
+                    {% if year == month.year %} in {% else %} collapse {% endif %}
+                {% else %}
+                    {% if forloop.counter == 1 %} in {% else %} collapse {% endif %}
+                {% endif %}
+                ">
                 <div class="panel-body">
                     <ul class="list-unstyled">
                         {% for ar_month in months %}

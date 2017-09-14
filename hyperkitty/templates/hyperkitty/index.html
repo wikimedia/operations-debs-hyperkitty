@@ -1,11 +1,12 @@
 {% extends "hyperkitty/base.html" %}
 {% load i18n %}
 {% load hk_generic %}
+{% load pagination %}
 {% load staticfiles %}
 
 
-{% block title %}
-{% trans 'Available lists' %} - {{ app_name|title }}
+{% block head_title %}
+{% trans 'Available lists' %} - {{ block.super }}
 {% endblock %}
 
 {% block content %}
@@ -14,34 +15,46 @@
 
 <div class="row header">
     {# This version of the sort-by options shows up on larger screens; hidden-xs and hidden-tn are Bootstrap options to hide it at tiny or small sizes. #}
-    <nav class="right hidden-tn hidden-xs col-sm-6 col-sm-push-6 col-md-4 col-md-push-8">
+    <nav class="sort-mode right hidden-tn hidden-xs col-sm-6 col-sm-push-6 col-md-4 col-md-push-8">
         <ul class="list-unstyled list-inline">
             <li>
                {% if sort_mode == "popular" %}
                <span class="active">{% trans 'Most popular' %}</span>
                {% else %}
-                <a href="{% url 'hk_root' %}?sort=popular" title="{% trans 'Sort by number of recent participants' %}">{% trans 'Most popular' %}</a>
+                <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "popular" %}"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="{% trans 'Sort by number of recent participants' %}"
+                   >{% trans 'Most popular' %}</a>
                {% endif %}
             </li>
             <li>
                {% if sort_mode == "active" %}
                <span class="active">{% trans 'Most active' %}</span>
                {% else %}
-               <a href="{% url 'hk_root' %}?sort=active" title="{% trans 'Sort by number of recent discussions' %}">{% trans 'Most active' %}</a>
+               <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "active" %}"
+                  data-toggle="tooltip" data-placement="bottom"
+                  title="{% trans 'Sort by number of recent discussions' %}"
+                  >{% trans 'Most active' %}</a>
                {% endif %}
             </li>
             <li>
                {% if sort_mode == "name" %}
                <span class="active">{% trans 'By name' %}</span>
                {% else %}
-               <a href="{% url 'hk_root' %}?sort=name" title="{% trans 'Sort alphabetically' %}">{% trans 'By name' %}</a>
+               <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "name" %}"
+                  data-toggle="tooltip" data-placement="bottom"
+                  title="{% trans 'Sort alphabetically' %}"
+                  >{% trans 'By name' %}</a>
                {% endif %}
             </li>
             <li>
                {% if sort_mode == "creation" %}
                <span class="active">{% trans 'Newest' %}</span>
                {% else %}
-                <a href="{% url 'hk_root' %}?sort=creation" title="{% trans 'Sort by list creation date' %}">{% trans 'Newest' %}</a>
+                <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "creation" %}"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="{% trans 'Sort by list creation date' %}"
+                   >{% trans 'Newest' %}</a>
                {% endif %}
             </li>
         </ul>
@@ -56,16 +69,16 @@
         </button>
         <ul class="dropdown-menu" role="menu">
             <li>
-                <a href="{% url 'hk_root' %}?sort=popular">{% trans 'Most popular' %}</a>
+                <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "popular" %}">{% trans 'Most popular' %}</a>
             </li>
             <li>
-                <a href="{% url 'hk_root' %}?sort=active">{% trans 'Most active' %}</a>
+                <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "active" %}">{% trans 'Most active' %}</a>
             </li>
             <li>
-                <a href="{% url 'hk_root' %}?sort=name">{% trans 'By name' %}</a>
+                <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "name" %}">{% trans 'By name' %}</a>
             </li>
             <li>
-                <a href="{% url 'hk_root' %}?sort=creation">{% trans 'Newest' %}</a>
+                <a href="{% url 'hk_root' %}?{% add_to_query_string "sort" "creation" %}">{% trans 'Newest' %}</a>
             </li>
         </ul>
     </div>
@@ -76,21 +89,25 @@
             {% if all_lists %}
             <p class="hide-switches">
                 <label><input type="checkbox" value="inactive" checked="checked" />{% trans "Hide inactive" %}</label>
-                <label><input type="checkbox" value="private"
-                        {% if sort_mode == "active" or sort_mode == "popular" %}
-                        checked="checked" disabled="disabled"
-                        title="{% trans 'Private lists are always hidden in this sort mode' %}"
-                        {% endif %}
-                        />{% trans "Hide private" %}</label>
+                <label
+                    {% if sort_mode == "active" or sort_mode == "popular" %}
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="{% trans 'Private lists are always hidden in this sort mode' %}"
+                    {% endif %}
+                    ><input type="checkbox" value="private"
+                            {% if sort_mode == "active" or sort_mode == "popular" %}
+                            checked="checked" disabled="disabled"
+                            {% endif %}
+                            />{% trans "Hide private" %}</label>
             </p>
             {% endif %}
     </div>
     <div class="pull-right col-tn-12 col-xs-5 col-md-3">
-        {% if all_lists|length > 10 %}
-        <input name="filter" type="text" class="form-control" id="focusedInput"
-               placeholder="{% trans 'Filter list names' %}"
-               />
-        {% endif %}
+        <form method="get" action="">
+            <input name="name" type="text" class="form-control" id="focusedInput"
+                   placeholder="{% trans 'Find list' %}"
+                   />
+        </form>
     </div>
 </div> <!--/row, for switches & filter -->
 
@@ -128,14 +145,14 @@
                         <span class="list-tags">{% trans "inactive" %}</span>
                         {% endif %}
                         <br />
+                        <span class="list-address">{{ mlist.name }}</span>
                         <span class="list-description">{{ mlist.description|default_if_none:"" }}</span>
-                        <span class="list-address hidden">{{ mlist.name }}</span>
-                        <div class="chart">
+                        <div class="chart hidden-xs">
                             <img alt="{% trans 'Loading...' %}" class="ajaxloader" src="{% static 'hyperkitty/img/ajax-loader.gif' %}" />
                         </div>
                         <ul class="list-stats list-unstyled">
                             <li>
-                                <i class="icomoon participant"></i>
+                                <i class="fa fa-user"></i>
                                 {% if mlist.can_view %}
                                 {{ mlist.recent_participants_count|default_if_none:"..." }}
                                 {% else %}
@@ -144,7 +161,7 @@
                                 {% trans 'participants' %}
                             </li>
                             <li>
-                                <i class="icomoon discussion"></i>
+                                <i class="fa fa-comments"></i>
                                 {% if mlist.can_view %}
                                 {{ mlist.recent_threads_count|default_if_none:"..." }}
                                 {% else %}
@@ -172,8 +189,8 @@
             <thead class="hidden-xs">
                 <tr>
                     <th class="col-sm-6 col-md-3 col-lg-3">{% trans 'List' %}</th>
-                    <th class="hidden-sm col-md-6 col-lg-6">{% trans 'Description' %}</th>
-                    <th class="col-sm-6 col-md-3 col-lg-3">{% trans 'Activity in the past 30 days' %}</th>
+                    <th class="hidden-sm col-md-5 col-lg-5">{% trans 'Description' %}</th>
+                    <th class="col-sm-6 col-md-4 col-lg-4" colspan=2>{% trans 'Activity in the past 30 days' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -213,13 +230,10 @@
                     <td class="list-description hidden-sm">
                         {{ mlist.description|default_if_none:"" }}
                     </td>
-                    <td class="activity">
-                        <div class="chart">
-                            <img alt="{% trans 'Loading...' %}" class="ajaxloader" src="{% static 'hyperkitty/img/ajax-loader.gif' %}" />
-                        </div>
+                    <td class="statistics">
                         <ul class="list-stats list-unstyled">
                             <li>
-                                <i class="icomoon participant"></i>
+                                <i class="fa fa-user"></i>
                                 {% if mlist.can_view %}
                                 {{ mlist.recent_participants_count|default_if_none:"..." }}
                                 {% else %}
@@ -228,7 +242,7 @@
                                 {% trans 'participants' %}
                             </li>
                             <li>
-                                <i class="icomoon discussion"></i>
+                                <i class="fa fa-comments"></i>
                                 {% if mlist.can_view %}
                                 {{ mlist.recent_threads_count|default_if_none:"..." }}
                                 {% else %}
@@ -237,6 +251,11 @@
                                 {% trans 'discussions' %}
                             </li>
                         </ul>
+                    </td>
+                    <td class="activity">
+                        <div class="chart">
+                            <img alt="{% trans 'Loading...' %}" class="ajaxloader" src="{% static 'hyperkitty/img/ajax-loader.gif' %}" />
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
@@ -250,9 +269,9 @@
 
 </div> <!-- /row, for lists -->
 
-<div class="row">
-    <img class="logo col-tn-offset-2 col-xs-offset-3 col-sm-offset-4 col-md-offset-4 col-lg-offset-5" alt="HyperKitty" src="{% static 'hyperkitty/img/logo.png' %}" />
-</div>
+{% paginator all_lists %}
+
+<img class="logo" alt="HyperKitty" src="{% static 'hyperkitty/img/logo.png' %}" />
 
 </div> <!-- /all-lists, outer-wrapper -->
 

@@ -49,9 +49,17 @@ h1 {
     border: 1px solid $rowBorderColor;
 }
 
+.bordered-vertical {
+    border-bottom: 1px solid $rowBorderColor;
+}
+
 .labels {
     font-size: 78%;
     text-transform: uppercase;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 // typical hover behavior for table rows
@@ -105,7 +113,7 @@ h1 {
 .saved .fa-star, .fa-star.saved {
     color: #ffdd00;
 }
-.notsaved .fa-star, .fa-star.notsaved {
+.notsaved .fa-star-o, .fa-star-o.notsaved {
     color: #999;
 }
 
@@ -128,22 +136,46 @@ h1 {
     @extend .small-bolded-text;
 }
 
-//== font icons (participant, discussion, unread) ===/
+.gravatar-placeholder {
+	width: 120px;
+	height: 120px;
+	background-color: $super-light-grey;
+}
+
+//== font icons (fa-user, fa-comment, unread) ===/
 ul.list-stats {
     margin: 0;
     li {
-        display: inline;
+        display: inline-block;
     }
     li+li {
         padding-left: 0.75em;
     }
+    .fa {
+        color: #BFBFBF;
+    }
 }
+
+.fa-user:before {
+    color: #BFBFBF;
+    font-size: 1.14em;
+    line-height: 1em;
+}
+
+.fa-comment:before {
+    color: #BFBFBF;
+    font-size: 1.14em;
+    line-height: 1em;
+}
+
+//== old icomoon styles ===/
 .participant:before {
     content: "\e609";
     color: #BFBFBF;
     font-size: 1.14em;
     line-height: 1em;
 }
+
 .discussion:before {
     content: "\e607";
     color: #BFBFBF;
@@ -244,6 +276,10 @@ div#months-list {
 .ui-autocomplete-loading {
     background: white url('../img/ajax-loader.gif') right center no-repeat;
 }
+.ui-widget.ui-autocomplete {
+    font-family: inherit;
+    font-size: 0.95em;
+}
 
 
 //=== Categories ===/
@@ -288,6 +324,7 @@ div#months-list {
     position: relative;
     margin: auto;
     padding-top: 3px;
+    background-color: $pre-bg;
     // default behavior is to hide axes
     .axis path, .chart-data .axis line {
         display: none;

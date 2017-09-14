@@ -1,67 +1,5 @@
-//=== Login form ==/
-#login,
-#register {
-    text-align: left;
-    margin: 0 auto;
-}
-#login h2,
-#register h2 {
-    margin: 4em 0 1em 0;
-    text-align: center;
-    font-size: 160%;
-}
-#login {
-    .social-login {
-        text-align: center;
-        margin-bottom: 3em;
-        li {
-            margin: 0 20px;
-            display: inline;
-        }
-        li.browserid {
-            display: block;
-            margin-bottom: 20px;
-        }
-    }
-    form.openid {
-        display: none;
-        position: absolute;
-        left: 0;
-        width: 100%;
-        margin-top: 10px;
-    }
-    a.persona-button:hover {
-        color: #fff;
-    }
-}
-
-
 //=== User profile page ==/
 .user-profile {
-    h1 {
-        margin-bottom: 1em;
-    }
-    h3 {
-        margin-top: 2em;
-    }
-
-    div.gravatar {
-        font-size: 95%;
-        img {
-            @include square(150px);
-        }
-    }
-
-    .tab-pane {
-        padding-top: 1em;
-    }
-
-    .ajaxloader {
-        margin-top: 0;
-        margin-left: 0;
-        position: absolute;
-    }
-
     tr.list-address {
         font-weight: bold;
         background: $rowBorderColor;
@@ -76,6 +14,10 @@ table.user-data {
     }
     tr.gravatar td {
         vertical-align: middle;
+    }
+    tr:first-child > td,
+    tr:first-child > th {
+        border-top: 0;
     }
 }
 

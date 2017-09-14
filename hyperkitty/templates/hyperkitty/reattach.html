@@ -5,8 +5,8 @@
 {% load staticfiles %}
 
 
-{% block title %}
-{% trans "Reattach a thread" %} - {{ mlist.display_name|default:mlist.name|escapeemail }} - {{ app_name|title }}
+{% block head_title %}
+{% trans "Reattach a thread" %} - {{ mlist.display_name|default:mlist.name }} - {{ block.super }}
 {% endblock %}
 
 {% block content %}

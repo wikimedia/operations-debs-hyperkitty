@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -31,7 +32,6 @@ from hyperkitty.lib.incoming import add_to_list
 from hyperkitty.tests.utils import TestCase
 
 
-
 class TestThreadOrderDepth(TestCase):
 
     def setUp(self):
@@ -59,7 +59,8 @@ class TestThreadOrderDepth(TestCase):
 
     def test_simple_thread(self):
         # A basic thread: msg2 replies to msg1
-        thread = Thread.objects.create(mailinglist=self.mlist, thread_id="msg1")
+        thread = Thread.objects.create(
+            mailinglist=self.mlist, thread_id="msg1")
         msg1 = self.make_fake_email(1, thread=thread)
         msg1.thread_order = msg1.thread_depth = 42
         msg1.save()
@@ -83,7 +84,8 @@ class TestThreadOrderDepth(TestCase):
         # |-msg2
         # | `-msg4
         # `-msg3
-        thread = Thread.objects.create(mailinglist=self.mlist, thread_id="msg1")
+        thread = Thread.objects.create(
+            mailinglist=self.mlist, thread_id="msg1")
         # All in the same thread
         msg1 = self.make_fake_email(1, thread=thread)
         msg2 = self.make_fake_email(2, thread=thread)
@@ -100,9 +102,9 @@ class TestThreadOrderDepth(TestCase):
         msg4.save()
         # Init with false values
         msg1.thread_order = msg1.thread_depth = \
-                msg2.thread_order = msg2.thread_depth = \
-                msg3.thread_order = msg3.thread_depth = \
-                msg4.thread_order = msg4.thread_depth = 42
+            msg2.thread_order = msg2.thread_depth = \
+            msg3.thread_order = msg3.thread_depth = \
+            msg4.thread_order = msg4.thread_depth = 42
         msg1.save()
         msg2.save()
         msg3.save()
@@ -143,7 +145,7 @@ class TestThreadOrderDepth(TestCase):
             msg = Email.objects.filter(
                 mailinglist=self.mlist, message_id="msg%d" % num).first()
             msgs.append(msg)
-        msg1, msg2, msg3, msg4 = msgs # pylint: disable=unbalanced-tuple-unpacking
+        msg1, msg2, msg3, msg4 = msgs
         self.assertEqual(msg1.thread_order, 0)
         self.assertEqual(msg1.thread_depth, 0)
         self.assertEqual(msg2.thread_order, 1)
@@ -155,7 +157,8 @@ class TestThreadOrderDepth(TestCase):
 
     def test_reply_to_oneself(self):
         # A message replying to itself (yes, it's been spotted in the wild)
-        thread = Thread.objects.create(mailinglist=self.mlist, thread_id="msg1")
+        thread = Thread.objects.create(
+            mailinglist=self.mlist, thread_id="msg1")
         msg1 = self.make_fake_email(1)
         msg1.save()
         thread.starting_email = msg1
@@ -173,7 +176,8 @@ class TestThreadOrderDepth(TestCase):
         """Loops in message replies"""
         # This implies that someone replies to a message not yet sent, but you
         # never know, Dr Who can be on your mailing-list.
-        thread = Thread.objects.create(mailinglist=self.mlist, thread_id="msg1")
+        thread = Thread.objects.create(
+            mailinglist=self.mlist, thread_id="msg1")
         msg1 = self.make_fake_email(1, thread=thread)
         msg1.save()
         thread.starting_email = msg1

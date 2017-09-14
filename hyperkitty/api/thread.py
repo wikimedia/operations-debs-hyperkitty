@@ -1,5 +1,5 @@
-#-*- coding: utf-8 -*-
-# Copyright (C) 2012-2015 by the Free Software Foundation, Inc.
+# -*- coding: utf-8 -*-
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -19,29 +19,31 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-# pylint: disable=no-init
-
 from __future__ import absolute_import, unicode_literals
 
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from rest_framework import serializers, generics
 
-from hyperkitty.models import Thread, ArchivePolicy
-from hyperkitty.api.utils import MLChildHyperlinkedRelatedField
+from hyperkitty.models import Thread, MailingList
+from hyperkitty.lib.view_helpers import is_mlist_authorized
+from .utils import (
+    MLChildHyperlinkedRelatedField,
+    IsMailingListPublicOrIsMember,
+    )
 
 
-class ThreadSerializer(serializers.HyperlinkedModelSerializer):
+class ThreadShortSerializer(serializers.HyperlinkedModelSerializer):
     url = MLChildHyperlinkedRelatedField(
         view_name='hk_api_thread_detail', read_only=True,
         lookup_field="thread_id", source="*")
     mailinglist = serializers.HyperlinkedRelatedField(
-        view_name='hk_api_mailinglist_detail', read_only=True, lookup_field="name")
+        view_name='hk_api_mailinglist_detail', read_only=True,
+        lookup_field="name", lookup_url_kwarg="mlist_fqdn")
     starting_email = MLChildHyperlinkedRelatedField(
         view_name='hk_api_email_detail', read_only=True,
         lookup_field="message_id_hash")
-    likes = serializers.IntegerField(min_value=0)
-    dislikes = serializers.IntegerField(min_value=0)
+    votes_total = serializers.IntegerField(min_value=0)
     emails = MLChildHyperlinkedRelatedField(
         view_name='hk_api_thread_email_list', read_only=True,
         lookup_field="thread_id", source="*")
@@ -52,25 +54,51 @@ class ThreadSerializer(serializers.HyperlinkedModelSerializer):
     prev_thread = MLChildHyperlinkedRelatedField(
         view_name='hk_api_thread_detail', read_only=True,
         lookup_field="thread_id")
+
     class Meta:
         model = Thread
         fields = ("url", "mailinglist", "thread_id", "subject", "date_active",
-                  "category", "starting_email", "emails", "likes", "dislikes",
+                  "starting_email", "emails", "votes_total",
                   "replies_count", "next_thread", "prev_thread")
 
     def get_replies_count(self, obj):
         return obj.emails_count - 1
 
 
+class ThreadSerializer(ThreadShortSerializer):
+    votes = serializers.SerializerMethodField()
+    participants = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Thread
+        fields = ThreadShortSerializer.Meta.fields + (
+            "votes", "participants", "participants_count",
+            )
+
+    def get_votes(self, obj):
+        return obj.get_votes()
+
+    def get_participants(self, obj):
+        return [
+            {"name": p[0].replace("@", " (a) "),
+             "email": p[1].replace("@", " (a) "),
+             }
+            for p in obj.participants
+            ]
+
+
 class ThreadList(generics.ListAPIView):
     """List threads"""
 
-    serializer_class = ThreadSerializer
+    serializer_class = ThreadShortSerializer
+    ordering = ("-date_active", )
 
     def get_queryset(self):
+        mlist = MailingList.objects.get(name=self.kwargs["mlist_fqdn"])
+        if not is_mlist_authorized(self.request, mlist):
+            raise PermissionDenied
         return Thread.objects.filter(
                 mailinglist__name=self.kwargs["mlist_fqdn"],
-            ).exclude(mailinglist__archive_policy=ArchivePolicy.private.value
             ).order_by("-date_active")
 
 
@@ -78,12 +106,12 @@ class ThreadDetail(generics.RetrieveAPIView):
     """Show a thread"""
 
     serializer_class = ThreadSerializer
+    permission_classes = [IsMailingListPublicOrIsMember]
 
     def get_object(self):
-        thread = get_object_or_404(Thread,
+        thread = get_object_or_404(
+            Thread,
             mailinglist__name=self.kwargs["mlist_fqdn"],
             thread_id=self.kwargs["thread_id"],
             )
-        if thread.mailinglist.archive_policy == ArchivePolicy.private.value:
-            raise PermissionDenied
         return thread

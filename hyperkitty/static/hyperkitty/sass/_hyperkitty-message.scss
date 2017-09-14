@@ -62,6 +62,7 @@ $oddEmailColor: rgb(238, 238, 238);
 
     .fa-envelope {
         font-size: 130%;
+        margin-right: 10px;
     }
 
     .messagelink {
@@ -119,6 +120,10 @@ $oddEmailColor: rgb(238, 238, 238);
         padding: 3px 10px 0 0;
     }
 }
+.email-body.fixed {
+    font-family: 'Droid Sans Mono', monospace;
+    white-space: pre;
+}
 
 .attachments {
     padding-top: 8px;
@@ -157,10 +162,11 @@ $oddEmailColor: rgb(238, 238, 238);
             }
         }
         p { margin: 0; }
-        #id_subject {
+        p.new-subject {
+            display: none;
             margin-bottom: 0.5em;
         }
-        #id_message {
+        p.message-text {
             margin-bottom: 0.25em;
         }
         p.buttons {
@@ -242,6 +248,19 @@ $oddEmailColor: rgb(238, 238, 238);
     font-size: 70%;
 }
 
+
+#thread-overview-info, #message-overview-info {
+    a {
+        color: #999;
+    }
+    .fa {
+        color: #BFBFBF;
+    }
+    .postorius .fa {
+        color: black;
+    }
+}
+
 #thread-overview-info {
     #thread-date-info {
         padding-bottom: 8px;
@@ -257,7 +276,6 @@ $oddEmailColor: rgb(238, 238, 238);
         margin-bottom: 0;
     }
     .favorite a {
-        color: #999;
         i {
             margin-right: 0.3em;
         }

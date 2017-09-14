@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# pylint: skip-file
+# flake8: noqa
 
 from __future__ import absolute_import, print_function, unicode_literals
 
 import unittest
 import datetime
 import uuid
-from urllib2 import HTTPError
+from django.utils.six.moves.urllib.error import HTTPError
 
 from mock import Mock
 from mailman.email.message import Message
@@ -158,7 +158,7 @@ class UserIdCacheTestCase(unittest.TestCase):
         msg.set_payload("Dummy message")
         try:
             self.store.add_to_list("example-list", msg)
-        except ValueError, e:
+        except ValueError as e:
             self.fail("Errors from mailmanclient should be handled gracefully")
         dbmsg = self.store.get_message_by_id_from_list(
                 "example-list", "dummy")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+ * Copyright (C) 2012-2012 by the Free Software Foundation, Inc.
  *
  * This file is part of HyperKitty.
  *
@@ -65,7 +65,7 @@ function setup_overview(recent_activity_url) {
     $('#posted-to h3').click(collapsibleDivs);
 
     // "More threads" links
-    $('.more-threads').click(function(e) {
+    $(".overview").on("click", ".more-threads", function(e) {
         e.preventDefault();
         //var more_block = $(this).parent('.more-threads');
         var more_block = $(this).parent().next();
@@ -75,5 +75,10 @@ function setup_overview(recent_activity_url) {
             more_block.remove();
             $(this).remove();
         }
+    });
+
+    // Page fragments
+    $('div[data-load-from]').each(function() {
+        $(this).load($(this).attr("data-load-from"));
     });
 }

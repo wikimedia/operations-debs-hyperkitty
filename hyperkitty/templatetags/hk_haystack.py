@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 1998-2012 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -24,7 +25,9 @@ from __future__ import absolute_import, unicode_literals, print_function
 from xml.sax.saxutils import escape
 
 from django import template
+
 register = template.Library()
+
 
 @register.filter
 def nolongterms(text):
@@ -35,6 +38,10 @@ def nolongterms(text):
     version of the term, with the XTEXT prefix (thus the '240' limit)
     """
     def _getlen(word):
-        return len(escape(word)
-            .replace('"', '&quot;').replace("'", "&#39;").encode("utf-8"))
+        return len(
+            escape(word).replace(
+                '"', '&quot;').replace(
+                "'", "&#39;").encode("utf-8"))
+    if not text:
+        return ""
     return ' '.join(word for word in text.split() if _getlen(word) < 240)

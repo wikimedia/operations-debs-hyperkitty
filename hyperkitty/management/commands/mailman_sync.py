@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2014-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,6 @@ Sync properties from Mailman into HyperKitty
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from optparse import make_option
-
 from django.core.management.base import BaseCommand, CommandError
 from hyperkitty.lib.mailman import sync_with_mailman
 from hyperkitty.management.utils import setup_logging
@@ -34,10 +32,11 @@ from hyperkitty.management.utils import setup_logging
 
 class Command(BaseCommand):
     help = "Sync properties from Mailman into HyperKitty"
-    option_list = BaseCommand.option_list + (
-        make_option('--overwrite', action='store_true', default=False,
-            help="overwrite existing Mailman IDs in HyperKitty's database"),
-        )
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--overwrite', action='store_true', default=False,
+            help="overwrite existing Mailman IDs in HyperKitty's database")
 
     def handle(self, *args, **options):
         options["verbosity"] = int(options.get("verbosity", "1"))

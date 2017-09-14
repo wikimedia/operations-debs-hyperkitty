@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2011-2015 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2011-2017 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,12 +26,12 @@ Download archives from Mailman 2.1
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
-import urllib2
 import gzip
 import itertools
 from multiprocessing import Pool
 from datetime import date
-from optparse import make_option
+from django.utils.six.moves.urllib.error import HTTPError, URLError
+from django.utils.six.moves.urllib.request import urlopen
 
 from django.core.management.base import BaseCommand, CommandError
 from hyperkitty.management.utils import setup_logging
@@ -56,11 +56,11 @@ def _archive_downloader(args):
     if options["verbosity"] >= 2:
         print("Downloading from {0}".format(url))
     try:
-        request = urllib2.urlopen(url)
+        request = urlopen(url)
         with open(filepath, "w") as f:
             f.write(request.read())
-    except urllib2.URLError, e:
-        if isinstance(e, urllib2.HTTPError) and e.code == 404:
+    except URLError as e:
+        if isinstance(e, HTTPError) and e.code == 404:
             print("This archive hasn't been created on the server yet: %s"
                   % basename)
         else:
@@ -77,19 +77,22 @@ def _archive_downloader(args):
 class Command(BaseCommand):
     args = "-u <url> -l <list_address> [-d destination]"
     help = "Download Mailman 2.1 archives"
-    option_list = BaseCommand.option_list + (
-        make_option('-u', '--url',
-            help="URL of the Mailman server"),
-        make_option('-l', '--list-address',
-            help="the full list address the mailbox will be imported to"),
-        make_option('-d', '--destination', default=os.getcwd(),
-            help="directory to download the archives to. Defaults "
-                 "to the current directory (%default)"),
-        make_option("-s", "--start", default="2000",
-            help="first year to start looking for archives")
-        )
 
-    def _check_options(self, args, options): # pylint: disable-msg=unused-argument
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '-u', '--url', help="URL of the Mailman server")
+        parser.add_argument(
+            '-l', '--list-address',
+            help="the full list address the mailbox will be imported to")
+        parser.add_argument(
+            '-d', '--destination', default=os.getcwd(),
+            help="directory to download the archives to. Defaults "
+                 "to the current directory (%(default)s)")
+        parser.add_argument(
+            "-s", "--start", default="2000",
+            help="first year to start looking for archives")
+
+    def _check_options(self, args, options):
         if not options.get("url"):
             raise CommandError("an URL must be provided")
         if not options.get("list_address"):
@@ -100,8 +103,9 @@ class Command(BaseCommand):
                 "The list name must be fully-qualified, including "
                 "the '@' symbol and the domain name.")
         try:
-            options["start"] = range(1980, int(options["start"]), date.today().year + 1)
-        except ValueError, e:
+            options["start"] = range(
+                1980, int(options["start"]), date.today().year + 1)
+        except ValueError as e:
             raise CommandError("invalid value for '--start': %s" % e)
         options["verbosity"] = int(options.get("verbosity", "1"))
 
@@ -109,4 +113,5 @@ class Command(BaseCommand):
         self._check_options(args, options)
         setup_logging(self, options["verbosity"])
         p = Pool(5)
-        p.map(_archive_downloader, itertools.product([options], options["start"], MONTHS))
+        p.map(_archive_downloader, itertools.product(
+              [options], options["start"], MONTHS))
