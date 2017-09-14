@@ -1,0 +1,22 @@
+General maintenance
+
+    This package is maintained in Git at github.com:P-EB/mailman3-hyperkitty.
+    It uses the "3.0 (quilt)" source format and follows the Git packaging
+    workflow from the Debian Python Modules Team. For more information, see:
+    * https://wiki.debian.org/Python/GitPackaging
+    * https://python-modules.alioth.debian.org/policy.html#git-procedures
+
+Build the package
+
+    Build the package using git-buildpackage with pristine tar:
+
+        gbp buildpackage --git-pristine-tar
+
+Import a new upstream version
+
+    'git-dpm' is used to import new upstream versions into the Git repository:
+
+        git-dpm import-new-upstream --ptc --rebase-patched hyperkitty-1.1.1.tar.gz
+
+ -- Jonas Meurer <mejo@debian.org>  Thu, 14 Sep 2017 14:24:35 +0200
+
