@@ -21,7 +21,7 @@ Build-Depends: cssmin (>= 0.2.0),
                python-social-auth (>= 0.2.3),
                python-sphinx,
                python-tz (>= 2012),
-Standards-Version: 3.9.7
+Standards-Version: 4.1.0
 Homepage: http://www.list.org/
 Vcs-Browser: https://github.com/P-EB/mailman3-hyperkitty
 Vcs-Git: https://github.com/P-EB/mailman3-hyperkitty.git -b master
