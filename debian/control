@@ -1,4 +1,4 @@
-Source: mailman3-hyperkitty
+Source: hyperkitty
 Section: mail
 Priority: optional
 Maintainer: Pierre-Elliott Bécue <becue@crans.org>
@@ -23,8 +23,8 @@ Build-Depends: cssmin (>= 0.2.0),
                python-tz (>= 2012),
 Standards-Version: 4.1.0
 Homepage: http://www.list.org/
-Vcs-Browser: https://github.com/P-EB/mailman3-hyperkitty
-Vcs-Git: https://github.com/P-EB/mailman3-hyperkitty.git -b master
+Vcs-Browser: https://anonscm.debian.org/git/pkg-mailman/hyperkitty.git/
+Vcs-Git: https://anonscm.debian.org/cgit/pkg-mailman/hyperkitty.git/
 X-Python-Version: >= 2.7
 
 # django-gravatar2
@@ -32,7 +32,7 @@ X-Python-Version: >= 2.7
 # django-paintstore
 # django-browserid
 
-Package: mailman3-hyperkitty
+Package: hyperkitty
 Architecture: any
 Depends: mailman3-client, ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
 Recommends: nginx, uwsgi
