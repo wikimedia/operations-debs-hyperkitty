@@ -1,0 +1,9 @@
+Document: hyperkitty
+Title: Postorius documentation
+Author: The Mailman Developers
+Abstract: This manual describes how to use Hyperkitty, the Mailman3 archiver
+Section: Network/Communication
+
+Format: HTML
+Index: /usr/share/doc/python-django-hyperkitty/html/index.html
+Files: /usr/share/doc/python-django-hyperkitty/html/*
