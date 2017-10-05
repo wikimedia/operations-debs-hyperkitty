@@ -12,6 +12,6 @@ Import a new upstream version
 
     'gbp' is used to import new upstream versions into the Git repository:
 
-        gbp import-orig --pristin-tar ../hyperkitty_1.1.1.orig.tar.gz
+        gbp import-orig --pristine-tar ../hyperkitty_1.1.1.orig.tar.gz
 
  -- Jonas Meurer <mejo@debian.org>  Mon, 02 Oct 2017 18:33:58 +0200
