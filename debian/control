@@ -39,7 +39,7 @@ Depends: fonts-font-awesome,
          python-tz,
          ${misc:Depends},
          ${python:Depends}
-Recommends: nginx | libapache2-mod-uwsgi, uwsgi, mailman3-core
+Recommends: mailman3-core
 Description: Web user interface to access GNU Mailman3 archives
  The hyperkitty Django app provides a web user interface
  to access GNU Mailman3 archives, and manage it. This
