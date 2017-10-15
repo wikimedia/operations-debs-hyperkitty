@@ -1,7 +1,7 @@
 {% load i18n %}
 
     <form method="post" class="likeform"
-          action="{% url 'hk_message_vote' mlist_fqdn=object.mailinglist_id message_id_hash=message_id_hash %}">
+          action="{% url 'hk_message_vote' mlist_fqdn=object.mailinglist.name message_id_hash=message_id_hash %}">
     {% csrf_token %}
     {% with votes=object.get_votes %}
     

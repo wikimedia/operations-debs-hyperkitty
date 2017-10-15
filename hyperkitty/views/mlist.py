@@ -28,7 +28,8 @@ import zlib
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponse, StreamingHttpResponse
+from django.http import (
+    Http404, HttpResponse, StreamingHttpResponse, HttpResponseBadRequest)
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import formats, timezone
 from django.utils.dateformat import format as date_format
@@ -302,16 +303,19 @@ def recent_activity(request, mlist_fqdn):
 def export_mbox(request, mlist_fqdn, filename):
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
     query = mlist.emails
-    if "start" in request.GET:
-        start_date = datetime.datetime.strptime(
-            request.GET["start"], "%Y-%m-%d")
-        start_date = timezone.make_aware(start_date, timezone.utc)
-        query = query.filter(date__gte=start_date)
-    if "end" in request.GET:
-        end_date = datetime.datetime.strptime(
-            request.GET["end"], "%Y-%m-%d")
-        end_date = timezone.make_aware(end_date, timezone.utc)
-        query = query.filter(date__lt=end_date)
+    try:
+        if "start" in request.GET:
+            start_date = datetime.datetime.strptime(
+                request.GET["start"], "%Y-%m-%d")
+            start_date = timezone.make_aware(start_date, timezone.utc)
+            query = query.filter(date__gte=start_date)
+        if "end" in request.GET:
+            end_date = datetime.datetime.strptime(
+                request.GET["end"], "%Y-%m-%d")
+            end_date = timezone.make_aware(end_date, timezone.utc)
+            query = query.filter(date__lt=end_date)
+    except ValueError:
+        return HttpResponseBadRequest("Invalid dates")
     if "thread" in request.GET:
         query = query.filter(thread__thread_id=request.GET["thread"])
     if "message" in request.GET:

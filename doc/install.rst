@@ -5,7 +5,7 @@ Installation
 .. note::
     This installation guide covers HyperKitty, the web user interface to access
     GNU Mailman v3 Archives. To install GNU Mailman follow the instructions in
-    the documentation: http://packages.python.org/mailman/
+    the documentation: http://mailman.readthedocs.io/
 
 
 Install the code

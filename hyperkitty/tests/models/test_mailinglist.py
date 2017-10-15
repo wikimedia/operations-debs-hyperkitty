@@ -219,7 +219,7 @@ class TopThreadsTestCase(TestCase):
             msg = Message()
             msg["From"] = "sender@example.com"
             msg["Message-ID"] = "<msg%d>" % email_count
-            msg["Date"] = "2017-07-16 00:00:00 UTC"
+            msg["Date"] = datetime.now().isoformat()
             msg.set_payload("message %d" % email_count)
             add_to_list(self.ml.name, msg)
             # Add the replies
@@ -228,7 +228,7 @@ class TopThreadsTestCase(TestCase):
                 msg["From"] = "sender@example.com"
                 msg["Message-ID"] = "<msg%d-%d>" % (email_count, email_num)
                 msg["In-Reply-To"] = "<msg%d>" % email_count
-                msg["Date"] = "2017-07-16 00:00:00 UTC"
+                msg["Date"] = datetime.now().isoformat()
                 msg.set_payload("message %d-%d" % (email_count, email_num))
                 add_to_list(self.ml.name, msg)
         # The TopThreads value should be reverse-sorted by number of emails.
@@ -259,7 +259,7 @@ class PopularThreadsTestCase(TestCase):
             msg = Message()
             msg["From"] = "sender@example.com"
             msg["Message-ID"] = "<msg%d>" % votes_num
-            msg["Date"] = "2017-07-16 00:00:00 UTC"
+            msg["Date"] = datetime.now().isoformat()
             msg.set_payload("message %d" % votes_num)
             msg_id = add_to_list(self.ml.name, msg)
             # Vote on the thread

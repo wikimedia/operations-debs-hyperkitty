@@ -270,7 +270,7 @@ class Email(models.Model):
         else:
             thread.on_email_deleted(self)
         try:
-            mlist = MailingList.objects.get(name=self.mailinglist_id)
+            mlist = MailingList.objects.get(pk=self.mailinglist_id)
         except MailingList.DoesNotExist:
             pass
         else:

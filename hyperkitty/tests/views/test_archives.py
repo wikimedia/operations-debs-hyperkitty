@@ -127,7 +127,8 @@ class ListArchivesTestCase(TestCase):
     def test_overview_cleaned_cache(self):
         # Test the overview page with a clean cache (different code path for
         # MailingList.recent_threads)
-        cache.delete("MailingList:list@example.com:recent_threads")
+        mlist = MailingList.objects.get(name="list@example.com")
+        cache.delete("MailingList:%s:recent_threads" % mlist.pk)
         response = self.client.get(
             reverse('hk_list_overview', args=["list@example.com"]))
         self.assertEqual(response.status_code, 200)
@@ -247,6 +248,16 @@ class ExportMboxTestCase(TestCase):
         mbox = self._get_mbox(qs="message=%s" % msg_id)
         self.assertEqual(len(mbox), 1)
         self.assertEqual([m["Message-ID"] for m in mbox], ["<msg2>"])
+
+    def test_bogus_dates(self):
+        base_url = reverse(
+            "hk_list_export_mbox", args=["list@example.com", "dummy"])
+        url = "{}?start=invalid".format(base_url)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 400)
+        url = "{}?end=2017-01-01/".format(base_url)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 400)
 
 
 class PrivateArchivesTestCase(TestCase):

@@ -17,7 +17,7 @@
                     <div class="col-tn-12 col-sm-10 col-md-7 col-lg-8">
                         <span class="thread-title">
                             <a name="{{email.message_id_hash}}"
-                               href="{% url 'hk_message_index' mlist_fqdn=email.mailinglist_id message_id_hash=email.message_id_hash %}"
+                               href="{% url 'hk_message_index' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}"
                                >{{ email.subject|strip_subject:mlist }}</a>
                         </span>
                         <div>
