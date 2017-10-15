@@ -1,9 +1,9 @@
-hyperkitty (1.1.1-1) unstable; urgency=medium
+hyperkitty (1.1.4-1) unstable; urgency=medium
 
   [ Pierre-Elliott Bécue ]
   * Initial release (Closes: #799287)
 
   [ Jonas Meurer ]
-  * Import upstream version 1.1.1.
+  * Import upstream versions 1.1.1 and 1.1.4.
 
- -- Jonas Meurer <mejo@debian.org>  Mon, 02 Oct 2017 18:31:00 +0200
+ -- Jonas Meurer <mejo@debian.org>  Sun, 15 Oct 2017 13:02:29 +0200
