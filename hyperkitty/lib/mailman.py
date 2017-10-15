@@ -60,8 +60,16 @@ def subscribe(list_address, user, email=None, display_name=None):
                 " to it before posting.")
 
         # not subscribed yet, subscribe the user without email delivery
-        member = rest_list.subscribe(
-            email, display_name, pre_verified=True, pre_confirmed=True)
+        try:
+            member = rest_list.subscribe(
+                email, display_name, pre_verified=True, pre_confirmed=True)
+        except HTTPError as e:
+            if e.code == 409:
+                logger.info("Subscription for %s to %s is already pending",
+                            email, list_address)
+                return subscribed_now
+            else:
+                raise
         # The result can be a Member object or a dict if the subscription can't
         # be done directly, or if it's pending, or something else.
         # Broken API :-(

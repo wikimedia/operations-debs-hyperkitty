@@ -71,7 +71,6 @@ hyperkitty/management/utils.py
 hyperkitty/management/commands/__init__.py
 hyperkitty/management/commands/hyperkitty_import.py
 hyperkitty/management/commands/hyperkitty_warm_up_cache.py
-hyperkitty/management/commands/mailman2_download.py
 hyperkitty/management/commands/mailman_sync.py
 hyperkitty/migrations/0001_initial.py
 hyperkitty/migrations/0002_auto_20150311_0913.py
@@ -85,6 +84,9 @@ hyperkitty/migrations/0009_duplicate_persona_users.py
 hyperkitty/migrations/0010_email_sender_name.py
 hyperkitty/migrations/0011_email_parent.py
 hyperkitty/migrations/0012_thread_order_null.py
+hyperkitty/migrations/0013_mailinglist_id_1.py
+hyperkitty/migrations/0014_mailinglist_id_2.py
+hyperkitty/migrations/0015_mailinglist_id_3.py
 hyperkitty/migrations/__init__.py
 hyperkitty/models/__init__.py
 hyperkitty/models/category.py
@@ -238,20 +240,6 @@ hyperkitty/static/hyperkitty/libs/fonts/font-awesome/fonts/fontawesome-webfont.s
 hyperkitty/static/hyperkitty/libs/fonts/font-awesome/fonts/fontawesome-webfont.ttf
 hyperkitty/static/hyperkitty/libs/fonts/font-awesome/fonts/fontawesome-webfont.woff
 hyperkitty/static/hyperkitty/libs/fonts/font-awesome/fonts/fontawesome-webfont.woff2
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_animated.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_bordered-pulled.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_core.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_fixed-width.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_icons.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_larger.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_list.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_mixins.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_path.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_rotated-flipped.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_screen-reader.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_stacked.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/_variables.scss
-hyperkitty/static/hyperkitty/libs/fonts/font-awesome/scss/font-awesome.scss
 hyperkitty/static/hyperkitty/libs/fonts/icomoon/icomoon.css
 hyperkitty/static/hyperkitty/libs/fonts/icomoon/fonts/icomoon.eot
 hyperkitty/static/hyperkitty/libs/fonts/icomoon/fonts/icomoon.svg
@@ -351,7 +339,6 @@ hyperkitty/tests/urls_test.py
 hyperkitty/tests/utils.py
 hyperkitty/tests/commands/__init__.py
 hyperkitty/tests/commands/test_import.py
-hyperkitty/tests/commands/test_mailman2_download.py
 hyperkitty/tests/commands/test_mailman_sync.py
 hyperkitty/tests/jobs/__init__.py
 hyperkitty/tests/jobs/test_update_index.py

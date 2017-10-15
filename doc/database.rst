@@ -35,22 +35,16 @@ where:
 
 * ``ADDRESS`` is the fully-qualified list name (including the ``@`` sign and
   the domain name)
-* The ``mbox_file`` arguments are the existing archives to import. Make sure
-  you point at the ``*.txt`` version of the files and not the ``*.gz``.
+* The ``mbox_file`` arguments are the existing archives to import (in mbox
+  format).
+
+The archive mbox file for a list is usually available at the following
+location::
+
+    /var/lib/mailman/archives/private/LIST_NAME.mbox/LIST_NAME.mbox
 
 If the previous archives aren't available locally, you need to download them
-from your current Mailman 2.1 installation. The ``mailman2_download``
-management command can help you do that, its syntax is::
-
-    django-admin mailman2_download --pythonpath example_project --settings settings -u URL -l LIST_NAME [-d destdir]
-
-where:
-
-* ``URL`` is the base URL of your current Mailman 2.1 installation, typically
-  the part before the ``/pipermail`` subdirectory when you're looking at your
-  current archives. Make sure you remember to include the 'http://' in this string.
-* ``LIST_NAME`` is the name of the mailing-list without the domain (before the
-  ``@`` sign)
+from your current Mailman 2.1 installation. The file is not web-accessible.
 
 After importing your existing archives, you must add them to the fulltext
 search engine with the following command::

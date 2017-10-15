@@ -129,7 +129,7 @@ class PostingTestCase(TestCase):
 
     def test_get_sender_is_string(self):
         # The get_sender function must always return a string
-        from mailmanclient._client import Address
+        from mailmanclient.restobjects.address import Address
         self.mm_user.addresses = [
             Address(None, None, dict(email="testuser@example.com")),
             ]

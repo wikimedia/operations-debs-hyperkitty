@@ -23,6 +23,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from django.contrib.auth.models import User
+from django.utils.six.moves.urllib.error import HTTPError
 from django_mailman3.lib.cache import cache
 from django_mailman3.tests.utils import FakeMMList, FakeMMPage
 from mock import Mock, patch
@@ -120,6 +121,24 @@ class MailmanSubscribeTestCase(TestCase):
         self.assertEqual(
             cache.get("User:%s:subscriptions" % self.user.id, version=2),
             "test-value")
+
+    def test_subscribe_moderate_then_open(self):
+        # The list required moderation, the user tried to subscribe, and then
+        # the list was set to open before the subscription could be approved.
+        # There is therefore a pending subscription on an open list, make sure
+        # we can handle that.
+        # https://gitlab.com/mailman/hyperkitty/issues/152
+        self.ml.settings["subscription_policy"] = "open"
+        self.ml.get_member.side_effect = ValueError
+        self.ml.subscribe.side_effect = HTTPError(
+            url=None, code=409, msg="Subscription request already pending",
+            hdrs=None, fp=None)
+        try:
+            subscribed_now = mailman.subscribe("list@example.com", self.user)
+        except HTTPError:
+            self.fail("This use case was not properly handled")
+        self.assertTrue(self.ml.get_member.called)
+        self.assertFalse(subscribed_now)
 
     def test_subscribe_different_address(self):
         self.ml.settings["subscription_policy"] = "open"

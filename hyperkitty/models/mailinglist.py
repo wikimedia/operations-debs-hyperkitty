@@ -58,7 +58,7 @@ class MailingList(models.Model):
     """
     An archived mailing-list.
     """
-    name = models.CharField(max_length=254, primary_key=True)
+    name = models.CharField(max_length=254, unique=True)
     list_id = models.CharField(max_length=254, null=True, unique=True)
     display_name = models.CharField(max_length=255)
     description = models.TextField()
@@ -138,7 +138,7 @@ class MailingList(models.Model):
         # specific warm up or rebuild: this is done by the recent_threads
         # CachedValue.
         begin_date, end_date = self.get_recent_dates()
-        cache_key = "MailingList:%s:recent_threads_count" % self.name
+        cache_key = "MailingList:%s:recent_threads_count" % self.pk
         result = cache.get(cache_key)
         if result is None:
             result = self.get_threads_between(begin_date, end_date).count()
@@ -290,7 +290,7 @@ class ParticipantsCountForMonth(ModelCachedValue):
 
     def _get_cache_key(self, year, month):
         return "MailingList:%s:p_count_for:%s:%s" % (
-            self.instance.name, year, month)
+            self.instance.pk, year, month)
 
     def get_value(self, year, month):
         begin_date = datetime.datetime(year, month, 1, tzinfo=utc)
@@ -350,8 +350,11 @@ class TopThreads(ModelCachedValue):
         # Filter on the recent_threads ids instead of re-using the date
         # filter, otherwise the Sum will be computed for every thread
         # regardless of their date.
+        begin_date, end_date = self.instance.get_recent_dates()
+        recent_thread_ids = self.instance.get_threads_between(
+            begin_date, end_date).values("id")
         threads = Thread.objects.filter(
-            id__in=[t.id for t in self.instance.recent_threads]).annotate(
+            id__in=recent_thread_ids).annotate(
             models.Count("emails")).order_by("-emails__count")[:20]
         # (not sure about using .values_list() here because of the annotation)
         # Only cache the list of thread ids, or it may go over memcached's size
@@ -372,8 +375,11 @@ class PopularThreads(ModelCachedValue):
         # Filter on the recent_threads ids instead of re-using the date
         # filter, otherwise the Sum will be computed for every thread
         # regardless of their date.
+        begin_date, end_date = self.instance.get_recent_dates()
+        recent_thread_ids = self.instance.get_threads_between(
+            begin_date, end_date).values("id")
         threads = Thread.objects.filter(
-            id__in=[t.id for t in self.instance.recent_threads]).annotate(
+            id__in=recent_thread_ids).annotate(
             models.Sum("emails__votes__value")).order_by(
             "-emails__votes__value__sum")[:20]
         # (not sure about using .values_list() here because of the annotation)

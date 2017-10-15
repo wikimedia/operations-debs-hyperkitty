@@ -420,8 +420,8 @@ class TestAddToList(TestCase):
     def test_rebuild_recent_threads_cache(self):
         # The recent threads cache must be rebuilt when a new message arrives.
         mlist = MailingList.objects.create(name="example-list")
-        cache.set("MailingList:example-list:recent_threads", [42])
-        cache.set("MailingList:example-list:recent_threads_count",
+        cache.set("MailingList:%s:recent_threads" % mlist.pk, [42])
+        cache.set("MailingList:%s:recent_threads_count" % mlist.pk,
                   "test-value")
         msg = Message()
         msg["From"] = "dummy@example.com"
@@ -430,11 +430,11 @@ class TestAddToList(TestCase):
         msg.set_payload("Fake Message")
         m_hash = add_to_list("example-list", msg)
         thread = Thread.objects.get(thread_id=m_hash)
-        cached_value = cache.get("MailingList:example-list:recent_threads")
+        cached_value = cache.get("MailingList:%s:recent_threads" % mlist.pk)
         self.assertListEqual(list(cached_value), [thread.id])
         self.assertEqual(mlist.recent_threads[0].thread_id, m_hash)
         self.assertEqual(
-            cache.get("MailingList:example-list:recent_threads_count"), 1)
+            cache.get("MailingList:%s:recent_threads_count" % mlist.pk), 1)
 
     def test_existing_thread(self):
         msg = Message()
