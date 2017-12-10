@@ -2,8 +2,10 @@ hyperkitty (1.1.4-2) unstable; urgency=medium
 
   * debian/changelog: Add missing copyright statement for bootstrap.
     Thanks to Chris Lamb for the hint.
+  * debian/copyright: Bump standards-version to 4.1.2, no changes
+    needed.
 
- -- Jonas Meurer <mejo@debian.org>  Sun, 10 Dec 2017 17:31:41 +0100
+ -- Jonas Meurer <mejo@debian.org>  Sun, 10 Dec 2017 17:35:44 +0100
 
 hyperkitty (1.1.4-1) unstable; urgency=medium
 
