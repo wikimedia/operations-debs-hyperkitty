@@ -1,3 +1,10 @@
+hyperkitty (1.1.4-2) unstable; urgency=medium
+
+  * debian/changelog: Add missing copyright statement for bootstrap.
+    Thanks to Chris Lamb for the hint.
+
+ -- Jonas Meurer <mejo@debian.org>  Sun, 10 Dec 2017 17:31:41 +0100
+
 hyperkitty (1.1.4-1) unstable; urgency=medium
 
   [ Pierre-Elliott Bécue ]
