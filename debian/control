@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Debian Mailman Team <pkg-mailman-hackers@lists.alioth.debian.org>
 Uploaders: Pierre-Elliott Bécue <becue@crans.org>,
-           Jonas Meurer <mejo@debian.org>
+           Jonas Meurer <jonas@freesources.org>
 Build-Depends: debhelper (>= 10),
                dh-python,
                python-all,

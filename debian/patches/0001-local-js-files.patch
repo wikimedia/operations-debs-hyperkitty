@@ -3,7 +3,7 @@ Description: Replace JS script links to CDN with local copies
  a privacy breach for documents in Debian packages. This patch replaces
  the links to JS scripts at googleapis.com with local links.
 Forwarded: https://gitlab.com/mailman/hyperkitty/issues/158
-Author: Jonas Meurer <mejo@debian.org>
+Author: Jonas Meurer <jonas@freesources.org>
 Last-Update: 2017-10-02
 
 ---
