@@ -6,10 +6,7 @@ export PYBUILD_NAME = hyperkitty
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
 
 override_dh_auto_test:
-#	set -e; \
-#	for python in $(shell pyversions -r); do \
-#		PYTHONPATH="." $$python example_project/manage.py test --settings=test_settings; \
-#	done
+	django-admin test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty
 
 override_dh_auto_build:
 	PYTHONPATH=. sphinx-build -b html -E -N doc build/sphinx/html
