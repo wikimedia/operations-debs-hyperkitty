@@ -7,9 +7,9 @@ export PYBUILD_NAME = hyperkitty
 
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-	sed -e; \
+	set -e; \
 	for python in $(shell pyversions -r); do \
-		$$python $(shell which django-admin) --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
+		$$python $(shell which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
 	done
 endif
 

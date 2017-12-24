@@ -1,4 +1,4 @@
-Test-Command: django-admin test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty
+Test-Command: python2.7 $(which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty
 Depends: @,
          python-bs4,
          python-mock,
