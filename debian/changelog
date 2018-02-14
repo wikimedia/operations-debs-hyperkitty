@@ -4,7 +4,10 @@ hyperkitty (1.1.4-4) unstable; urgency=medium
   * d/tests/control: run django-admin with explicit python version
   * d/rules: don't run testsuite when 'nocheck' in DEB_BUILD_OPTIONS
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Wed, 14 Feb 2018 15:39:48 +0100
+  [ Pierre-Elliott Bécue ]
+  * d/watch: fix the broken link, and raise version to 4
+
+ -- Pierre-Elliott Bécue <becue@crans.org>  Wed, 14 Feb 2018 15:41:48 +0100
 
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
