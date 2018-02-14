@@ -62,7 +62,7 @@ Copyright: © 2005, 2013 jQuery Foundation, Inc. and other contributors
 License: Expat
 
 Files: debian/*
-Copyright: © 2015 Pierre-Elliott Bécue <becue@crans.org>
+Copyright: © 2015-2018 Pierre-Elliott Bécue <becue@crans.org>
            © 2017 Jonas Meurer <jonas@freesources.org>
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify

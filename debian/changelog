@@ -11,8 +11,9 @@ hyperkitty (1.1.4-4) unstable; urgency=medium
     - Change Vcs links to salsa.debian.org
     - Bump debhelper version requirement to 11
   * d/compat: bump to 11
+  * d/copyright: update years
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Wed, 14 Feb 2018 15:45:05 +0100
+ -- Pierre-Elliott Bécue <becue@crans.org>  Wed, 14 Feb 2018 15:45:36 +0100
 
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
