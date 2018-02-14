@@ -28,7 +28,7 @@ Build-Depends: debhelper (>= 10),
                python-tz,
                python-whoosh,
                python3-sphinx
-Standards-Version: 4.1.2
+Standards-Version: 4.1.3
 Homepage: https://gitlab.com/mailman/hyperkitty
 Vcs-Browser: https://anonscm.debian.org/git/pkg-mailman/hyperkitty.git/
 Vcs-Git: https://anonscm.debian.org/cgit/pkg-mailman/hyperkitty.git/
