@@ -24,3 +24,10 @@ override_dh_auto_install:
 		ln -sf /usr/share/fonts-font-awesome/fonts/fontawesome-webfont.ttf {} \;
 	find debian/python-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
 		ln -sf /usr/share/fonts-font-awesome/fonts/FontAwesome.otf {} \;
+	find debian/python-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
+		ln -sf /usr/share/glewlwyd/webapp/fonts/glyphicons-halflings-regular.ttf {} \;
+	# Don't embed bootstrap/jquery JS scripts
+	find debian/python-django-hyperkitty -name 'jquery-1.10.1.min.js' -type f -exec \
+		ln -sf /usr/share/javascript/jquery/jquery.min.js {} \;
+	find debian/python-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
+		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;

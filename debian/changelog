@@ -1,9 +1,16 @@
 hyperkitty (1.1.4-4) unstable; urgency=medium
 
+  [ Jonas Meurer ]
   * d/control:
     - Don't recommend mailman3, recommend mailman3-web instead.
 
- -- Jonas Meurer <jonas@freesources.org>  Fri, 16 Mar 2018 09:23:40 +0100
+  [ Pierre-Elliott Bécue ]
+  * d/rules:
+    - Remove the embedded fonts that are in other packages. Same for js libs
+  * d/control:
+    - Add dependency on the font/js packages required by the rules change
+
+ -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 16:24:36 +0100
 
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
