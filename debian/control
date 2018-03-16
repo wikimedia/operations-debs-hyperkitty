@@ -39,7 +39,6 @@ Architecture: all
 Depends: fonts-font-awesome,
          fonts-glewlwyd,
          libjs-bootstrap,
-         libjs-jquery,
          python-cssmin,
          python-dateutil,
          python-django,

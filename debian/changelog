@@ -6,7 +6,8 @@ hyperkitty (1.1.4-4) unstable; urgency=medium
 
   [ Pierre-Elliott Bécue ]
   * d/rules:
-    - Remove the embedded fonts that are in other packages. Same for js libs
+    - Remove the embedded fonts that are in other packages. Same for
+      bootstrap.js{,.min}
     - Add upstream's changelog to the package
     - Move django's static files in /usr/share/python-django-hyperkitty
   * d/control:
@@ -15,7 +16,7 @@ hyperkitty (1.1.4-4) unstable; urgency=medium
   * Add d/s/lintian-overrides to give intel on the current python3 missing
     package status.
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 16:53:05 +0100
+ -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 17:33:39 +0100
 
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
