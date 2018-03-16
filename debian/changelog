@@ -1,3 +1,10 @@
+hyperkitty (1.1.4-4) unstable; urgency=medium
+
+  * d/control:
+    - Don't recommend mailman3, recommend mailman3-web instead.
+
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 16 Mar 2018 09:23:40 +0100
+
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
   [ Jonas Meurer ]
