@@ -12,8 +12,10 @@ hyperkitty (1.1.4-4) unstable; urgency=medium
   * d/control:
     - Add dependency on the font/js packages required by the rules change
   * wrap-and-sort
+  * Add d/s/lintian-overrides to give intel on the current python3 missing
+    package status.
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 16:29:27 +0100
+ -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 16:53:05 +0100
 
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
