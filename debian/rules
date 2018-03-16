@@ -29,8 +29,13 @@ override_dh_auto_install:
 	# Don't embed bootstrap/jquery JS scripts
 	find debian/python-django-hyperkitty -name 'jquery-1.10.1.min.js' -type f -exec \
 		ln -sf /usr/share/javascript/jquery/jquery.min.js {} \;
-	find debian/python-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
+	find debian/python-django-hyperkitty -name 'bootstrap.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
+	# Move static files outside of the lib directory
+	mv debian/python-django-hyperkitty/usr/lib/python2.7/dist-packages/hyperkitty/static \
+		debian/python-django-hyperkitty/usr/share/python-django-hyperkitty/
+	ln -sf /usr/share/python-django-hyperkitty/static \
+		debian/python-django-hyperkitty/usr/lib/python2.7/dist-packages/hyperkitty/static
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
