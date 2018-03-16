@@ -31,3 +31,6 @@ override_dh_auto_install:
 		ln -sf /usr/share/javascript/jquery/jquery.min.js {} \;
 	find debian/python-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
+
+override_dh_installchangelogs:
+	dh_installchangelogs doc/news.rst

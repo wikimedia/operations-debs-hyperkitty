@@ -7,11 +7,12 @@ hyperkitty (1.1.4-4) unstable; urgency=medium
   [ Pierre-Elliott Bécue ]
   * d/rules:
     - Remove the embedded fonts that are in other packages. Same for js libs
+    - Add upstream's changelog to the package
   * d/control:
     - Add dependency on the font/js packages required by the rules change
   * wrap-and-sort
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 16:26:57 +0100
+ -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 16:27:14 +0100
 
 hyperkitty (1.1.4-3) unstable; urgency=medium
 
