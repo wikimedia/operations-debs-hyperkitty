@@ -1,3 +1,43 @@
+hyperkitty (1.1.4-4) unstable; urgency=medium
+
+  [ Jonas Meurer ]
+  * d/control:
+    - Don't recommend mailman3, recommend mailman3-web instead.
+
+  [ Pierre-Elliott Bécue ]
+  * d/rules:
+    - Remove the embedded fonts that are in other packages. Same for
+      bootstrap.js{,.min}
+    - Add upstream's changelog to the package
+    - Move django's static files in /usr/share/python-django-hyperkitty
+  * d/control:
+    - Add dependency on the font/js packages required by the rules change
+  * wrap-and-sort
+  * Add d/s/lintian-overrides to give intel on the current python3 missing
+    package status.
+
+ -- Pierre-Elliott Bécue <becue@crans.org>  Fri, 16 Mar 2018 17:33:39 +0100
+
+hyperkitty (1.1.4-3) unstable; urgency=medium
+
+  [ Jonas Meurer ]
+  * d/tests/control: Add test command 'django-admin test'.
+  * d/rules: Run 'django-admin test' as build-time test.
+  * d/tests/control: run django-admin with explicit python version
+  * d/rules: don't run testsuite when 'nocheck' in DEB_BUILD_OPTIONS
+
+  [ Pierre-Elliott Bécue ]
+  * d/watch: fix the broken link, and raise version to 4
+  * d/control:
+    - Bump Standards-Version to 4.1.3
+    - Change Vcs links to salsa.debian.org
+    - Bump debhelper version requirement to 11
+    - Remove Testsuite: header as d/tests/control exists
+  * d/compat: bump to 11
+  * d/copyright: update years
+
+ -- Pierre-Elliott Bécue <becue@crans.org>  Wed, 14 Feb 2018 23:58:29 +0100
+
 hyperkitty (1.1.4-2~bpo9+2) stretch-backports; urgency=medium
 
   * Rebuild for stretch-backports.

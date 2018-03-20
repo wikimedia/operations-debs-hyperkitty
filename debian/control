@@ -3,29 +3,49 @@ Section: python
 Priority: optional
 Maintainer: Debian Mailman Team <pkg-mailman-hackers@lists.alioth.debian.org>
 Uploaders: Pierre-Elliott Bécue <becue@crans.org>,
-           Jonas Meurer <mejo@debian.org>
-Build-Depends: debhelper (>= 10),
+           Jonas Meurer <jonas@freesources.org>
+Build-Depends: debhelper (>= 11),
                dh-python,
                python-all,
+               python-bs4,
+               python-django,
+               python-django-compressor,
+               python-django-extensions,
+               python-django-gravatar2,
+               python-django-haystack,
+               python-django-mailman3,
+               python-django-paintstore,
+               python-django-q,
+               python-djangorestframework,
+               python-enum34,
+               python-lockfile,
+               python-mailmanclient,
+               python-mock,
+               python-networkx,
+               python-rjsmin,
+               python-robot-detection,
                python-setuptools,
+               python-tz,
+               python-whoosh,
                python3-sphinx
-Standards-Version: 4.1.2
+Standards-Version: 4.1.3
 Homepage: https://gitlab.com/mailman/hyperkitty
-Vcs-Browser: https://anonscm.debian.org/git/pkg-mailman/hyperkitty.git/
-Vcs-Git: https://anonscm.debian.org/cgit/pkg-mailman/hyperkitty.git/
-Testsuite: autopkgtest-pkg-python
+Vcs-Browser: https://salsa.debian.org/mailman-team/hyperkitty
+Vcs-Git: https://salsa.debian.org/mailman-team/hyperkitty.git/
 X-Python-Version: >= 2.7
 
 Package: python-django-hyperkitty
 Architecture: all
 Depends: fonts-font-awesome,
+         fonts-glewlwyd,
+         libjs-bootstrap,
          python-cssmin,
-         python-django,
          python-dateutil,
+         python-django,
          python-django-compressor,
          python-django-extensions,
-         python-django-haystack,
          python-django-gravatar2,
+         python-django-haystack,
          python-django-mailman3,
          python-django-paintstore,
          python-django-q,
@@ -39,7 +59,7 @@ Depends: fonts-font-awesome,
          python-tz,
          ${misc:Depends},
          ${python:Depends}
-Recommends: mailman3-core
+Recommends: mailman3-web
 Description: Web user interface to access GNU Mailman3 archives
  The hyperkitty Django app provides a web user interface
  to access GNU Mailman3 archives, and manage it. This

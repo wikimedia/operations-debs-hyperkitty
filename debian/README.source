@@ -14,4 +14,4 @@ Import a new upstream version
 
         gbp import-orig --pristine-tar ../hyperkitty_1.1.1.orig.tar.gz
 
- -- Jonas Meurer <mejo@debian.org>  Mon, 02 Oct 2017 18:33:58 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Mon, 02 Oct 2017 18:33:58 +0200

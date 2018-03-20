@@ -6,10 +6,12 @@ export PYBUILD_NAME = hyperkitty
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
 
 override_dh_auto_test:
-#	set -e; \
-#	for python in $(shell pyversions -r); do \
-#		PYTHONPATH="." $$python example_project/manage.py test --settings=test_settings; \
-#	done
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	set -e; \
+	for python in $(shell pyversions -r); do \
+		$$python $(shell which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
+	done
+endif
 
 override_dh_auto_build:
 	PYTHONPATH=. sphinx-build -b html -E -N doc build/sphinx/html
@@ -22,3 +24,18 @@ override_dh_auto_install:
 		ln -sf /usr/share/fonts-font-awesome/fonts/fontawesome-webfont.ttf {} \;
 	find debian/python-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
 		ln -sf /usr/share/fonts-font-awesome/fonts/FontAwesome.otf {} \;
+	find debian/python-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
+		ln -sf /usr/share/glewlwyd/webapp/fonts/glyphicons-halflings-regular.ttf {} \;
+	# Don't embed bootstrap/jquery JS scripts
+	find debian/python-django-hyperkitty -name 'bootstrap.js' -type f -exec \
+		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
+	find debian/python-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
+		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
+	# Move static files outside of the lib directory
+	mv debian/python-django-hyperkitty/usr/lib/python2.7/dist-packages/hyperkitty/static \
+		debian/python-django-hyperkitty/usr/share/python-django-hyperkitty/
+	ln -sf /usr/share/python-django-hyperkitty/static \
+		debian/python-django-hyperkitty/usr/lib/python2.7/dist-packages/hyperkitty/static
+
+override_dh_installchangelogs:
+	dh_installchangelogs doc/news.rst
