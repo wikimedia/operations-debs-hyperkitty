@@ -27,7 +27,6 @@ Build-Depends: debhelper (>= 11~),
                python-setuptools,
                python-tz,
                python-whoosh,
-               python3-distutils,
                python3-sphinx
 Standards-Version: 4.1.3
 Homepage: https://gitlab.com/mailman/hyperkitty

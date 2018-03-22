@@ -4,11 +4,9 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
     - Prevent dh_clean to delete
       hyperkitty/tests/testdata/payload-utf8-wrong.txt.orig
   * d/control:
-    - Add python3-distutils as a direct build-dependency as latest build
-      attempt without got sphinx complaining about it missing.
     - Lowers build-depends on dh >= 11 to dh >= 11~
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Thu, 22 Mar 2018 12:52:56 +0100
+ -- Pierre-Elliott Bécue <becue@crans.org>  Thu, 22 Mar 2018 13:35:15 +0100
 
 hyperkitty (1.1.4-4) unstable; urgency=medium
 
