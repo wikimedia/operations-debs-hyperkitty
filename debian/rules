@@ -5,6 +5,9 @@ export PYBUILD_NAME = hyperkitty
 %:
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
 
+override_dh_clean:
+	dh_clean -X.txt.orig
+
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	set -e; \
