@@ -27,6 +27,7 @@ override_dh_auto_install:
 		ln -sf /usr/share/fonts-font-awesome/fonts/fontawesome-webfont.ttf {} \;
 	find debian/python-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
 		ln -sf /usr/share/fonts-font-awesome/fonts/FontAwesome.otf {} \;
+	# Don't embed glewlwyd glyphicons as they're also shipped into debian.
 	find debian/python-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/glyphicons-halflings-regular.ttf {} \;
 	# Don't embed bootstrap/jquery JS scripts

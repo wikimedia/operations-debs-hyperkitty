@@ -3,10 +3,14 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
   * d/rules:
     - Prevent dh_clean to delete
       hyperkitty/tests/testdata/payload-utf8-wrong.txt.orig
+    - Remove the replacement of font-awesome fonts by Debian's shipped ones,
+      as the new release of font-awesome into Debian is not currently
+      compatible with Hyperkitty's needs.
   * d/control:
     - Lowers build-depends on dh >= 11 to dh >= 11~
+    - Remove the dependency on fonts-font-awesome.
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Thu, 22 Mar 2018 13:35:15 +0100
+ -- Pierre-Elliott Bécue <becue@crans.org>  Sun, 20 May 2018 14:30:15 +0200
 
 hyperkitty (1.1.4-4) unstable; urgency=medium
 

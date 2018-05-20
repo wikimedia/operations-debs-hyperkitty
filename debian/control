@@ -36,8 +36,7 @@ X-Python-Version: >= 2.7
 
 Package: python-django-hyperkitty
 Architecture: all
-Depends: fonts-font-awesome,
-         fonts-glewlwyd,
+Depends: fonts-glewlwyd,
          libjs-bootstrap,
          python-cssmin,
          python-dateutil,
