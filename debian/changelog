@@ -6,6 +6,7 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
     - Remove the replacement of font-awesome fonts by Debian's shipped ones,
       as the new release of font-awesome into Debian is not currently
       compatible with Hyperkitty's needs.
+      Closes: #898920
   * d/control:
     - Lowers build-depends on dh >= 11 to dh >= 11~
     - Remove the dependency on fonts-font-awesome.
@@ -13,7 +14,7 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
   * d/python-django-hyperkitty.examples:
     - Add the files in example_project in /u/s/d/p-d-h/examples
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Sun, 20 May 2018 14:34:16 +0200
+ -- Pierre-Elliott Bécue <becue@crans.org>  Sun, 20 May 2018 14:55:47 +0200
 
 hyperkitty (1.1.4-4) unstable; urgency=medium
 
