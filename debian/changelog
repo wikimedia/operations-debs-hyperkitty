@@ -9,10 +9,11 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
   * d/control:
     - Lowers build-depends on dh >= 11 to dh >= 11~
     - Remove the dependency on fonts-font-awesome.
+    - Bump Standards-Version to 4.1.4
   * d/python-django-hyperkitty.examples:
     - Add the files in example_project in /u/s/d/p-d-h/examples
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Sun, 20 May 2018 14:33:46 +0200
+ -- Pierre-Elliott Bécue <becue@crans.org>  Sun, 20 May 2018 14:34:16 +0200
 
 hyperkitty (1.1.4-4) unstable; urgency=medium
 
