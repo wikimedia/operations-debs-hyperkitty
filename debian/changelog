@@ -3,9 +3,10 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
   * d/rules:
     - Prevent dh_clean to delete
       hyperkitty/tests/testdata/payload-utf8-wrong.txt.orig
-    - Remove the replacement of font-awesome fonts by Debian's shipped ones,
-      as the new release of font-awesome into Debian is not currently
-      compatible with Hyperkitty's needs.
+    - Use the font-awesome.ttf and the FontAwesome.otf files from
+      fonts-glewlwyd package as fonts-font-awesome got updated and is not
+      backward compatible. Expect breakage as soon as upstream migrates to
+      font-awesome 5.
       Closes: #898920
   * d/control:
     - Lowers build-depends on dh >= 11 to dh >= 11~
@@ -14,7 +15,7 @@ hyperkitty (1.1.4-5) unstable; urgency=medium
   * d/python-django-hyperkitty.examples:
     - Add the files in example_project in /u/s/d/p-d-h/examples
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Sun, 20 May 2018 14:55:47 +0200
+ -- Pierre-Elliott Bécue <becue@crans.org>  Wed, 30 May 2018 15:35:43 +0200
 
 hyperkitty (1.1.4-4) unstable; urgency=medium
 
