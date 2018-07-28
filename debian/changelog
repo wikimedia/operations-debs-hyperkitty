@@ -6,6 +6,9 @@ hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
     - Rename d/p/0002 to d/p/0001
     - upstream signing key changed. Using now
       541EA0448453394FF77A0ECC9D9B2BA061D0A67C (Abhilash Raj)
+  * d/control:
+    - Update (Build-)?Depedencies, as Python3 is the only supported version
+      now
 
  -- Pierre-Elliott Bécue <becue@crans.org>  Mon, 06 Aug 2018 00:41:05 +0200
 
