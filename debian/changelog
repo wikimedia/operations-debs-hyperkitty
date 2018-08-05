@@ -2,8 +2,10 @@ hyperkitty (1.1.4-7) unstable; urgency=medium
 
   * d/patches:
     - Take into account django-q API changes.
+  * d/control:
+    - Bump Standards-Version to 4.2.0. No change required
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Mon, 06 Aug 2018 00:13:45 +0200
+ -- Pierre-Elliott Bécue <becue@crans.org>  Mon, 06 Aug 2018 00:14:50 +0200
 
 hyperkitty (1.1.4-6) unstable; urgency=medium
 
