@@ -1,3 +1,10 @@
+hyperkitty (1.1.4-7) unstable; urgency=medium
+
+  * d/patches:
+    - Take into account django-q API changes.
+
+ -- Pierre-Elliott Bécue <becue@crans.org>  Mon, 06 Aug 2018 00:13:45 +0200
+
 hyperkitty (1.1.4-6) unstable; urgency=medium
 
   * d/rules:
