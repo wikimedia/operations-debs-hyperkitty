@@ -3,24 +3,24 @@ Date: Mon, 6 Aug 2018 00:10:18 +0200
 Subject: django-q API changed, Async class became AsyncTask
 
 ---
- hyperkitty/tasks.py | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hyperkitty/tasks.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/hyperkitty/tasks.py b/hyperkitty/tasks.py
-index 495c49c..47ac478 100644
+index ca2abcf..0c37e70 100644
 --- a/hyperkitty/tasks.py
 +++ b/hyperkitty/tasks.py
-@@ -33,7 +33,7 @@ from functools import wraps
+@@ -32,7 +32,7 @@ from django.conf import settings
  from django.core.cache.utils import make_template_fragment_key
- from django_mailman3.lib.cache import cache
+ from django.core.cache import cache
  from django_q.conf import Conf
 -from django_q.tasks import Async
 +from django_q.tasks import AsyncTask
  from mailmanclient import MailmanConnectionError
  
  from hyperkitty.lib.analysis import compute_thread_order_and_depth
-@@ -61,7 +61,7 @@ def unlock_and_call(func, cache_key, *args, **kwargs):
-     return func(*args, **kwargs)
+@@ -84,7 +84,7 @@ def process_task_result(task):
+         log.debug(task.result)
  
  
 -class SingletonAsync(Async):
@@ -28,7 +28,7 @@ index 495c49c..47ac478 100644
      """A singleton task implementation.
  
      A singleton task does not enqueue the function if there's already one in
-@@ -109,14 +109,14 @@ class SingletonAsync(Async):
+@@ -185,7 +185,7 @@ class SingletonAsync(Async):
  
          Adds a ``delay()`` method to the decorated function which will run it
          asynchronously with the provided arguments.  The arguments accepted by
@@ -36,16 +36,8 @@ index 495c49c..47ac478 100644
 +        the :py:class:`AsyncTask` class are accepted here too.
          """
          def delay(*args, **kwargs):
-             async_class = cls
              if kwargs.get("sync", False) or Conf.SYNC:
-                 # Singleton locking does not work on sync calls because the
-                 # lock is placed after the run() call (to have the task id).
--                async_class = Async
-+                async_class = AsyncTask
-             # Use a more intuitive task name
-             if "task_name" not in kwargs:
-                 kwargs["task_name"] = func.__name__ if callable(func) else func
-@@ -138,7 +138,7 @@ class SingletonAsync(Async):
+@@ -220,7 +220,7 @@ class SingletonAsync(Async):
  def async_task(f):
      @wraps(f)
      def wrapper(*args, **kwargs):
