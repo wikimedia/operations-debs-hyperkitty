@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'HyperKitty'
-copyright = u'2012-2015, HyperKitty Developers'
+project = 'HyperKitty'
+copyright = '2012-2015, HyperKitty Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -180,8 +180,8 @@ htmlhelp_basename = 'HyperKittydoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'HyperKitty.tex', u'HyperKitty Documentation',
-   u'Mailman Coders', 'manual'),
+  ('index', 'HyperKitty.tex', 'HyperKitty Documentation',
+   'Mailman Coders', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,6 +213,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'hyperkitty', u'HyperKitty Documentation',
-     [u'Mailman Coders'], 1)
+    ('index', 'hyperkitty', 'HyperKitty Documentation',
+     ['Mailman Coders'], 1)
 ]

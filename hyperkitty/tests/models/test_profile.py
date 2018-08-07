@@ -20,9 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
+from email.message import EmailMessage
 
 from django.contrib.auth.models import User
 from hyperkitty.lib.incoming import add_to_list
@@ -31,7 +29,7 @@ from hyperkitty.tests.utils import TestCase
 
 
 def _create_email(num, reply_to=None):
-    msg = Message()
+    msg = EmailMessage()
     msg["From"] = "sender%d@example.com" % num
     msg["Message-ID"] = "<msg%d>" % num
     msg.set_payload("message %d" % num)

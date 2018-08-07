@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 import datetime
 import re
 from collections import OrderedDict
@@ -49,19 +47,15 @@ SNIPPED_END_PGP = re.compile("^.*(END PGP SIGNATURE).*$", re.M)
 def listsort(value):
     if isinstance(value, dict):
         new_dict = OrderedDict()
-        key_list = value.keys()
-        key_list.sort()
+        key_list = sorted(value.keys())
         key_list.reverse()
         for key in key_list:
-            values = value[key]
-            values.sort()
+            values = sorted(value[key])
             values.reverse()
             new_dict[key] = values
         return new_dict.items()
     elif isinstance(value, list):
-        new_list = list(value)
-        new_list.sort()
-        return new_list
+        return sorted(value)
     else:
         return value
     listsort.is_safe = True
@@ -89,9 +83,6 @@ def truncatesmart(value, limit=80):
         # Fail silently.
         return value
 
-    # Make sure it's unicode
-    value = unicode(value)
-
     # Return the string itself if length is smaller or equal to the limit
     if len(value) <= limit:
         return value
@@ -109,7 +100,7 @@ def truncatesmart(value, limit=80):
 @register.filter(is_safe=True)
 def escapeemail(text):
     """To escape email addresses"""
-    return text.replace("@", u"\uff20")
+    return text.replace("@", "\uff20")
 
 
 @register.filter(is_safe=True)
@@ -204,7 +195,7 @@ def multiply(num1, num2):
     return num1 * num2
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def is_message_new(context, refdate):
     user = context["user"]
     if "last_view" not in context:
@@ -212,7 +203,7 @@ def is_message_new(context, refdate):
     last_view = context["last_view"]
     refdate = refdate.replace(tzinfo=utc)
     return (
-        user.is_authenticated() and
+        user.is_authenticated and
         (not last_view or refdate > last_view)
         )
 

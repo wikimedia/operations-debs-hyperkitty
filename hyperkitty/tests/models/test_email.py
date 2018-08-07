@@ -20,10 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
-from email.mime.text import MIMEText
+from email.message import EmailMessage
 from mimetypes import guess_all_extensions
 
 from hyperkitty.lib.incoming import add_to_list
@@ -34,7 +31,7 @@ from hyperkitty.tests.utils import TestCase
 def _create_tree(tree):
     emails = []
     for msgid in tree:
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "sender@example.com"
         msg["Message-ID"] = "<%s>" % msgid
         parent_id = msgid.rpartition(".")[0]
@@ -49,7 +46,7 @@ def _create_tree(tree):
 class EmailTestCase(TestCase):
 
     def test_as_message(self):
-        msg_in = Message()
+        msg_in = EmailMessage()
         msg_in["From"] = "dummy@example.com"
         msg_in["Message-ID"] = "<msg>"
         msg_in["Date"] = "Fri, 02 Nov 2012 16:07:54 +0000"
@@ -57,54 +54,51 @@ class EmailTestCase(TestCase):
         add_to_list("list@example.com", msg_in)
         email = Email.objects.get(message_id="msg")
         msg = email.as_message()
-        self.assertEqual(msg["From"], "dummy at example.com")
+        self.assertEqual(msg["From"], "dummy@example.com")
         self.assertEqual(msg["Message-ID"], "<msg>")
         self.assertEqual(msg["Date"], msg_in["Date"])
         self.assertTrue(msg.is_multipart())
         payload = msg.get_payload()
         self.assertEqual(len(payload), 1)
         self.assertEqual(
-            payload[0].get_payload(decode=True),
-            "Dummy message with email(a)address.com")
+            payload[0].get_payload(),
+            "Dummy message with email(a)address.com\n")
 
     def test_as_message_unicode(self):
-        msg_in = Message()
+        msg_in = EmailMessage()
         msg_in["From"] = "dummy@example.com"
         msg_in["Message-ID"] = "<msg>"
-        msg_in.set_payload("Dummy message ünîcödé", "utf-8")
+        msg_in.set_payload("Dummy message ünîcödé", charset="utf-8")
         add_to_list("list@example.com", msg_in)
         email = Email.objects.get(message_id="msg")
         msg = email.as_message()
-        self.assertEqual(msg["From"], "dummy at example.com")
+        self.assertEqual(msg["From"], "dummy@example.com")
         self.assertEqual(msg["Message-ID"], "<msg>")
         self.assertTrue(msg.is_multipart())
         payload = msg.get_payload()
         self.assertEqual(len(payload), 1)
         payload = payload[0]
         self.assertEqual(
-            payload["Content-Transfer-Encoding"], "quoted-printable")
-        self.assertEqual(payload.get_charset(), "utf-8")
-        self.assertEqual(
-            payload.get_payload(decode=True).decode("utf-8"),
-            "Dummy message ünîcödé")
+            payload.get_payload(),
+            "Dummy message ünîcödé\n")
 
     def test_as_message_attachments(self):
-        msg_in = Message()
+        msg_in = EmailMessage()
         msg_in["From"] = "dummy@example.com"
         msg_in["Message-ID"] = "<msg>"
-        msg_in.attach(MIMEText("Dummy message"))
-        msg_in.attach(MIMEText("<html><body>Dummy message</body></html>",
-                               _subtype="html"))
+        msg_in.add_attachment("Dummy message", subtype='plain')
+        msg_in.add_attachment("<html><body>Dummy message</body></html>",
+                              subtype='html')
         add_to_list("list@example.com", msg_in)
         email = Email.objects.get(message_id="msg")
         msg = email.as_message()
-        self.assertEqual(msg["From"], "dummy at example.com")
+        self.assertEqual(msg["From"], "dummy@example.com")
         self.assertEqual(msg["Message-ID"], "<msg>")
         self.assertTrue(msg.is_multipart())
         payload = msg.get_payload()
         self.assertEqual(len(payload), 2)
         self.assertEqual(
-            payload[0].get_payload(decode=True).strip(), "Dummy message")
+            payload[0].get_content(), "Dummy message\n")
         # The filename extension detection from content type is a bit random
         # (depends on the PYTHON_HASHSEED), make sure we get the right one
         # here for testing.
@@ -114,11 +108,11 @@ class EmailTestCase(TestCase):
             payload[1]["Content-Disposition"],
             'attachment; filename="attachment%s"' % expected_ext)
         self.assertEqual(
-            payload[1].get_payload(decode=True),
-            "<html><body>Dummy message</body></html>")
+            payload[1].get_content(),
+            "<html><body>Dummy message</body></html>\n")
 
     def test_as_message_timezone(self):
-        msg_in = Message()
+        msg_in = EmailMessage()
         msg_in["From"] = "dummy@example.com"
         msg_in["Message-ID"] = "<msg>"
         msg_in["Date"] = "Fri, 02 Nov 2012 16:07:54 +0400"

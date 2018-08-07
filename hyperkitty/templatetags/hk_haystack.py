@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 from xml.sax.saxutils import escape
 
 from django import template

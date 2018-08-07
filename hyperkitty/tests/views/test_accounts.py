@@ -21,18 +21,16 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import datetime
 import uuid
-from email.message import Message
+from email.message import EmailMessage
 from traceback import format_exc
 
 from allauth.account.models import EmailAddress
 from mock import Mock
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from hyperkitty.utils import reverse
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 
 from hyperkitty.lib.utils import get_message_id_hash
@@ -51,7 +49,7 @@ class AccountViewsTestCase(TestCase):
             user=self.user, verified=True, email='test@example.com')
 
     def _send_message(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Message-ID"] = "<msg>"
         msg["Subject"] = "Dummy message"
@@ -221,7 +219,7 @@ class LastViewsTestCase(TestCase):
         # Create 3 threads
         messages = []
         for msgnum in range(3):
-            msg = Message()
+            msg = EmailMessage()
             msg["From"] = "dummy@example.com"
             msg["Message-ID"] = "<id%d>" % (msgnum+1)
             msg["Subject"] = "Dummy message %d" % (msgnum+1)
@@ -233,7 +231,7 @@ class LastViewsTestCase(TestCase):
         thread_3 = Thread.objects.get(thread_id=get_message_id_hash("<id3>"))
         LastView.objects.create(user=self.user, thread=thread_2)
         LastView.objects.create(user=self.user, thread=thread_3)
-        msg4 = Message()
+        msg4 = EmailMessage()
         msg4["From"] = "dummy@example.com"
         msg4["Message-ID"] = "<id4>"
         msg4["Subject"] = "Dummy message 4"

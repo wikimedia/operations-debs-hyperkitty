@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from __future__ import unicode_literals, print_function
-
 from django.db import migrations, models, IntegrityError, connection, utils
 
 

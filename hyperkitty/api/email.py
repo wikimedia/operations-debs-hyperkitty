@@ -19,14 +19,13 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from rest_framework import serializers, generics
 
 from hyperkitty.models import Email, ArchivePolicy, MailingList
 from hyperkitty.lib.view_helpers import is_mlist_authorized
+from .attachment import AttachmentSerializer
 from .sender import SenderSerializer
 from .utils import (
     MLChildHyperlinkedRelatedField,
@@ -62,10 +61,12 @@ class EmailShortSerializer(serializers.HyperlinkedModelSerializer):
 
 class EmailSerializer(EmailShortSerializer):
     votes = serializers.SerializerMethodField()
+    attachments = AttachmentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Email
-        fields = EmailShortSerializer.Meta.fields + ("votes", "content",)
+        fields = EmailShortSerializer.Meta.fields + (
+            "votes", "content", "attachments")
 
     def get_votes(self, obj):
         return obj.get_votes()
@@ -98,11 +99,15 @@ class EmailListBySender(generics.ListAPIView):
     serializer_class = EmailShortSerializer
 
     def get_queryset(self):
-        return Email.objects.filter(
-                sender__mailman_id=self.kwargs["mailman_id"],
-            ).exclude(
-                mailinglist__archive_policy=ArchivePolicy.private.value
-            ).order_by("-archived_date")
+        key = self.kwargs["mailman_id"]
+        query = Email.objects.exclude(
+            mailinglist__archive_policy=ArchivePolicy.private.value
+        )
+        if "@" in key:
+            query = query.filter(sender__address=key)
+        else:
+            query = query.filter(sender__mailman_id=key)
+        return query.order_by("-archived_date")
 
 
 class EmailDetail(generics.RetrieveAPIView):

@@ -20,9 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
+from email.message import EmailMessage
 
 from django.utils.timezone import now
 
@@ -130,7 +128,7 @@ class TestThreadOrderDepth(TestCase):
         # `-msg3
         msgs = []
         for num in range(1, 5):
-            msg = Message()
+            msg = EmailMessage()
             msg["From"] = "sender%d@example.com" % num
             msg["Message-ID"] = "<msg%d>" % num
             msg.set_payload("message %d" % num)

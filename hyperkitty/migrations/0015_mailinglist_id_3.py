@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
-from __future__ import unicode_literals
-
 import django
 from django.db import migrations, models, connection
 
@@ -28,12 +26,16 @@ class Migration(migrations.Migration):
             model_name='thread',
             name='mailinglist',
             field=models.ForeignKey(
-                related_name='threads', to='hyperkitty.MailingList'),
+                related_name='threads',
+                to='hyperkitty.MailingList',
+                on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='email',
             name='mailinglist',
             field=models.ForeignKey(
-                related_name='emails', to='hyperkitty.MailingList'),
+                related_name='emails',
+                to='hyperkitty.MailingList',
+                on_delete=models.CASCADE),
         ),
     ]

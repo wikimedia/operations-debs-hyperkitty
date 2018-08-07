@@ -143,6 +143,14 @@ You can add HTML snippets to every HyperKitty page by using Django's
 .. _TEMPLATE DIRS: https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-TEMPLATES-DIRS
 
 
+By default, HyperKitty stores the email attachments in the database. If you
+would rather have them stored on the filesystem, you can set the
+``HYPERKITTY_ATTACHMENT_FOLDER`` configuration value to a directory.
+
+Make sure that the user running the Django process (for example, ``apache`` or
+``www-data``) has the permissions to write in this directory.
+
+
 Upgrading
 =========
 

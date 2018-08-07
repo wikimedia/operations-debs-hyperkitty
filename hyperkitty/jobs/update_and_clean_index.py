@@ -23,8 +23,6 @@
 Update the full-text index
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django_extensions.management.jobs import BaseJob
 
 from hyperkitty.lib.utils import run_with_lock

@@ -1,0 +1,31 @@
+From user@example.com Tue Apr  5 19:15:24 2016
+Content-Type: multipart/mixed; boundary="===============7056587023871316551=="
+MIME-Version: 1.0
+From: A User <user@example.com>
+To: mailman-users@mailman3.org
+Subject: [MM3-users]New Mailman 3 users list
+Date: Tue, 05 Apr 2016 12:13:42 -0700
+Message-ID: <57040E66.9050705@msapiro.net>
+
+--===============7056587023871316551==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+I'm happy to announce a new list for Mailman 3 users and others
+interested in Mailman 3. This list is running on a new Mailman 3
+installation at lists.mailman3.org.
+
+
+--===============7056587023871316551==
+Content-Type: application/pgp-signature
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="signature.asc"
+
+LS0tLS1CRUdJTiBQR1AgU0lHTkFUVVJFLS0tLS0KVmVyc2lvbjogR251UEcgdjIKCmlFWUVBUkVD
+QUFZRkFsY0VEbWNBQ2drUVZWdVhYcFU3aHBOMkxRQ2c2b2xaOHE4RFdjVnVVVG5UQ3A4M1ZDR3EK
+WFkwQW5qQ0xLbWVJRWlWRWlmN2hYOCsxYkRzSzF2VHgKPTQyYTEKLS0tLS1FTkQgUEdQIFNJR05B
+VFVSRS0tLS0tCg==
+
+--===============7056587023871316551==--

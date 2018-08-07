@@ -23,9 +23,6 @@ Warm up the cache.
 Author: Aurelien Bompard <abompard@fedoraproject.org>
 """
 
-from __future__ import (
-    absolute_import, print_function, unicode_literals, division)
-
 import datetime
 
 from django.core.management.base import BaseCommand

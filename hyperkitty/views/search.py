@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 from django.conf import settings
 from django.forms import ValidationError
 from django.http import Http404
@@ -61,7 +59,7 @@ def search(request):
     else:
         excluded_mlists = MailingList.objects.filter(
             archive_policy=ArchivePolicy.private.value)
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             subscriptions = get_subscriptions(request.user)
             excluded_mlists = excluded_mlists.exclude(
                 list_id__in=subscriptions.keys())
@@ -107,7 +105,7 @@ def search(request):
             params={"error": e}, code="parse",
             ))
     for email in emails:
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             email.object.myvote = email.object.votes.filter(
                 user=request.user).first()
         else:

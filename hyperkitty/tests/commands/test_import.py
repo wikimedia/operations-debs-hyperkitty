@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import os.path
 import mailbox
-from email.message import Message
+from email.message import EmailMessage
 from email import message_from_file
-from StringIO import StringIO
+from io import StringIO
 from datetime import datetime
 from unittest import SkipTest
 from traceback import format_exc
@@ -37,20 +35,21 @@ class CommandTestCase(TestCase):
 
     def test_impacted_threads(self):
         # existing message
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "dummy@example.com"
         msg1["Message-ID"] = "<msg1>"
-        msg1["Date"] = "2015-01-01 12:00:00"
+        msg1["Date"] = "01 Jan 2015 12:00:00"
         msg1.set_payload("msg1")
         add_to_list("list@example.com", msg1)
         # new message in the imported mbox
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "dummy@example.com"
         msg2["Message-ID"] = "<msg2>"
-        msg2["Date"] = "2015-02-01 12:00:00"
+        msg2["Date"] = "01 Feb 2015 12:00:00"
         msg2.set_payload("msg2")
         mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
         mbox.add(msg2)
+        mbox.close()
         # do the import
         output = StringIO()
         with patch("hyperkitty.management.commands.hyperkitty_import"
@@ -67,13 +66,13 @@ class CommandTestCase(TestCase):
     def test_since_auto(self):
         # When there's mail already and the "since" option is not used, it
         # defaults to the last email's date
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "dummy@example.com"
         msg1["Message-ID"] = "<msg1>"
-        msg1["Date"] = "2015-01-01 12:00:00"
+        msg1["Date"] = "01 Jan 2015 12:00:00"
         msg1.set_payload("msg1")
         add_to_list("list@example.com", msg1)
-        mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mailbox.mbox(os.path.join(self.tmpdir, "test.mbox")).close()
         # do the import
         output = StringIO()
         with patch("hyperkitty.management.commands.hyperkitty_import"
@@ -90,13 +89,13 @@ class CommandTestCase(TestCase):
 
     def test_since_override(self):
         # The "since" option is used
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "dummy@example.com"
         msg1["Message-ID"] = "<msg1>"
-        msg1["Date"] = "2015-01-01 12:00:00"
+        msg1["Date"] = "01 Jan 2015 12:00:00"
         msg1.set_payload("msg1")
         add_to_list("list@example.com", msg1)
-        mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mailbox.mbox(os.path.join(self.tmpdir, "test.mbox")).close()
         # do the import
         output = StringIO()
         with patch("hyperkitty.management.commands.hyperkitty_import"
@@ -113,13 +112,14 @@ class CommandTestCase(TestCase):
                          datetime(2010, 1, 1, tzinfo=utc))
 
     def test_lowercase_list_name(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg1>"
-        msg["Date"] = "2015-02-01 12:00:00"
+        msg["Date"] = "01 Feb 2015 12:00:00"
         msg.set_payload("msg1")
         mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
         mbox.add(msg)
+        mbox.close()
         # do the import
         output = StringIO()
         kw = self.common_cmd_args.copy()
@@ -131,6 +131,28 @@ class CommandTestCase(TestCase):
         ml = MailingList.objects.first()
         self.assertEqual(ml.name, "list@example.com")
 
+    def test_missing_message_id(self):
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Date"] = "01 Feb 2015 12:00:00"
+        msg.set_payload("msg1")
+        msg2 = EmailMessage()
+        msg2["From"] = "dummy@example.com"
+        msg2["Date"] = "01 Feb 2015 12:00:00"
+        msg2.set_payload("msg2")
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        mbox.add(msg2)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # Both messages should be archived.
+        self.assertEqual(Email.objects.count(), 2)
+
     def test_wrong_encoding(self):
         """badly encoded message, only fails on PostgreSQL"""
         db_engine = settings.DATABASES[DEFAULT_DB_ALIAS]["ENGINE"]
@@ -141,12 +163,13 @@ class CommandTestCase(TestCase):
         mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
         mbox.add(msg)
         # Second message
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg1>"
-        msg["Date"] = "2015-02-01 12:00:00"
+        msg["Date"] = "01 Feb 2015 12:00:00"
         msg.set_payload("msg1")
         mbox.add(msg)
+        mbox.close()
         # do the import
         output = StringIO()
         kw = self.common_cmd_args.copy()
@@ -165,19 +188,20 @@ class CommandTestCase(TestCase):
         # Make sure it does not break our _is_old_enough() method.
         mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
         # First message is already imported
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "dummy@example.com"
         msg1["Message-ID"] = "<msg1>"
-        msg1["Date"] = "2008-01-01 12:00:00"
+        msg1["Date"] = "01 Jan 2008 12:00:00"
         msg1.set_payload("msg1")
         add_to_list("list@example.com", msg1)
         # Second message is in the mbox to import
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "dummy@example.com"
         msg2["Message-ID"] = "<msg2>"
         msg2["Date"] = "Sat, 30 Aug 2008 16:40:31 +05-30"
         msg2.set_payload("msg2")
         mbox.add(msg2)
+        mbox.close()
         # do the import
         output = StringIO()
         kw = self.common_cmd_args.copy()
@@ -196,11 +220,12 @@ class CommandTestCase(TestCase):
         msg = mailbox.mboxMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg1>"
-        msg["Date"] = "2008-01-01 12:00:00"
+        msg["Date"] = "01 Jan 2008 12:00:00"
         msg.set_payload("msg1")
         msg.set_from("dummy@example.com Mon Jul 21 11:44:51 2008")
         mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
         mbox.add(msg)
+        mbox.close()
         # do the import
         output = StringIO()
         kw = self.common_cmd_args.copy()
@@ -219,12 +244,13 @@ class CommandTestCase(TestCase):
         # Fix GL issue #86
         mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
         for i in range(250):
-            msg = Message()
+            msg = EmailMessage()
             msg["From"] = "dummy@example.com"
             msg["Message-ID"] = "<msg%d>" % i
-            msg["Date"] = "2015-01-01 12:00:00"
+            msg["Date"] = "01 Jan 2015 12:00:00"
             msg.set_payload("msg%d" % i)
             mbox.add(msg)
+        mbox.close()
         # do the import
         output = StringIO()
         with patch("hyperkitty.management.commands.hyperkitty_import"

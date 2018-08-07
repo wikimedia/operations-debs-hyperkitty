@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import os
 import logging
 import shutil
@@ -38,7 +36,7 @@ from django.db.migrations import Migration, RunSQL, RunPython
 from django.db.migrations.executor import MigrationExecutor
 from django.test import (
     RequestFactory, TestCase as DjangoTestCase, TransactionTestCase)
-from django_mailman3.lib.cache import cache
+from django.core.cache import cache
 from mock import Mock, patch
 
 
@@ -56,7 +54,9 @@ def setup_logging(tmpdir):
         logger = logging.getLogger(logger_name)
         logger.propagate = False
         logger.setLevel(logging.DEBUG)
-        del logger.handlers[:]
+        for handler in logger.handlers:
+            handler.close()
+            logger.removeHandler(handler)
         for handler in handlers:
             logger.addHandler(handler)
 
@@ -112,7 +112,8 @@ class SearchEnabledTestCase(TestCase):
         except ImportError:
             raise SkipTest("The Whoosh library is not available")
         super(SearchEnabledTestCase, self)._pre_setup()
-        call_command('rebuild_index', interactive=False, verbosity=0)
+        call_command('clear_index', verbosity=0, interactive=False)
+        call_command('update_index', verbosity=0)
 
     def _post_teardown(self):
         super(SearchEnabledTestCase, self)._post_teardown()

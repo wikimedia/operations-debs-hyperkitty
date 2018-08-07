@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import unittest
 import datetime
 import uuid
-from django.utils.six.moves.urllib.error import HTTPError
+from urllib.error import HTTPError
 
 from mock import Mock
 from mailman.email.message import Message
@@ -30,9 +28,9 @@ class ListCacheTestCase(unittest.TestCase):
 
     def test_properties_on_new_message(self):
         ml = FakeList("example-list")
-        ml.display_name = u"name 1"
-        ml.subject_prefix = u"[prefix 1]"
-        ml.description = u"desc 1"
+        ml.display_name = "name 1"
+        ml.subject_prefix = "[prefix 1]"
+        ml.description = "desc 1"
         kittystore.utils.MM_CLIENT.get_list.side_effect = lambda n: ml
         msg = Message()
         msg["From"] = "dummy@example.com"
@@ -42,9 +40,9 @@ class ListCacheTestCase(unittest.TestCase):
         ml_db = self.store.get_lists()[0]
         self.assertEqual(ml_db.display_name, "name 1")
         self.assertEqual(ml_db.subject_prefix, "[prefix 1]")
-        ml.display_name = u"name 2"
-        ml.subject_prefix = u"[prefix 2]"
-        ml.description = u"desc 2"
+        ml.display_name = "name 2"
+        ml.subject_prefix = "[prefix 2]"
+        ml.description = "desc 2"
         ml.archive_policy = "private"
         msg.replace_header("Message-ID", "<dummy2>")
         self.store.add_to_list("example-list", msg)
@@ -190,24 +188,24 @@ class TestNotifyStore(unittest.TestCase):
                         self.store.db.cache.delete.call_args_list ]
         #from pprint import pprint; pprint(delete_args)
         self.assertEqual(set(delete_args), set([
-            u'list:example-list:recent_participants_count',
-            u'list:example-list:recent_threads_count',
-            u'list:example-list:participants_count:%d:%d' % (today.year, today.month),
-            u'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:emails_count',
-            u'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:participants_count'
+            'list:example-list:recent_participants_count',
+            'list:example-list:recent_threads_count',
+            'list:example-list:participants_count:%d:%d' % (today.year, today.month),
+            'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:emails_count',
+            'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:participants_count'
             ]))
         # calls to cache.get_or_create() -- repopulation
         goc_args = [ call[0][0] for call in
                      self.store.db.cache.get_or_create.call_args_list ]
         #from pprint import pprint; pprint(goc_args)
         self.assertEqual(set(goc_args), set([
-            u'list:example-list:recent_participants_count',
-            u'list:example-list:recent_threads_count',
-            u'list:example-list:participants_count:%d:%d' % (today.year, today.month),
-            u'list:example-list:threads_count:%d:%d' % (today.year, today.month),
-            u'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:emails_count',
-            u'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:participants_count',
-            u'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:starting_email_id',
+            'list:example-list:recent_participants_count',
+            'list:example-list:recent_threads_count',
+            'list:example-list:participants_count:%d:%d' % (today.year, today.month),
+            'list:example-list:threads_count:%d:%d' % (today.year, today.month),
+            'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:emails_count',
+            'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:participants_count',
+            'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:starting_email_id',
             ]))
         #self.assertEqual(l.recent_participants_count, 1)
         #self.assertEqual(l.recent_threads_count, 1)
@@ -233,5 +231,5 @@ class TestNotifyStore(unittest.TestCase):
         #from pprint import pprint; pprint(call_args)
         #print(repr(call_args))
         self.assertEqual(call_args, set([
-            u'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:subject'
+            'list:example-list:thread:QKODQBCADMDSP5YPOPKECXQWEQAMXZL3:subject'
             ]))

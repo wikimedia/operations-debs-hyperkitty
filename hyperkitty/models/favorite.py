@@ -20,20 +20,20 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 from django.conf import settings
 from django.contrib import admin
 from django.db import models
 
 
 class Favorite(models.Model):
-    thread = models.ForeignKey("Thread", related_name="favorites")
+    thread = models.ForeignKey(
+        "Thread", related_name="favorites", on_delete=models.CASCADE)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="favorites")
+        settings.AUTH_USER_MODEL,
+        related_name="favorites", on_delete=models.CASCADE)
 
-    def __unicode__(self):
-        return u"%s is a favorite of %s" % (
-            unicode(self.thread), unicode(self.user))
+    def __str__(self):
+        return "%s is a favorite of %s" % (
+            str(self.thread), str(self.user))
 
 admin.site.register(Favorite)  # noqa: E305

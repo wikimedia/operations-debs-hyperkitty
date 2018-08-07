@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load compress %}
-{% load staticfiles %}
+{% load static %}
 {% load gravatar %}
 <!DOCTYPE HTML>
 <html>
@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="ROBOTS" content="INDEX, FOLLOW" />
-        <title>{% block head_title %}{{ site_name|title }}{% endblock %}</title>
+        <title>{% block head_title %}{{ site_name }}{% endblock %}</title>
         <meta name="author" content="" />
         <meta name="dc.language" content="en" />
         <link rel="shortcut icon" href="{% static 'hyperkitty/img/favicon.ico' %}" />
@@ -228,8 +228,7 @@
       </div>
     </footer>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{% static 'hyperkitty/libs/jquery/jquery-1.10.1.min.js' %}"><\/script>')</script>
+    <script src="{% static 'hyperkitty/libs/jquery/jquery-1.10.1.min.js' %}"></script>
     <script src="{% static 'hyperkitty/libs/jquery/jquery-ui-1.10.3.custom.min.js' %}"></script>
     {% compress js %}
     <script type="text/javascript" src="{% static 'hyperkitty/libs/bootstrap/javascripts/bootstrap.min.js' %}" />
