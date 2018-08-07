@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 from django.conf import settings
 from django.contrib import admin
 from django.db import models
@@ -31,8 +29,10 @@ class Vote(models.Model):
     """
     A User's vote on a message
     """
-    email = models.ForeignKey("Email", related_name="votes")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
+    email = models.ForeignKey(
+        "Email", related_name="votes", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             related_name="votes", on_delete=models.CASCADE)
     value = models.SmallIntegerField(db_index=True)
 
     class Meta:

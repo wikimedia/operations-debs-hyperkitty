@@ -20,10 +20,8 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import datetime
-from email.message import Message
+from email.message import EmailMessage
 from email import message_from_file
 from traceback import format_exc
 
@@ -51,58 +49,58 @@ class TestUtils(TestCase):
         self.assertEqual(ref_id, None)
 
     def test_in_reply_to(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["In-Reply-To"] = " <ref-1> "
-        msg.set_payload("Dummy message")
+        msg.set_content("Dummy message")
         ref_id = utils.get_ref(msg)
         self.assertEqual(ref_id, "ref-1")
 
     def test_in_reply_to_and_reference(self):
         """The In-Reply-To header should win over References"""
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["In-Reply-To"] = " <ref-1> "
         msg["References"] = " <ref-2> "
-        msg.set_payload("Dummy message")
+        msg.set_content("Dummy message")
         ref_id = utils.get_ref(msg)
         self.assertEqual(ref_id, "ref-1")
 
     def test_single_reference(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["References"] = " <ref-1> "
-        msg.set_payload("Dummy message")
+        msg.set_content("Dummy message")
         ref_id = utils.get_ref(msg)
         self.assertEqual(ref_id, "ref-1")
 
     def test_reference_no_brackets(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["References"] = "ref-1"
-        msg.set_payload("Dummy message")
+        msg.set_content("Dummy message")
         ref_id = utils.get_ref(msg)
         self.assertEqual(ref_id, "ref-1")
 
     def test_multiple_reference(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["References"] = " <ref-1> <ref-2> "
-        msg.set_payload("Dummy message")
+        msg.set_content("Dummy message")
         ref_id = utils.get_ref(msg)
         self.assertEqual(ref_id, "ref-2")
 
     def test_empty_reference(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["References"] = " "
-        msg.set_payload("Dummy message")
+        msg.set_content("Dummy message")
         try:
             utils.get_ref(msg)
         except IndexError:
@@ -111,36 +109,36 @@ class TestUtils(TestCase):
     def test_non_ascii_headers(self):
         """utils.header_to_unicode must handle non-ascii headers"""
         testdata = [
-                ("=?ISO-8859-2?Q?V=EDt_Ondruch?=", u'V\xedt Ondruch'),
-                ("=?UTF-8?B?VsOtdCBPbmRydWNo?=", u'V\xedt Ondruch'),
-                ("=?iso-8859-1?q?Bj=F6rn_Persson?=", u'Bj\xf6rn Persson'),
+                ("=?ISO-8859-2?Q?V=EDt_Ondruch?=", 'V\xedt Ondruch'),
+                ("=?UTF-8?B?VsOtdCBPbmRydWNo?=", 'V\xedt Ondruch'),
+                ("=?iso-8859-1?q?Bj=F6rn_Persson?=", 'Bj\xf6rn Persson'),
                 ("=?UTF-8?B?TWFyY2VsYSBNYcWhbMOhxYhvdsOh?=",
-                 u'Marcela Ma\u0161l\xe1\u0148ov\xe1'),
-                ("Dan =?ISO-8859-1?Q?Hor=E1k?=", u'Dan Hor\xe1k'),
-                ("=?ISO-8859-1?Q?Bj=F6rn?= Persson", u'Bj\xf6rn Persson'),
+                 'Marcela Ma\u0161l\xe1\u0148ov\xe1'),
+                ("Dan =?ISO-8859-1?Q?Hor=E1k?=", 'Dan Hor\xe1k'),
+                ("=?ISO-8859-1?Q?Bj=F6rn?= Persson", 'Bj\xf6rn Persson'),
                 ("=?UTF-8?Q?Re=3A_=5BFedora=2Dfr=2Dlist=5D_Compte=2D"
                  "rendu_de_la_r=C3=A9union_du_?= =?UTF-8?Q?1_novembre_2009?=",
-                 u"Re: [Fedora-fr-list] Compte-rendu de la r\xe9union du "
-                 u"1 novembre 2009"),
+                 "Re: [Fedora-fr-list] Compte-rendu de la r\xe9union du "
+                 "1 novembre 2009"),
                 ("=?iso-8859-1?q?Compte-rendu_de_la_r=E9union_du_?= "
                  "=?iso-8859-1?q?1_novembre_2009?=",
-                 u"Compte-rendu de la r\xe9union du 1 novembre 2009"),
+                 "Compte-rendu de la r\xe9union du 1 novembre 2009"),
                 ]
         for h_in, h_expected in testdata:
             h_out = utils.header_to_unicode(h_in)
             self.assertEqual(h_out, h_expected)
-            self.assertTrue(isinstance(h_out, unicode))
+            self.assertTrue(isinstance(h_out, str))
 
     def test_bad_header(self):
         """
         utils.header_to_unicode must handle badly encoded non-ascii headers
         """
         testdata = [
-            (b"Guillermo G\xf3mez", u"Guillermo G\ufffdmez"),
+            (b"Guillermo G\xf3mez", "Guillermo G\ufffdmez"),
             ("=?gb2312?B?UmU6IFJlOl9bQW1iYXNzYWRvcnNdX01hdGVyaWFfc29icmVfb1"
              "9DRVNvTF8oRGnhcmlvX2RlX2JvcmRvKQ==?=",
-             u"Re: Re:_[Ambassadors]_Materia_sobre_o_CESoL_"
-             u"(Di\ufffdrio_de_bordo)"),
+             "Re: Re:_[Ambassadors]_Materia_sobre_o_CESoL_"
+             "(Di\ufffdrio_de_bordo)"),
         ]
         for h_in, h_expected in testdata:
             try:
@@ -148,7 +146,7 @@ class TestUtils(TestCase):
             except UnicodeDecodeError as e:
                 self.fail(e)
             self.assertEqual(h_out, h_expected)
-            self.assertTrue(isinstance(h_out, unicode))
+            self.assertTrue(isinstance(h_out, str))
 
     def test_wrong_datestring(self):
         datestring = "Fri, 5 Dec 2003 11:41 +0000 (GMT Standard Time)"
@@ -196,11 +194,11 @@ class TestUtils(TestCase):
         """Unknown encodings should just replace unknown characters"""
         header = "=?x-gbk?Q?Frank_B=A8=B9ttner?="
         decoded = utils.header_to_unicode(header)
-        self.assertEqual(decoded, u'Frank B\ufffd\ufffdttner')
+        self.assertEqual(decoded, 'Frank B\ufffd\ufffdttner')
 
     def test_no_from(self):
-        msg = Message()
-        msg.set_payload("Dummy message")
+        msg = EmailMessage()
+        msg.set_content("Dummy message")
         try:
             name, email = utils.parseaddr(msg["From"])
         except AttributeError as e:
@@ -214,18 +212,20 @@ class TestUtils(TestCase):
         self.assertEqual(utils.get_message_id_hash(msg_id), expected)
 
     def test_get_message_id(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["Message-Id"] = '<%s>' % ('x' * 300)
         self.assertEqual(utils.get_message_id(msg), 'x' * 254)
 
     def test_non_ascii_ref(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
-        msg["In-Reply-To"] = u"<ref-\xed>".encode('utf-8')
-        msg.set_payload("Dummy message")
+        msg["In-Reply-To"] = "<ref-\xed>"
+        msg.set_content("Dummy message")
         try:
             ref_id = utils.get_ref(msg)
         except UnicodeEncodeError as e:
             self.fail(e)
-        self.assertEqual(ref_id, "ref-")
+        # utf-8 characters are perfectly legitimate here (RFC 6532) and
+        # stripping it here makes no sense at all
+        self.assertEqual(ref_id, "ref-\xed")

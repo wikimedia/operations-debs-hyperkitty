@@ -19,8 +19,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 from rest_framework import serializers, permissions
 from hyperkitty.models import MailingList
 from hyperkitty.lib.view_helpers import is_mlist_authorized

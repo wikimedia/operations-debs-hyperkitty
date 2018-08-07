@@ -21,12 +21,10 @@
 #
 
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import json
-from email.message import Message
+from email.message import EmailMessage
 
-from django.core.urlresolvers import reverse
+from hyperkitty.utils import reverse
 from django.test import override_settings
 
 from hyperkitty.models import MailingList, ArchivePolicy
@@ -40,7 +38,7 @@ class PrivateListTestCase(TestCase):
         MailingList.objects.create(
             name="list@example.com", subject_prefix="[example] ",
             archive_policy=ArchivePolicy.private.value)
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msgid>"
         msg["Subject"] = "Dummy message"
@@ -69,7 +67,7 @@ class FindTestCase(TestCase):
     def test_find(self):
         response = self.client.get("%s?term=one" % reverse("hk_find_list"))
         self.assertEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode(response.charset)),
             [{'label': 'list-one@example.com',
               'value': 'list-one@example.com'}]
             )
@@ -82,7 +80,7 @@ class FindTestCase(TestCase):
     def test_find_name(self):
         response = self.client.get("%s?term=example" % reverse("hk_find_list"))
         self.assertEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode(response.charset)),
             [{'label': 'list-one@example.com',
               'value': 'list-one@example.com'},
              {'label': 'List Two',
@@ -100,7 +98,7 @@ class FindTestCase(TestCase):
         ml.save()
         response = self.client.get("%s?term=value" % reverse("hk_find_list"))
         self.assertEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode(response.charset)),
             [{'label': 'Test Value', 'value': 'list-one@example.com'}]
             )
 

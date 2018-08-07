@@ -19,14 +19,12 @@
 #
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import uuid
-from email.message import Message
+from email.message import EmailMessage
 
 from mock import Mock, patch
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from hyperkitty.utils import reverse
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 
 from hyperkitty.lib.incoming import add_to_list
@@ -47,7 +45,7 @@ class SearchViewsTestCase(SearchEnabledTestCase):
         self.mm_user.addresses = ["testuser@example.com"]
 
     def _send_message(self, mlist):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Message-ID"] = "<msg>"
         msg["Subject"] = "Dummy message"
@@ -137,7 +135,7 @@ class SearchViewsTestCase(SearchEnabledTestCase):
         )
         mm_mlist = FakeMMList("public@example.com")
         self.mailman_client.get_list.side_effect = lambda name: mm_mlist
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -157,7 +155,7 @@ class SearchViewsTestCase(SearchEnabledTestCase):
         )
         mm_mlist = FakeMMList("public@example.com")
         self.mailman_client.get_list.side_effect = lambda name: mm_mlist
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -178,7 +176,7 @@ class SearchViewsTestCase(SearchEnabledTestCase):
         )
         mm_mlist = FakeMMList("public@example.com")
         self.mailman_client.get_list.side_effect = lambda name: mm_mlist
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "someone-else@example.com"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"

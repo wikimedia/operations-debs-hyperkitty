@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 from django.conf import settings
 from django.contrib import admin
 from django.db import models
@@ -29,13 +27,14 @@ from django.db import models
 
 class Tagging(models.Model):
 
-    thread = models.ForeignKey("Thread")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    tag = models.ForeignKey("Tag")
+    thread = models.ForeignKey("Thread", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    tag = models.ForeignKey("Tag", on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Tag %s on %s by %s' % (
-            unicode(self.tag), unicode(self.thread), unicode(self.user))
+            str(self.tag), str(self.thread), str(self.user))
 
 
 class Tag(models.Model):
@@ -49,7 +48,7 @@ class Tag(models.Model):
     class Meta:
         ordering = ["name"]
 
-    def __unicode__(self):
-        return 'Tag %s' % (unicode(self.name))
+    def __str__(self):
+        return 'Tag %s' % self.name
 
 admin.site.register(Tag)  # noqa: E305

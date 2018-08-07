@@ -20,14 +20,19 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
+import json
+from email.message import EmailMessage
+from io import BytesIO
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from django.core.urlresolvers import reverse
+import mock
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django_mailman3.models import MailDomain
-from hyperkitty.tests.utils import TestCase
+
+from hyperkitty.models.email import Email
+from hyperkitty.utils import reverse
 from hyperkitty.views.mailman import _get_url
+from hyperkitty.tests.utils import TestCase
 
 
 class PrivateListTestCase(TestCase):
@@ -55,3 +60,53 @@ class PrivateListTestCase(TestCase):
                 "mlist_fqdn": "test@example.com",
                 "message_id_hash": "3F32NJAOW2XVHJWKZ73T2EPICEIAB3LI"
             }))
+
+
+class ArchiveTestCase(TestCase):
+
+    def setUp(self):
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Subject"] = "Fake Subject"
+        msg["Message-ID"] = "<dummy>"
+        msg["Date"] = "Fri, 02 Nov 2012 16:07:54"
+        msg.set_payload("Fake Message")
+        self.message = BytesIO(msg.as_string().encode("utf-8"))
+        self.url = "{}?key={}".format(
+            reverse('hk_mailman_archive'),
+            settings.MAILMAN_ARCHIVER_KEY,
+        )
+
+    def test_basic(self):
+        response = self.client.post(
+            self.url,
+            data={
+                "mlist": "list@example.com",
+                "name": "email.txt",
+                "message": self.message,
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content.decode(response.charset))
+        self.assertEqual(result, {
+            "url": "https://example.com/list/list@example.com/message/"
+                   "QKODQBCADMDSP5YPOPKECXQWEQAMXZL3/"
+        })
+        self.assertEqual(Email.objects.filter(message_id="dummy").count(), 1)
+
+    def test_data_error(self):
+        with mock.patch("hyperkitty.views.mailman.add_to_list") as atl:
+            atl.side_effect = ValueError("test error")
+            response = self.client.post(
+                self.url,
+                data={
+                    "mlist": "list@example.com",
+                    "name": "email.txt",
+                    "message": self.message,
+                }
+            )
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.content.decode(response.charset))
+        self.assertEqual(result, {
+            "error": "test error",
+        })

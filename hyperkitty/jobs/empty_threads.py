@@ -23,8 +23,6 @@
 Remove empty threads
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django_extensions.management.jobs import BaseJob
 from django.db.models import Count
 from hyperkitty.models import Thread

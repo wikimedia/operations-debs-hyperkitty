@@ -21,27 +21,22 @@ with open('hyperkitty/__init__.py') as fp:
 
 # Requirements
 REQUIRES = [
-    "Django>=1.8",
-    # Don't upgrade to 1.11 until django-haystack supports it:
-    # https://github.com/django-haystack/django-haystack/pull/1499
-    "Django<1.11",
-    "django_mailman3>=1.0.0",
+    "django_mailman3>=1.2.0a2",
     "django-gravatar2>=1.0.6",
     "djangorestframework>=3.0.0",
-    "rjsmin>=1.0.6",
-    "cssmin>=0.2.0",
     "robot-detection>=0.3",
     "pytz>=2012",
     "django-paintstore>=0.1.2",
     "django-compressor>=1.3",
     "mailmanclient>=3.1.1",
-    "python-dateutil < 2.0",  # python-dateutil 2.0+ is for Python 3
+    "python-dateutil >= 2.0",
     "networkx>=1.9.1",
-    "enum34>=1.0",
-    "django-haystack>=2.5.0",
+    # django-haystack>=2.5.0 suffices for Django-1.11
+    "django-haystack>=2.8.0",
     "django-extensions>=1.3.7",
     "lockfile>=0.9.1",
     "django-q",
+    "Django>=1.11",
 ]
 
 
@@ -59,7 +54,7 @@ setup(
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Topic :: Communications :: Email :: Mailing List Servers",
-        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 3",
         "Programming Language :: JavaScript",
         ],
     keywords='email',

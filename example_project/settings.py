@@ -78,16 +78,14 @@ INSTALLED_APPS = (
 )
 
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'django_mailman3.middleware.TimezoneMiddleware',
 )
 
@@ -349,6 +347,7 @@ HAYSTACK_CONNECTIONS = {
 #
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.OrderingFilter',
     ),
@@ -445,9 +444,15 @@ if DEBUG == True:
 #
 # HyperKitty-specific
 #
-
 # Only display mailing-lists from the same virtual host as the webserver
 FILTER_VHOST = False
+# Disable singleton locking for Django-Q tasks.
+HYPERKITTY_DISABLE_SINGLETON_TASKS = False
+# Maximum time between two task runs with same function and arguments.
+# This setting is mostly meant for Mailman Developers and should be used
+# with caution.
+# Default set to 10mins.
+HYPERKITTY_TASK_LOCK_TIMEOUT = 10 * 60
 
 
 try:

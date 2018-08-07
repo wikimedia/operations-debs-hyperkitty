@@ -20,9 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
+from email.message import EmailMessage
 
 from django.contrib.auth.models import User
 from hyperkitty.lib.incoming import add_to_list
@@ -34,7 +32,7 @@ class LastViewTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.create(username="dummy")
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "sender1@example.com"
         msg["Message-ID"] = "<msg>"
         msg.set_payload("message")

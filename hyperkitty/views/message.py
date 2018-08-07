@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 import urllib
 import datetime
 import json
@@ -30,7 +28,11 @@ from django.db import DatabaseError
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    # For Django 2.0+
+    from django.urls import reverse
 from django.core.exceptions import SuspiciousOperation
 from django.template import loader
 from django.contrib.auth.decorators import login_required
@@ -58,7 +60,7 @@ def index(request, mlist_fqdn, message_id_hash):
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
     message = get_object_or_404(
         Email, mailinglist=mlist, message_id_hash=message_id_hash)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         message.myvote = message.votes.filter(user=request.user).first()
     else:
         message.myvote = None
@@ -101,14 +103,14 @@ def attachment(request, mlist_fqdn, message_id_hash, counter, filename):
     if att.name != filename:
         raise Http404
     # http://djangosnippets.org/snippets/1710/
-    response = HttpResponse(att.content)
+    response = HttpResponse(att.get_content())
     response['Content-Type'] = att.content_type
     response['Content-Length'] = att.size
     if att.encoding is not None:
         response['Content-Encoding'] = att.encoding
     # Follow RFC2231, browser support is sufficient nowadays (2012-09)
     response['Content-Disposition'] = 'attachment; filename*=UTF-8\'\'%s' \
-        % urllib.quote(att.name.encode('utf-8'))
+        % urllib.parse.quote(att.name.encode('utf-8'))
     return response
 
 
@@ -117,7 +119,7 @@ def vote(request, mlist_fqdn, message_id_hash):
     """ Vote for or against a given message identified by messageid. """
     if request.method != 'POST':
         raise SuspiciousOperation
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to vote',
                             content_type="text/plain", status=403)
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)

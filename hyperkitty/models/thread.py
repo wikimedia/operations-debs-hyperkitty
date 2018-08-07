@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 from collections import namedtuple
 from django.conf import settings
 from django.db import models
@@ -41,7 +39,9 @@ class Thread(models.Model):
     A thread of archived email, from a mailing-list. It is identified by both
     the list name and the thread id.
     """
-    mailinglist = models.ForeignKey("MailingList", related_name="threads")
+    mailinglist = models.ForeignKey(
+        # Delete the model if the MailingList is deleted.
+        "MailingList", related_name="threads", on_delete=models.CASCADE)
     thread_id = models.CharField(max_length=255, db_index=True)
     date_active = models.DateTimeField(db_index=True, default=now)
     category = models.ForeignKey(
@@ -129,7 +129,7 @@ class Thread(models.Model):
             ).order_by("date_active").first()
 
     def is_unread_by(self, user):
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return False
         try:
             last_view = LastView.objects.get(thread=self, user=user)
@@ -233,15 +233,17 @@ class VotesTotal(ModelCachedValue):
 
 
 class LastView(models.Model):
-    thread = models.ForeignKey("Thread", related_name="lastviews")
+    thread = models.ForeignKey(
+        "Thread", related_name="lastviews", on_delete=models.CASCADE)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="lastviews")
+        settings.AUTH_USER_MODEL,
+        related_name="lastviews", on_delete=models.CASCADE)
     view_date = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation"""
-        return u"Last view of %s by %s was %s" % (
-            unicode(self.thread), unicode(self.user),
+        return "Last view of %s by %s was %s" % (
+            str(self.thread), str(self.user),
             self.view_date.isoformat())
 
     def num_unread(self):

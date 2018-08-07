@@ -20,9 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
-
 from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib import admin
@@ -37,11 +34,12 @@ logger = logging.getLogger(__name__)
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                related_name="hyperkitty_profile")
+                                related_name="hyperkitty_profile",
+                                on_delete=models.CASCADE)
     karma = models.IntegerField(default=1)
 
-    def __unicode__(self):
-        return u'%s' % (unicode(self.user))
+    def __str__(self):
+        return '%s' % (str(self.user))
 
     @property
     def emails(self):

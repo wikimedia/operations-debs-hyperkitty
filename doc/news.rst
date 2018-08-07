@@ -3,6 +3,22 @@ News / Changelog
 ================
 
 
+1.2.0
+=====
+(2018-07-10)
+
+- Handle email attachments returned by Scrubber as bytes or as strings with
+  no specified encoding. (#171)
+- Remove robotx.txt from Hyperkitty. It wasn't working correctly anyway.
+  If you still need it, serve it from the webserver directly. (#176)
+- Add the possibility to store attachments on the filesystem, using the
+  ``HYPERKITTY_ATTACHMENT_FOLDER`` config variable.
+- If a message in the mbox passed to ``hyperkitty_import`` is missing a
+  ``Message-ID``, a generated one will be added. (#180)
+- There is a new management command ``update_index_one_list`` to update the
+  search index for a single list. (#175)
+
+
 1.1.4
 =====
 (2017-10-09)

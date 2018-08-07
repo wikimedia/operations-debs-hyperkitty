@@ -25,8 +25,6 @@ Inpired by
 https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations/
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django.utils.timezone import now
 from hyperkitty.tests.utils import MigrationTestCase
 

@@ -20,13 +20,10 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import uuid
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test.client import RequestFactory
-from django.utils import six
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 from mock import Mock, patch
 
@@ -61,7 +58,7 @@ class PostingTestCase(TestCase):
                 self.request, self.mlist, "Dummy subject", "dummy content",
                 {"In-Reply-To": "<msg>", "References": "<msg>"})
             sub_fn.assert_called_with(
-                'list@example.com', self.user, 'testuser@example.com',
+                'list.example.com', self.user, 'testuser@example.com',
                 'Django User')
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].recipients(), ["list@example.com"])
@@ -81,7 +78,7 @@ class PostingTestCase(TestCase):
                 self.request, self.mlist, "Subject", "Content",
                 {"From": "otheremail@example.com"})
             sub_fn.assert_called_with(
-                'list@example.com', self.user, 'otheremail@example.com',
+                'list.example.com', self.user, 'otheremail@example.com',
                 'Django User')
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].recipients(), ["list@example.com"])
@@ -137,4 +134,4 @@ class PostingTestCase(TestCase):
             FakeMMMember(self.mlist.list_id, self.mm_user.addresses[0]),
         ]
         addr = posting.get_sender(self.request, self.mlist)
-        self.assertTrue(isinstance(addr, six.string_types))
+        self.assertTrue(isinstance(addr, str))

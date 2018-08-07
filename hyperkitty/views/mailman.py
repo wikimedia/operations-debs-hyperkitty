@@ -20,20 +20,24 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 import json
-from email import message_from_file
+from email import message_from_binary_file
+from email.message import EmailMessage
+from email.policy import default
 from functools import wraps
 
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    # For Django 2.0+
+    from django.urls import reverse
 from django.http import HttpResponse
 from django.utils.http import urlunquote
 from django.views.decorators.csrf import csrf_exempt
 from django_mailman3.models import MailDomain
-from django.utils.six.moves.urllib.parse import urljoin
+from urllib.parse import urljoin
 
 from hyperkitty.lib.incoming import add_to_list, DuplicateMessage
 from hyperkitty.lib.utils import get_message_id_hash
@@ -109,11 +113,17 @@ def archive(request):
     mlist_fqdn = request.POST["mlist"]
     if "message" not in request.FILES:
         raise SuspiciousOperation
-    msg = message_from_file(request.FILES['message'])
+    msg = message_from_binary_file(
+        request.FILES['message'], _class=EmailMessage, policy=default)
     try:
         add_to_list(mlist_fqdn, msg)
     except DuplicateMessage as e:
         logger.info("Duplicate email with message-id '%s'", e.args[0])
+    except ValueError as e:
+        logger.warning("Could not archive the email with message-id '%s': %s",
+                       msg.get("Message-Id", None), e)
+        return HttpResponse(json.dumps({"error": str(e)}),
+                            content_type='application/javascript')
     url = _get_url(mlist_fqdn, msg['Message-Id'])
     logger.info("Archived message %s to %s", msg['Message-Id'], url)
     return HttpResponse(json.dumps({"url": url}),

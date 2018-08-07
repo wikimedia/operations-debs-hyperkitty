@@ -20,11 +20,9 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
+from urllib.error import HTTPError
 
-from django.utils.six.moves.urllib.error import HTTPError
-
-from django_mailman3.lib.cache import cache
+from django.core.cache import cache
 from django_mailman3.lib.mailman import get_mailman_client
 from mailmanclient import MailmanConnectionError
 
@@ -37,13 +35,13 @@ class ModeratedListException(Exception):
     pass
 
 
-def subscribe(list_address, user, email=None, display_name=None):
+def subscribe(list_id, user, email=None, display_name=None):
     if email is None:
         email = user.email
     if display_name is None:
         display_name = "%s %s" % (user.first_name, user.last_name)
     client = get_mailman_client()
-    rest_list = client.get_list(list_address)
+    rest_list = client.get_list(list_id)
     subscription_policy = rest_list.settings.get(
         "subscription_policy", "moderate")
     # Add a flag to return that would tell the user they have been subscribed
@@ -66,7 +64,7 @@ def subscribe(list_address, user, email=None, display_name=None):
         except HTTPError as e:
             if e.code == 409:
                 logger.info("Subscription for %s to %s is already pending",
-                            email, list_address)
+                            email, list_id)
                 return subscribed_now
             else:
                 raise
@@ -75,14 +73,14 @@ def subscribe(list_address, user, email=None, display_name=None):
         # Broken API :-(
         if isinstance(member, dict):
             logger.info("Subscription for %s to %s is pending",
-                        email, list_address)
+                        email, list_id)
             return subscribed_now
         member.preferences["delivery_status"] = "by_user"
         member.preferences.save()
         subscribed_now = True
         cache.delete("User:%s:subscriptions" % user.id, version=2)
         logger.info("Subscribing %s to %s on first post",
-                    email, list_address)
+                    email, list_id)
 
     return subscribed_now
 

@@ -20,11 +20,9 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django.contrib.auth.models import User
-from django.utils.six.moves.urllib.error import HTTPError
-from django_mailman3.lib.cache import cache
+from urllib.error import HTTPError
+from django.core.cache import cache
 from django_mailman3.tests.utils import FakeMMList, FakeMMPage
 from mock import Mock, patch
 

@@ -20,9 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
+from email.message import EmailMessage
 
 from hyperkitty import tasks
 from hyperkitty.lib.incoming import add_to_list
@@ -54,12 +52,12 @@ class TaskTestCase(TestCase):
 
     def test_check_orphans(self):
         # Create an orphan: the reply arrived first
-        msg_reply = Message()
+        msg_reply = EmailMessage()
         msg_reply["From"] = "sender2@example.com"
         msg_reply["Message-ID"] = "<msgid2>"
         msg_reply["In-Reply-To"] = "<msgid1>"
         msg_reply.set_payload("reply")
-        msg_orig = Message()
+        msg_orig = EmailMessage()
         msg_orig["From"] = "sender1@example.com"
         msg_orig["Message-ID"] = "<msgid1>"
         msg_orig.set_payload("original message")

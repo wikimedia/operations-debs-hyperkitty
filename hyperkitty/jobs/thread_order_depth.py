@@ -23,8 +23,6 @@
 Compute thread order and depth for all threads
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django_extensions.management.jobs import BaseJob
 from hyperkitty.models import Thread
 from hyperkitty.lib.analysis import compute_thread_order_and_depth

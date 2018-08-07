@@ -20,15 +20,17 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
-from django.utils.six.moves.urllib.error import HTTPError
+from urllib.error import HTTPError
 
 import dateutil.parser
 import mailmanclient
 
 from allauth.account.models import EmailAddress
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    # For Django 2.0+
+    from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
@@ -171,7 +173,7 @@ def public_profile(request, user_id):
     # This is only used for the Gravatar. No email display on the public
     # profile, we have enough spam as it is, thank you very much.
     try:
-        addresses = [unicode(addr) for addr in mm_user.addresses]
+        addresses = [str(addr) for addr in mm_user.addresses]
     except (KeyError, IndexError):
         addresses = []
     fullname = mm_user.display_name
@@ -184,7 +186,7 @@ def public_profile(request, user_id):
     else:
         creation = None
     posts_count = Email.objects.filter(sender__mailman_id=user_id).count()
-    is_user = request.user.is_authenticated() and bool(
+    is_user = request.user.is_authenticated and bool(
         set([str(a) for a in mm_user.addresses]) &
         set(request.user.hyperkitty_profile.addresses))
     context = {

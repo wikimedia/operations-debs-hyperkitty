@@ -244,7 +244,9 @@ function setup_replies() {
         var quoted = $(this).parents(".email").first()
                         .find(".email-body").clone()
                         .find(".quoted-switch").remove().end()
-                        .find(".quoted-text").remove().end()
+                        .find(".quoted-text").text(function(index, oldText) {
+                          return oldText.replace(/^/mg, "> ");
+                        }).end()
                         .text();
         var textarea = $(this).parents(".reply-form").find("textarea");
         // remove signature
@@ -252,10 +254,13 @@ function setup_replies() {
         if (sig_index != -1) {
             quoted = quoted.substr(0, sig_index);
         }
+        // set reply attribution
+        var attribution = $(this).parents(".email").first()
+                            .find(".email-author .name").clone().text();
         // add quotation marks
         quoted = $.trim(quoted).replace(/^/mg, "> ");
         // insert before any previous text
-        textarea.val(quoted + "\n" + textarea.val());
+        textarea.val($.trim(attribution) + " wrote:\n" + quoted + "\n" + textarea.val());
         textarea.focus();
     });
     function set_new_thread(checkbox) {

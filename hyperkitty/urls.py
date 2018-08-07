@@ -154,7 +154,6 @@ urlpatterns = [
     # Search
     url(r'^search$', search.search, name='hk_search'),
 
-
     # Categories and Tags
     url(r'^categories/$', categories.categories, name='hk_categories_overview'),
     url(r'^tags/$', tags.tags, name='hk_tags_overview'),
@@ -165,9 +164,6 @@ urlpatterns = [
 
     # REST API
     url(r'^api/', include(api_patterns)),
-
-    # Robots.txt
-    url(r'^robots\.txt$', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
 
     # Mailman 2.X compatibility
     url(r'^listinfo/?$', compat.summary),
