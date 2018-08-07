@@ -1,3 +1,11 @@
+hyperkitty (1.1.4-8) unstable; urgency=medium
+
+  * d/control:
+    - Add the Depends field on python-django-hyperkitty on python-django-q >=
+      0.9.4-2.
+
+ -- Pierre-Elliott Bécue <becue@crans.org>  Tue, 07 Aug 2018 15:08:09 +0200
+
 hyperkitty (1.1.4-7) unstable; urgency=medium
 
   * d/patches:
