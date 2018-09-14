@@ -22,7 +22,6 @@
 
 from allauth.account.models import EmailAddress
 from django.conf import settings
-from django.contrib import admin
 from django.db import models
 
 from .email import Email
@@ -63,5 +62,3 @@ class Profile(models.Model):
     def get_first_post(self, mlist):
         return self.emails.filter(
             mailinglist=mlist).order_by("archived_date").first()
-
-admin.site.register(Profile)  # noqa: E305

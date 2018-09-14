@@ -21,7 +21,6 @@
 #
 
 from django.conf import settings
-from django.contrib import admin
 from django.db import models
 
 
@@ -47,6 +46,3 @@ class Vote(models.Model):
         self.email.on_vote_deleted(self)
         self.email.thread.on_vote_deleted(self)
         self.email.mailinglist.on_vote_deleted(self)
-
-
-admin.site.register(Vote)  # noqa: E305

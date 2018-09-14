@@ -123,6 +123,17 @@ class DbImporter(object):
         except ValueError:
             return False
 
+    def _get_date(self, message, header):
+        try:
+            date = message.get(header)
+        except TypeError as e:
+            if self.verbose:
+                self.stderr.write(
+                    "Can't get {} header in message {}: {}.".format(
+                        header, message["message-id"], e))
+            return None
+        return date
+
     def from_mbox(self, mbfile):
         """
         Insert all the emails contained in an mbox file into the database.
@@ -139,6 +150,16 @@ class DbImporter(object):
             msg_raw = msg.as_bytes(unixfrom=False)
             unixfrom = msg.get_from()
             message = message_from_bytes(msg_raw, policy=policy.default)
+            # Fix missing and wierd Date: headers.
+            date = (self._get_date(message, "date") or
+                    self._get_date(message, "resent-date"))
+            if unixfrom and not date:
+                date = " ".join(unixfrom.split()[1:])
+            if date:
+                try:
+                    message.replace_header('date', date)
+                except KeyError:
+                    message['Date'] = date
             if self._is_too_old(message):
                 continue
             progress_marker.tick(message["Message-Id"])
@@ -159,18 +180,18 @@ class DbImporter(object):
                     self.stderr.write(
                         "Duplicate email with message-id '%s'" % e.args[0])
                 continue
-            except ValueError as e:
+            except (LookupError, UnicodeError, ValueError) as e:
                 self.stderr.write("Failed adding message %s: %s"
                                   % (message.get("Message-ID"), e))
-                if len(e.args) != 2:
-                    raise  # Regular ValueError exception
-                try:
-                    self.stderr.write(
-                        "%s from %s about %s"
-                        % (e.args[0], e.args[1].get("From"),
-                           e.args[1].get("Subject")))
-                except UnicodeDecodeError:
-                    pass
+                if len(e.args) == 2:
+                    try:
+                        self.stderr.write(
+                            "%s from %s about %s"
+                            % (e.args[0], e.args[1].get("From"),
+                               e.args[1].get("Subject")))
+                    except UnicodeDecodeError:
+                        pass
+                # Don't reraise the exception
                 continue
             except DatabaseError:
                 try:
@@ -257,7 +278,7 @@ class Command(BaseCommand):
         #     != "django.db.backends.sqlite3":
         #     transaction.set_autocommit(False)
         settings.HYPERKITTY_BATCH_MODE = True
-        # Only import emails older than the latest email in the DB
+        # Only import emails newer than the latest email in the DB
         latest_email_date = Email.objects.filter(
                 mailinglist__name=list_address
             ).values("date").order_by("-date").first()

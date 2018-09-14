@@ -2,6 +2,18 @@
 News / Changelog
 ================
 
+1.2.1
+=====
+(2018-08-30)
+
+- Several message defects that would cause ``hyperkitty_import`` to abort will
+  now just cause the message to be skipped and allow importing to continue.
+  (#183)
+- If an imported message has no Date: header, ``hyperkitty_import`` will now
+  look for Resent-Date: and the unixfrom date before archiving the message
+  with the current date.  (#184)
+- Add support for Django 2.1. Hyperkitty now supports Django 1.11-2.1 (#193)
+
 
 1.2.0
 =====

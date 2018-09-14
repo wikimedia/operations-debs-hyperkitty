@@ -30,6 +30,7 @@ example_project/urls.py
 example_project/wsgi.py
 example_project/logs/.keep
 hyperkitty/__init__.py
+hyperkitty/admin.py
 hyperkitty/apps.py
 hyperkitty/checks.py
 hyperkitty/context_processors.py
@@ -365,12 +366,17 @@ hyperkitty/tests/models/test_sender.py
 hyperkitty/tests/models/test_tag.py
 hyperkitty/tests/models/test_thread.py
 hyperkitty/tests/models/test_vote.py
+hyperkitty/tests/testdata/another-wrong-encoding.txt
 hyperkitty/tests/testdata/attachment-1.txt
 hyperkitty/tests/testdata/attachment-2.txt
 hyperkitty/tests/testdata/attachment-3.txt
+hyperkitty/tests/testdata/non-ascii-date-header.txt
 hyperkitty/tests/testdata/non-ascii-headers.txt
 hyperkitty/tests/testdata/payload-utf8-wrong.txt
+hyperkitty/tests/testdata/resent-date.txt
 hyperkitty/tests/testdata/strange-in-reply-to-header.txt
+hyperkitty/tests/testdata/unixfrom-date.txt
+hyperkitty/tests/testdata/unknown-charset.txt
 hyperkitty/tests/testdata/wrong-in-reply-to-header.txt
 hyperkitty/tests/views/__init__.py
 hyperkitty/tests/views/test_accounts.py

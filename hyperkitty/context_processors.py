@@ -20,19 +20,8 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from django.conf import settings
 from hyperkitty import VERSION
 
 
 def common(request):
-    extra_context = {}
-    extra_context.update(export_settings(request))
-    return extra_context
-
-
-def export_settings(request):
-    exports = ["USE_MOCKUPS"]
-    extra_context = dict(
-        (name.lower(), getattr(settings, name, None)) for name in exports)
-    extra_context["HYPERKITTY_VERSION"] = VERSION
-    return extra_context
+    return {"HYPERKITTY_VERSION": VERSION}

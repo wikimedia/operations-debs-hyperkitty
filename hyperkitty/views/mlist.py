@@ -24,12 +24,8 @@ import datetime
 import json
 import zlib
 
-from django.conf import settings
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    # For Django 2.0+
-    from django.urls import reverse
+
+from django.urls import reverse
 from django.http import (
     Http404, HttpResponse, StreamingHttpResponse, HttpResponseBadRequest)
 from django.shortcuts import redirect, render, get_object_or_404
@@ -128,31 +124,13 @@ def overview(request, mlist_fqdn=None):
     if not mlist_fqdn:
         return redirect('/')
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
-    threads = mlist.recent_threads
 
     # top authors are the ones that have the most kudos.  How do we determine
     # that?  Most likes for their post?
-    if getattr(settings, 'USE_MOCKUPS', False):
-        from hyperkitty.lib.mockup import generate_top_author
-        authors = generate_top_author()
-        authors = sorted(authors, key=lambda author: author.kudos)
-        authors.reverse()
-    else:
-        authors = []
+    authors = []
 
     # Threads by category
     threads_by_category = {}
-    if getattr(settings, 'USE_MOCKUPS', False):
-        active_threads = sorted(
-            threads, key=lambda t: t.date_active, reverse=True)
-        for thread in active_threads:
-            if not thread.category:
-                continue
-            # don't use defaultdict, use .setdefault():
-            # http://stackoverflow.com/questions/4764110/django-template-cant-loop-defaultdict
-            if len(threads_by_category.setdefault(thread.category, [])) >= 5:
-                continue
-            threads_by_category[thread.category].append(thread)
 
     # Export button
     recent_dates = [
