@@ -1,5 +1,6 @@
 hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
 
+  [ Pierre-Elliott Bécue ]
   * New upstream release 1.2.0
     - python3 now fully supported
     - d/p/0001 becomes obsolete, removed.
@@ -10,7 +11,15 @@ hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
     - Update (Build-)?Depedencies, as Python3 is the only supported version
       now
 
- -- Pierre-Elliott Bécue <becue@crans.org>  Mon, 06 Aug 2018 00:41:05 +0200
+  [ Jonas Meurer ]
+  * d/control:
+    - Add versioned (Build-)Depends on python3-mailmanclient >= 3.2.0
+  * d/rules:
+    - Migrate build system to python3
+  * d/source/lintian-overrides:
+    - Remove obsolete python2 lintian overrides
+
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 21:43:41 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 

@@ -1,9 +1,11 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 export PYBUILD_NAME = hyperkitty
 
 %:
-	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
+	dh $@ --with python3,sphinxdoc --buildsystem=pybuild
 
 override_dh_clean:
 	dh_clean -X.txt.orig
@@ -11,8 +13,8 @@ override_dh_clean:
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	set -e; \
-	for python in $(shell pyversions -r); do \
-		$$python $(shell which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
+	for python3 in $(shell py3versions -r); do \
+		$$python3 $(shell which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
 	done
 endif
 
@@ -20,30 +22,30 @@ override_dh_auto_build:
 	PYTHONPATH=. sphinx-build -b html -E -N doc build/sphinx/html
 	dh_auto_build
 
-override_dh_auto_install:
-	dh_auto_install
+override_dh_python3:
+	dh_python3
 #	# Don't embed fontawesome fonts. Use fonts-glewlwyd shipped ones instead.
-#	find debian/python-django-hyperkitty -name 'fontawesome-webfont.ttf' -type f -exec \
+#	find debian/python3-django-hyperkitty -name 'fontawesome-webfont.ttf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/fontawesome-webfont.ttf {} \;
-#	find debian/python-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
+#	find debian/python3-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/FontAwesome.otf {} \;
 	# Don't embed glewlwyd glyphicons as they're also shipped into debian.
-	find debian/python-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
+	find debian/python3-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/glyphicons-halflings-regular.ttf {} \;
-	# Don't embed bootstrap/jquery JS scripts
-	find debian/python-django-hyperkitty -name 'bootstrap.js' -type f -exec \
+	# Don't embed bootstrap JS scripts
+	find debian/python3-django-hyperkitty -name 'bootstrap.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
-	find debian/python-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
+	find debian/python3-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
 	# Move static files outside of the lib directory
-	mv debian/python-django-hyperkitty/usr/lib/python2.7/dist-packages/hyperkitty/static \
-		debian/python-django-hyperkitty/usr/share/python-django-hyperkitty/
-	ln -sf /usr/share/python-django-hyperkitty/static \
-		debian/python-django-hyperkitty/usr/lib/python2.7/dist-packages/hyperkitty/static
+	mv debian/python3-django-hyperkitty/usr/lib/python3/dist-packages/hyperkitty/static \
+		debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty/
+	dh_link usr/share/python3-django-hyperkitty/static \
+		usr/lib/python3/dist-packages/hyperkitty/static
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
 
 override_dh_fixperms:
 	dh_fixperms
-	chmod 644 debian/python-django-hyperkitty/usr/share/doc/python-django-hyperkitty/examples/wsgi.py
+	chmod 644 debian/python3-django-hyperkitty/usr/share/doc/python3-django-hyperkitty/examples/wsgi.py
