@@ -17,10 +17,11 @@ hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
     - Add versioned (Build-)Depends on python3-mailmanclient >= 3.2.0
   * d/rules:
     - Migrate build system to python3
+    - Remove obsolete command to fix permissions of examples/wsgi.py
   * d/source/lintian-overrides:
     - Remove obsolete python2 lintian overrides
 
- -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 21:44:58 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 22:29:10 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 

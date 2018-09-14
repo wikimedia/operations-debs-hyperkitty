@@ -23,7 +23,7 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_python3:
-	dh_python3
+	dh_python3 -Nexample_project
 #	# Don't embed fontawesome fonts. Use fonts-glewlwyd shipped ones instead.
 #	find debian/python3-django-hyperkitty -name 'fontawesome-webfont.ttf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/fontawesome-webfont.ttf {} \;
@@ -45,7 +45,3 @@ override_dh_python3:
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
-
-override_dh_fixperms:
-	dh_fixperms
-	chmod 644 debian/python3-django-hyperkitty/usr/share/doc/python3-django-hyperkitty/examples/wsgi.py

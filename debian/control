@@ -51,7 +51,7 @@ Depends: fonts-glewlwyd,
          python3-robot-detection,
          python3-tz,
          ${misc:Depends},
-         ${python:Depends}
+         ${python3:Depends}
 Recommends: mailman3-web
 Description: Web user interface to access GNU Mailman3 archives
  The hyperkitty Django app provides a web user interface
