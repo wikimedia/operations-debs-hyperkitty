@@ -1,0 +1,308 @@
+From zzz@cse.unl.edu  Mon Nov  8 21:54:11 1999
+Message-ID: <msg@id>
+Reply-To: "Some One" <zzz@cse.unl.edu>
+From: "Some One" <zzz@cse.unl.edu>
+To: <mailman-developers@python.org>
+Date: Mon, 8 Nov 1999 20:53:05 -0600
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="----=_NextPart_000_0271_01BF2A2B.411F64C0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 4.72.3110.5
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Subject: [Mailman-Developers] Questionnaire For My Project
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0271_01BF2A2B.411F64C0
+Content-Type: text/plain;
+        charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
+
+Dear Mailman,
+     I'm a graduate student (computer science) in University=20
+of Nebraska-Lincoln. The Questionnaire for open source testing=20
+below is for a paper I'm working on. Hope you can spend=20
+five minutes to finish it in your busy time. Any of your=20
+effort will be greatly appreciated!
+Luyin
+=20
+Questionnaire for Open Source Testing
+****************************************************
+1. What programming language is used in developing your product
+"Mailman 1.1":?
+****************************************************
+2. How many developers were involved in your project?
+****************************************************
+3. When do you begin to do testing?=20
+    a. Requirement Analysis Phase=20
+    b. Functional design Phase=20
+    c. Internal Design Phase=20
+    d. Implementation Phase=20
+    e. After Implementation=20
+    Note: Functional design is to describe the features of a system from
+      technique-oriented perspective compared with the user-oriented=20
+      perspective of requirement analysis. Internal design is to model=20
+      the implementation of system, such as class diagrams.
+Answer:
+****************************************************
+4. The time you spent in testing compared with the total time of =
+development?
+    a. <20%  b. 20%-40%  c. 40%-60%  d. 60-80%  e. >80%
+Answer:
+****************************************************
+5. How do you prepare for your testing (using plan or schedule)?=20
+    a. Written plan which was modified several times =20
+    b. One plan draft without further modification =20
+    c. I prepare it in my brain =20
+    d. I have no plan
+Answer:
+****************************************************
+6. Do you inspect the following items?
+    a. Requirement Documentation (if you have) =20
+    b. Design Documentation (if you have) =20
+    c. Source code (besides relying on compiler and program execution to =
+
+find faults in code)
+Answer:
+****************************************************
+7. There are some defects resulted from the unclear definition of =
+requirements.
+   In the total defects of this category you found, approximately what=20
+   percentage were found in code inspections, in unit tests and in =
+system=20
+   tests, respectively?
+   a. <20%  b. 20%-40%  c. 40%-60%  d. 60-80%  e. >80%   f. Not =
+applicable
+Answer:     ,       ,    =20
+****************************************************
+8. The percent of time you spent in document inspection (compared with =
+total=20
+   development time) is:
+    a. <20%  b. 20%-40%  c. 40%-60%  d. 60-80%  e. >80%   f. Not =
+applicable
+Answer:
+****************************************************
+9. How many people did you ask to check your documents or source code?
+   Do you think it is useful?
+    a. No =20
+    b. A little bit =20
+    c. Useful but not necessary =20
+    d. They found lots of defects that I haven=92t found =20
+    e. Absolutely necessary
+Answer:
+****************************************************
+10. Do you use testing tools during your development? The name of it?
+Answer:
+****************************************************
+11. What is the basis of your testing?
+    a. Test whether system implemented what user need =20
+    b. Test whether system implemented technical features =20
+    c. Find faults =20
+    d. All the above.
+Answer:
+****************************************************
+12. What strategy did you adopt in choosing your test cases? Please list =
+them
+    according to the importance of finding defects of your system =
+(descending)?
+    a. Choose sample of valid inputs =20
+    b. Choose those inputs most likely to cause failure =20
+    c. Choose inputs according to your experience =20
+    d. Other (specify            )
+Answer:
+****************************************************
+13. If you do coverage control, what percent of the code (lines of code) =
+do=20
+    you think are covered in your test?
+    a. <20%  b. 20%-40%  c. 40%-60%  d. 60-80%  e. >80%   f. Not =
+Applicable
+Answer:
+****************************************************
+14. In defects you found, what percent of the following problem =
+categories=20
+should be found in requirements phase? in design phase? in unit test ?
+in integration test?
+    a. <20%  b. 20%-40%  c. 40%-60%  d. 60-80%  e. >80%   F. Not =
+Applicable
+Answer:
+****************************************************
+15. In which areas did you find most of the defects when  you integrate =
+and=20
+    sell products (someone sell open source products such as RedHat)?
+    a. User interface-related problems =20
+    b. Database-related problems =20
+    c. Network-related problems =20
+    d. Logical =20
+    e. Other(specify   )
+    f. Not Applicable
+Answer:
+=20
+Some One
+000 N23 Street, #10
+Lincoln, NE 68503
+(402)555-1212
+
+------=_NextPart_000_0271_01BF2A2B.411F64C0
+Content-Type: text/html;
+        charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD W3 HTML//EN">
+<HTML>
+<HEAD>
+
+<META content=3Dtext/html;charset=3Dgb2312 http-equiv=3DContent-Type>
+<META content=3D'"MSHTML 4.72.3110.7"' name=3DGENERATOR>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT color=3D#000000 size=3D2>Dear =
+Mailman,<BR>&nbsp;&nbsp;&nbsp;&nbsp; I'm a=20
+graduate student (computer science) in University <BR>of =
+Nebraska-Lincoln. The=20
+Questionnaire for open source testing <BR>below is for a paper I'm =
+working on.=20
+Hope you can spend <BR>five minutes to finish it in your busy time. Any =
+of your=20
+<BR>effort will be greatly =
+appreciated!<BR>Luyin<BR>&nbsp;<BR>Questionnaire for=20
+Open Source=20
+Testing<BR>****************************************************<BR>1. =
+What=20
+programming language is used in developing your product<BR>&quot;Mailman =
+
+1.1&quot;:?<BR>****************************************************<BR>2.=
+ How=20
+many developers were involved in your=20
+project?<BR>****************************************************<BR>3. =
+When do=20
+you begin to do testing? <BR>&nbsp;&nbsp;&nbsp; a. Requirement Analysis =
+Phase=20
+<BR>&nbsp;&nbsp;&nbsp; b. Functional design Phase <BR>&nbsp;&nbsp;&nbsp; =
+c.=20
+Internal Design Phase <BR>&nbsp;&nbsp;&nbsp; d. Implementation Phase=20
+<BR>&nbsp;&nbsp;&nbsp; e. After Implementation <BR>&nbsp;&nbsp;&nbsp; =
+Note:=20
+Functional design is to describe the features of a system=20
+from<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; technique-oriented perspective =
+compared=20
+with the user-oriented <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; perspective of =
+
+requirement analysis. Internal design is to model=20
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the implementation of system, such as =
+class=20
+diagrams.<BR>Answer:<BR>*************************************************=
+***<BR>4.=20
+The time you spent in testing compared with the total time of=20
+development?<BR>&nbsp;&nbsp;&nbsp; a. &lt;20%&nbsp; b. 20%-40%&nbsp; c.=20
+40%-60%&nbsp; d. 60-80%&nbsp; e.=20
+&gt;80%<BR>Answer:<BR>***************************************************=
+*<BR>5.=20
+How do you prepare for your testing (using plan or schedule)?=20
+<BR>&nbsp;&nbsp;&nbsp; a. Written plan which was modified several =
+times&nbsp;=20
+<BR>&nbsp;&nbsp;&nbsp; b. One plan draft without further =
+modification&nbsp;=20
+<BR>&nbsp;&nbsp;&nbsp; c. I prepare it in my brain&nbsp; =
+<BR>&nbsp;&nbsp;&nbsp;=20
+d. I have no=20
+plan<BR>Answer:<BR>****************************************************<B=
+R>6. Do=20
+you inspect the following items?<BR>&nbsp;&nbsp;&nbsp; a. Requirement=20
+Documentation (if you have)&nbsp; <BR>&nbsp;&nbsp;&nbsp; b. Design =
+Documentation=20
+(if you have)&nbsp; <BR>&nbsp;&nbsp;&nbsp; c. Source code (besides =
+relying on=20
+compiler and program execution to <BR>find faults in=20
+code)<BR>Answer:<BR>****************************************************<=
+BR>7.=20
+There are some defects resulted from the unclear definition of=20
+requirements.<BR>&nbsp;&nbsp; In the total defects of this category you =
+found,=20
+approximately what <BR>&nbsp;&nbsp; percentage were found in code =
+inspections,=20
+in unit tests and in system <BR>&nbsp;&nbsp; tests,=20
+respectively?<BR>&nbsp;&nbsp; a. &lt;20%&nbsp; b. 20%-40%&nbsp; c. =
+40%-60%&nbsp;=20
+d. 60-80%&nbsp; e. &gt;80%&nbsp;&nbsp; f. Not=20
+applicable<BR>Answer:&nbsp;&nbsp;&nbsp;&nbsp;=20
+,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ,&nbsp;&nbsp;&nbsp;&nbsp;=20
+<BR>****************************************************<BR>8. The =
+percent of=20
+time you spent in document inspection (compared with total =
+<BR>&nbsp;&nbsp;=20
+development time) is:<BR>&nbsp;&nbsp;&nbsp; a. &lt;20%&nbsp; b. =
+20%-40%&nbsp; c.=20
+40%-60%&nbsp; d. 60-80%&nbsp; e. &gt;80%&nbsp;&nbsp; f. Not=20
+applicable<BR>Answer:<BR>************************************************=
+****<BR>9.=20
+How many people did you ask to check your documents or source=20
+code?<BR>&nbsp;&nbsp; Do you think it is useful?<BR>&nbsp;&nbsp;&nbsp; =
+a.=20
+No&nbsp; <BR>&nbsp;&nbsp;&nbsp; b. A little bit&nbsp; =
+<BR>&nbsp;&nbsp;&nbsp; c.=20
+Useful but not necessary&nbsp; <BR>&nbsp;&nbsp;&nbsp; d. They found lots =
+of=20
+defects that I haven=92t found&nbsp; <BR>&nbsp;&nbsp;&nbsp; e. =
+Absolutely=20
+necessary<BR>Answer:<BR>*************************************************=
+***<BR>10.=20
+Do you use testing tools during your development? The name of=20
+it?<BR>Answer:<BR>****************************************************<BR=
+>11.=20
+What is the basis of your testing?<BR>&nbsp;&nbsp;&nbsp; a. Test whether =
+system=20
+implemented what user need&nbsp; <BR>&nbsp;&nbsp;&nbsp; b. Test whether =
+system=20
+implemented technical features&nbsp; <BR>&nbsp;&nbsp;&nbsp; c. Find =
+faults&nbsp;=20
+<BR>&nbsp;&nbsp;&nbsp; d. All the=20
+above.<BR>Answer:<BR>****************************************************=
+<BR>12.=20
+What strategy did you adopt in choosing your test cases? Please list=20
+them<BR>&nbsp;&nbsp;&nbsp; according to the importance of finding =
+defects of=20
+your system (descending)?<BR>&nbsp;&nbsp;&nbsp; a. Choose sample of =
+valid=20
+inputs&nbsp; <BR>&nbsp;&nbsp;&nbsp; b. Choose those inputs most likely =
+to cause=20
+failure&nbsp; <BR>&nbsp;&nbsp;&nbsp; c. Choose inputs according to your=20
+experience&nbsp; <BR>&nbsp;&nbsp;&nbsp; d. Other=20
+(specify&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;=20
+)<BR>Answer:<BR>****************************************************<BR>1=
+3. If=20
+you do coverage control, what percent of the code (lines of code) do=20
+<BR>&nbsp;&nbsp;&nbsp; you think are covered in your =
+test?<BR>&nbsp;&nbsp;&nbsp;=20
+a. &lt;20%&nbsp; b. 20%-40%&nbsp; c. 40%-60%&nbsp; d. 60-80%&nbsp; e.=20
+&gt;80%&nbsp;&nbsp; f. Not=20
+Applicable<BR>Answer:<BR>************************************************=
+****<BR>14.=20
+In defects you found, what percent of the following problem categories=20
+<BR>should be found in requirements phase? in design phase? in unit test =
+?<BR>in=20
+integration test?<BR>&nbsp;&nbsp;&nbsp; a. &lt;20%&nbsp; b. =
+20%-40%&nbsp; c.=20
+40%-60%&nbsp; d. 60-80%&nbsp; e. &gt;80%&nbsp;&nbsp; F. Not=20
+Applicable<BR>Answer:<BR>************************************************=
+****<BR>15.=20
+In which areas did you find most of the defects when&nbsp; you integrate =
+and=20
+<BR>&nbsp;&nbsp;&nbsp; sell products (someone sell open source products =
+such as=20
+RedHat)?<BR>&nbsp;&nbsp;&nbsp; a. User interface-related problems&nbsp;=20
+<BR>&nbsp;&nbsp;&nbsp; b. Database-related problems&nbsp; =
+<BR>&nbsp;&nbsp;&nbsp;=20
+c. Network-related problems&nbsp; <BR>&nbsp;&nbsp;&nbsp; d. =
+Logical&nbsp;=20
+<BR>&nbsp;&nbsp;&nbsp; e. Other(specify&nbsp;&nbsp; =
+)<BR>&nbsp;&nbsp;&nbsp; f.=20
+Not Applicable<BR>Answer:<BR>&nbsp;</FONT></DIV>
+<DIV><FONT color=3D#000000 size=3D2>Some One<BR>000 N23 Street, =
+#10<BR>Lincoln, NE=20
+68503<BR>(402)555-1212</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0271_01BF2A2B.411F64C0--
+

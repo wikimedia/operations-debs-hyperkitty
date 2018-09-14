@@ -21,7 +21,6 @@
 #
 
 from django.conf import settings
-from django.contrib import admin
 from django.db import models
 
 
@@ -35,5 +34,3 @@ class Favorite(models.Model):
     def __str__(self):
         return "%s is a favorite of %s" % (
             str(self.thread), str(self.user))
-
-admin.site.register(Favorite)  # noqa: E305

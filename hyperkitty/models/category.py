@@ -20,7 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from django.contrib import admin
 from django.db import models
 from paintstore.fields import ColorPickerField
 
@@ -34,12 +33,3 @@ class ThreadCategory(models.Model):
 
     def __str__(self):
         return 'Thread category "%s"' % self.name
-
-
-class ThreadCategoryAdmin(admin.ModelAdmin):
-    def save_model(self, request, obj, form, change):
-        obj.name = obj.name.lower()
-        return super(ThreadCategoryAdmin, self).save_model(
-                     request, obj, form, change)
-
-admin.site.register(ThreadCategory, ThreadCategoryAdmin)  # noqa: E305

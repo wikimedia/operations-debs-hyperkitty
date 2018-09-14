@@ -23,7 +23,6 @@
 from collections import namedtuple
 from django.conf import settings
 from django.db import models
-from django.contrib import admin
 from django.utils.timezone import now, utc
 
 from hyperkitty.lib.analysis import compute_thread_order_and_depth
@@ -251,5 +250,3 @@ class LastView(models.Model):
             return 0  # avoid the expensive query below
         else:
             return self.thread.emails.filter(date__gt=self.view_date).count()
-
-admin.site.register(LastView)  # noqa: E305

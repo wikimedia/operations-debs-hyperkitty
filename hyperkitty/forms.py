@@ -33,10 +33,10 @@ class TextInputWithButton(forms.TextInput):
     Use the 'button_text' class attribute to set the button's text.
     """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         button_text = self.attrs.pop("button_text", "")
         initial_rendering = forms.TextInput.render(
-                self, name, value, attrs)
+                self, name, value, attrs, renderer=renderer)
         button = mark_safe(
             '<span class="input-group-btn"><button type="submit" '
             'class="btn btn-default">%s</button></span>'
@@ -73,14 +73,14 @@ class AttachmentFileInput(forms.FileInput):
 <a href="#" class="attach-files-add">%(attach_another_text)s</a>
 """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         substitutions = {
             'attach_first_text': self.attach_first_text,
             'attach_another_text': self.attach_another_text,
             'rm_text': self.rm_text,
         }
         substitutions['input'] = super(AttachmentFileInput, self).render(
-            name, value, attrs)
+            name, value, attrs, renderer=renderer)
         return mark_safe(self.template % substitutions)
 
 

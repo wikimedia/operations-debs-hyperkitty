@@ -24,19 +24,16 @@ import urllib
 import datetime
 import json
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.exceptions import SuspiciousOperation
 from django.db import DatabaseError
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib import messages
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    # For Django 2.0+
-    from django.urls import reverse
-from django.core.exceptions import SuspiciousOperation
 from django.template import loader
-from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 
 from hyperkitty.lib.mailman import ModeratedListException
 from hyperkitty.lib.posting import post_to_list, PostingFailed, reply_subject
@@ -114,11 +111,10 @@ def attachment(request, mlist_fqdn, message_id_hash, counter, filename):
     return response
 
 
+@require_POST
 @check_mlist_private
 def vote(request, mlist_fqdn, message_id_hash):
     """ Vote for or against a given message identified by messageid. """
-    if request.method != 'POST':
-        raise SuspiciousOperation
     if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to vote',
                             content_type="text/plain", status=403)
@@ -144,12 +140,11 @@ def vote(request, mlist_fqdn, message_id_hash):
                         content_type='application/javascript')
 
 
+@require_POST
 @login_required
 @check_mlist_private
 def reply(request, mlist_fqdn, message_id_hash):
     """Sends a reply to the list."""
-    if request.method != 'POST':
-        raise SuspiciousOperation
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
     form = get_posting_form(ReplyForm, request, mlist, request.POST)
     if not form.is_valid():

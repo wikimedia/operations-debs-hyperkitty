@@ -32,7 +32,7 @@ from django.conf import settings
 from django.core.cache.utils import make_template_fragment_key
 from django.core.cache import cache
 from django_q.conf import Conf
-from django_q.tasks import Async
+from django_q.tasks import AsyncTask
 from mailmanclient import MailmanConnectionError
 
 from hyperkitty.lib.analysis import compute_thread_order_and_depth
@@ -76,7 +76,7 @@ def process_task_result(task):
     """
     if not task.success:
         log.info(
-            'Async task "{0}" with args "{1}" and kwargs "{2}" finished with errors.'.format(  # noqa: E501
+            'AsyncTask task "{0}" with args "{1}" and kwargs "{2}" finished with errors.'.format(  # noqa: E501
                 task.func,
                 task.args,
                 task.kwargs)
@@ -84,7 +84,7 @@ def process_task_result(task):
         log.debug(task.result)
 
 
-class SingletonAsync(Async):
+class SingletonAsync(AsyncTask):
     """A singleton task implementation.
 
     A singleton task does not enqueue the function if there's already one in
@@ -120,7 +120,7 @@ class SingletonAsync(Async):
             func_name,
             crc32((repr(args) + repr(kwargs)).encode('utf-8')) & 0xffffffff
         )
-        # Call the Original Async class with required parameters.
+        # Call the Original AsyncTask class with required parameters.
         super().__init__(
             # This is the wrapper function that executes the actual function.
             # This function makes sure we drop the cache key before we call the
@@ -144,15 +144,14 @@ class SingletonAsync(Async):
         Dispatch the task to one of the workers for execution.
 
         ..note:: Behavior of run is slightly different that the original
-                Async.run() function that this method overrides. If there
-                is a task that resembles to this task (i.e. same function
-                call with same arguments) in the queue, we just don't run
-                the task at all.
-                To find out if a task is there in a queue,
-                we use Django's cache framework to store a unique key, which
-                is a hash of function name all it's arguments.
+                AsyncTask.run() function that this method overrides. If there
+                is a task that resembles to this task (i.e. same function call
+                with same arguments) in the queue, we just don't run the task
+                at all.  To find out if a task is there in a queue, we use
+                Django's cache framework to store a unique key, which is a hash
+                of function name all it's arguments.
         """
-        # This overrides the Async.run() method.
+        # This overrides the AsyncTask.run() method.
         # First, check if there is a function with same args in queue already.
         pending_id = cache.get(self._cache_key, default=None)
         if pending_id is not None:
@@ -185,7 +184,7 @@ class SingletonAsync(Async):
 
         Adds a ``delay()`` method to the decorated function which will run it
         asynchronously with the provided arguments.  The arguments accepted by
-        the :py:class:`Async` class are accepted here too.
+        the :py:class:`AsyncTask` class are accepted here too.
         """
         def delay(*args, **kwargs):
             if kwargs.get("sync", False) or Conf.SYNC:
@@ -201,7 +200,7 @@ class SingletonAsync(Async):
             if getattr(settings, "HYPERKITTY_DISABLE_SINGLETON_TASKS", False):
                 # Singleton locking does not work on sync calls because the
                 # lock is placed after the run() call (to have the task id).
-                async_class = Async
+                async_class = AsyncTask
             # Use a more intuitive task name, if one isn't already set.
             if "task_name" not in kwargs:
                 kwargs["task_name"] = func.__name__ if callable(func) else func
@@ -220,7 +219,7 @@ class SingletonAsync(Async):
 def async_task(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        task = Async(f, *args, **kwargs)
+        task = AsyncTask(f, *args, **kwargs)
         return task.run()
     return wrapper
 

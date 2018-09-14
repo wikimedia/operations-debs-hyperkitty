@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
+#
+# Copyright (C) 2018 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -16,8 +17,22 @@
 # You should have received a copy of the GNU General Public License along with
 # HyperKitty.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Author: Aurelien Bompard <abompard@fedoraproject.org>
-#
 
-VERSION = "1.2.1"
-default_app_config = 'hyperkitty.apps.HyperKittyConfig'
+from django.contrib import admin
+from hyperkitty import models
+
+
+admin.site.register(models.profile.Profile)
+admin.site.register(models.tag.Tag)
+admin.site.register(models.vote.Vote)
+admin.site.register(models.thread.LastView)
+admin.site.register(models.favorite.Favorite)
+admin.site.register(models.mailinglist.MailingList)
+
+
+@admin.register(models.category.ThreadCategory)
+class ThreadCategoryAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        obj.name = obj.name.lower()
+        return super(ThreadCategoryAdmin, self).save_model(
+                     request, obj, form, change)

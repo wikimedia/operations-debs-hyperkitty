@@ -28,14 +28,11 @@ from functools import wraps
 
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    # For Django 2.0+
-    from django.urls import reverse
+from django.urls import reverse
 from django.http import HttpResponse
 from django.utils.http import urlunquote
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django_mailman3.models import MailDomain
 from urllib.parse import urljoin
 
@@ -105,11 +102,10 @@ def urls(request):
                         content_type='application/javascript')
 
 
+@require_POST
 @key_and_ip_auth
 @csrf_exempt
 def archive(request):
-    if request.method != 'POST':
-        raise SuspiciousOperation
     mlist_fqdn = request.POST["mlist"]
     if "message" not in request.FILES:
         raise SuspiciousOperation

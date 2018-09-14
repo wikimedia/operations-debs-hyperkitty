@@ -183,6 +183,119 @@ class CommandTestCase(TestCase):
         self.assertEqual(MailingList.objects.count(), 1)
         self.assertEqual(Email.objects.count(), 1)
 
+    def test_ungettable_date(self):
+        # Certain bad Date: headers will throw TypeError on msg.get('date').
+        # Test that we handle that.
+        # For this test we use the testdata mbox directly to avoid a parse
+        # error in message_from_file().
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        kw["verbosity"] = 2
+        call_command('hyperkitty_import',
+                     get_test_file("non-ascii-date-header.txt"), **kw)
+        # The message should be archived.
+        self.assertEqual(Email.objects.count(), 1)
+        # But there should be an error message.
+        self.assertIn("Can't get date header in message", output.getvalue())
+
+    def test_no_date_but_resent_date(self):
+        # If there's no Dete: header, fall back to Resent-Date:.
+        with open(get_test_file("resent-date.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # The message should be archived.
+        self.assertEqual(Email.objects.count(), 1)
+        # The archived_date should be 8 Nov 1999 20:53:05 -0600 which is
+        # 9 Nov 1999 02:53:05 UTC.
+        self.assertEqual(Email.objects.all()[0].date,
+                         datetime(1999, 11, 9, 2, 53, 5, tzinfo=utc))
+
+    def test_no_date_and_no_resent_date(self):
+        # If there's no Dete: header and no Resent-Date: header, fall back
+        # to the unixfrom date.
+        with open(get_test_file("unixfrom-date.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # The message should be archived.
+        self.assertEqual(Email.objects.count(), 1)
+        # The archived_date should be Nov  9 21:54:11 1999
+        self.assertEqual(Email.objects.all()[0].date,
+                         datetime(1999, 11, 9, 21, 54, 11, tzinfo=utc))
+
+    def test_unknown_encoding(self):
+        # Spam messages have been seen with bogus charset= encodings which
+        # throw LookupError.
+        with open(get_test_file("unknown-charset.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        # Second message
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Message-ID"] = "<msg2>"
+        msg["Date"] = "01 Feb 2015 12:00:00"
+        msg.set_payload("msg2")
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # Message 1 must have been rejected, but no crash
+        self.assertIn("Failed adding message <msg@id>:",
+                      output.getvalue())
+        # Message 2 must have been accepted
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
+    def test_another_wrong_encoding(self):
+        # This is gb2312 with a bad character. It seems to fail before
+        # getting to the back end.
+        with open(get_test_file("another-wrong-encoding.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        # Second message
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Message-ID"] = "<msg1>"
+        msg["Date"] = "01 Feb 2015 12:00:00"
+        msg.set_payload("msg1")
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # Message 1 must have been rejected, but no crash
+        self.assertIn("Failed adding message <msg@id>:",
+                      output.getvalue())
+        # Message 2 must have been accepted
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
     def test_weird_timezone(self):
         # An email has a timezone with a strange offset (seen in the wild).
         # Make sure it does not break our _is_old_enough() method.

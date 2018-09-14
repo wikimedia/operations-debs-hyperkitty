@@ -21,7 +21,6 @@
 #
 
 from django.conf import settings
-from django.contrib import admin
 from django.db import models
 
 
@@ -50,5 +49,3 @@ class Tag(models.Model):
 
     def __str__(self):
         return 'Tag %s' % self.name
-
-admin.site.register(Tag)  # noqa: E305

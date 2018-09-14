@@ -27,17 +27,14 @@ import json
 
 import robot_detection
 from django.contrib import messages
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    # For Django 2.0+
-    from django.urls import reverse
+from django.urls import reverse
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.utils.timezone import utc
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 from haystack.query import SearchQuerySet
 
 from hyperkitty.models import (
@@ -196,7 +193,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
         # The limit is a safety measure, don't let a bot kill the DB
         context["replies"] = _get_thread_replies(request, thread, limit=1000)
 
-    return render(request, "hyperkitty/thread.html", context)
+    return render(request, "hyperkitty/thread.html", context=context)
 
 
 @check_mlist_private
@@ -237,6 +234,7 @@ def replies(request, mlist_fqdn, threadid):
                         content_type='application/javascript')
 
 
+@require_POST
 @check_mlist_private
 def tags(request, mlist_fqdn, threadid):
     """ Add or remove one or more tags on a given thread. """
@@ -246,8 +244,6 @@ def tags(request, mlist_fqdn, threadid):
     thread = get_object_or_404(
         Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
 
-    if request.method != 'POST':
-        raise SuspiciousOperation
     action = request.POST.get("action")
 
     if action == "add":
@@ -306,14 +302,13 @@ def suggest_tags(request, mlist_fqdn, threadid):
                         content_type='application/javascript')
 
 
+@require_POST
 @check_mlist_private
 def favorite(request, mlist_fqdn, threadid):
     """ Add or remove from favorites"""
     if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to have favorites',
                             content_type="text/plain", status=403)
-    if request.method != 'POST':
-        raise SuspiciousOperation
 
     thread = get_object_or_404(
         Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
@@ -326,14 +321,13 @@ def favorite(request, mlist_fqdn, threadid):
     return HttpResponse("success", content_type='text/plain')
 
 
+@require_POST
 @check_mlist_private
 def set_category(request, mlist_fqdn, threadid):
     """ Set the category for a given thread. """
     if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to add a tag',
                             content_type="text/plain", status=403)
-    if request.method != 'POST':
-        raise SuspiciousOperation
 
     thread = get_object_or_404(
         Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)

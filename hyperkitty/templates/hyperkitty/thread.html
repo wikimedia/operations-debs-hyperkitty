@@ -20,11 +20,6 @@
 
         <!-- thread header: navigation (older/newer), thread title -->
         <div class="thread-header row">
-            {% if use_mockups %}
-            <div class="thread-category">
-                {% include 'hyperkitty/threads/category.html' %}
-            </div>
-            {% endif %}
             {% with prev_thread=thread.prev_thread next_thread=thread.next_thread %}
             <div class="col-tn-2">
                 {% if next_thread %}

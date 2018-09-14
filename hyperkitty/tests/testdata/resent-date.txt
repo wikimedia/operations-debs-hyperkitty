@@ -1,0 +1,9 @@
+From zzz@example.com  Mon Nov  9 21:54:11 1999
+Message-ID: <msg@id>
+From: "Some One" <zzz@example.com>
+To: <mailman-developers@python.org>
+Resent-Date: Mon, 8 Nov 1999 20:53:05 -0600
+Subject: Test Resent-Date:
+
+This should be archived with date 8 Nov 1999
+

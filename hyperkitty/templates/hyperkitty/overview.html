@@ -51,11 +51,6 @@
                     <li>
                         <a href="#most-active" tabindex="-1">{% trans "most active" %}</a>
                     </li>
-                    {% if use_mockups %}
-                    <li>
-                        <a href="#by-category" tabindex="-1">{% trans "by category" %}</a>
-                    </li>
-                    {% endif %}
                 </ul>
             </li>
             <li class="dropdown">
@@ -134,22 +129,6 @@
                 <img alt="{% trans 'Loading...' %}" class="ajaxloader" src="{% static 'hyperkitty/img/ajax-loader.gif' %}" />
             </div>
         </section>
-
-        {% if use_mockups %}
-        <div class="anchor-link"><a id="by-category"></a></div>
-        <section id="by-category">
-            <h3>{% trans "Discussion by category" %}</h3>
-            {% for category, threads in threads_by_category.items %}
-                <h4 class="label" style="background-color:{{category.color}}"
-                   >{{ category.name|upper }}
-                </h4>
-                {% include "hyperkitty/fragments/overview_threads.html" with threads=threads|slice:":5" %}
-            {% empty %}
-                <p>{% trans "No category has been set this month (yet)." %}</p>
-            {% endfor %}
-        </section>
-        {% endif %}
-
     </div> <!-- /container, for thread lists -->
 
     <div class="stats col-tn-12 col-sm-4">
