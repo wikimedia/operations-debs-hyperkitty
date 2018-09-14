@@ -21,8 +21,10 @@ hyperkitty (1.2.1-1) UNRELEASED; urgency=medium
     - Remove obsolete command to fix permissions of examples/wsgi.py
   * d/source/lintian-overrides:
     - Remove obsolete python2 lintian overrides
+  * d/patches/0001-django-q-API-changed-Async-class-became-AsyncTask.patch:
+    - Remove obsolete patch, got incorporated upstream
 
- -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 22:47:57 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 22:49:36 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 
