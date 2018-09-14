@@ -16,6 +16,7 @@ hyperkitty (1.2.1-1) UNRELEASED; urgency=medium
   * d/control:
     - Bump standards-version to 4.2.1, no changes required
     - Add versioned (Build-)Depends on python3-mailmanclient >= 3.2.0
+    - Add Conflicts/Replaces python-django-hyperkitty
   * d/rules:
     - Migrate build system to python3
     - Remove obsolete command to fix permissions of examples/wsgi.py
@@ -24,7 +25,7 @@ hyperkitty (1.2.1-1) UNRELEASED; urgency=medium
   * d/patches/0001-django-q-API-changed-Async-class-became-AsyncTask.patch:
     - Remove obsolete patch, got incorporated upstream
 
- -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 22:49:36 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 23:10:22 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 

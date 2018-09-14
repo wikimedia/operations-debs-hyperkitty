@@ -53,6 +53,8 @@ Depends: fonts-glewlwyd,
          ${misc:Depends},
          ${python3:Depends}
 Recommends: mailman3-web
+Conflicts: python-django-hyperkitty
+Replaces: python-django-hyperkitty
 Description: Web user interface to access GNU Mailman3 archives
  The hyperkitty Django app provides a web user interface
  to access GNU Mailman3 archives, and manage it. This
