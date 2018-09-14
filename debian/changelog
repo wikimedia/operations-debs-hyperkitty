@@ -1,4 +1,4 @@
-hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
+hyperkitty (1.2.1-1) UNRELEASED; urgency=medium
 
   [ Pierre-Elliott Bécue ]
   * New upstream release 1.2.0
@@ -12,6 +12,7 @@ hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
       now
 
   [ Jonas Meurer ]
+  * New upstream release 1.2.1
   * d/control:
     - Bump standards-version to 4.2.1, no changes required
     - Add versioned (Build-)Depends on python3-mailmanclient >= 3.2.0
@@ -21,7 +22,7 @@ hyperkitty (1.2.0-1) UNRELEASED; urgency=medium
   * d/source/lintian-overrides:
     - Remove obsolete python2 lintian overrides
 
- -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 22:29:10 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 14 Sep 2018 22:47:57 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 
