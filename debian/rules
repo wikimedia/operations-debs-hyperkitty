@@ -23,7 +23,13 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_python3:
-	dh_python3 -Nexample_project
+	dh_python3
+	# Move static files outside of the lib directory
+	mkdir -p debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty
+	mv debian/python3-django-hyperkitty/usr/lib/python3/dist-packages/hyperkitty/static \
+		debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty/
+	dh_link usr/share/python3-django-hyperkitty/static \
+		usr/lib/python3/dist-packages/hyperkitty/static
 #	# Don't embed fontawesome fonts. Use fonts-glewlwyd shipped ones instead.
 #	find debian/python3-django-hyperkitty -name 'fontawesome-webfont.ttf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/fontawesome-webfont.ttf {} \;
@@ -37,11 +43,6 @@ override_dh_python3:
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
 	find debian/python3-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
-	# Move static files outside of the lib directory
-	mv debian/python3-django-hyperkitty/usr/lib/python3/dist-packages/hyperkitty/static \
-		debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty/
-	dh_link usr/share/python3-django-hyperkitty/static \
-		usr/lib/python3/dist-packages/hyperkitty/static
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
