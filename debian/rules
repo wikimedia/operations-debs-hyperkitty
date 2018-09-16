@@ -46,3 +46,7 @@ override_dh_python3:
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod 644 debian/python3-django-hyperkitty/usr/share/doc/python3-django-hyperkitty/examples/wsgi.py
