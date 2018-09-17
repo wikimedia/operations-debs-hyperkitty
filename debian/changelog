@@ -15,7 +15,9 @@ hyperkitty (1.2.1-1) unstable; urgency=medium
   * New upstream release 1.2.1
   * d/control:
     - Bump standards-version to 4.2.1, no changes required
+    - Add versioned (Build-)Depends on python3-django >= 1:1.11
     - Add versioned (Build-)Depends on python3-mailmanclient >= 3.2.0
+    - Add versioned (Build-)Depends on python3-django-haystack >= 2.8.0
     - Add Conflicts/Replaces python-django-hyperkitty
   * d/rules:
     - Migrate build system to python3
@@ -24,7 +26,7 @@ hyperkitty (1.2.1-1) unstable; urgency=medium
   * d/patches/0001-django-q-API-changed-Async-class-became-AsyncTask.patch:
     - Remove obsolete patch, got incorporated upstream
 
- -- Jonas Meurer <jonas@freesources.org>  Mon, 17 Sep 2018 13:08:48 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Mon, 17 Sep 2018 13:43:15 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 
