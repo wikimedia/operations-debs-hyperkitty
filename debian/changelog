@@ -1,4 +1,4 @@
-hyperkitty (1.2.1-1) UNRELEASED; urgency=medium
+hyperkitty (1.2.1-1) unstable; urgency=medium
 
   [ Pierre-Elliott Bécue ]
   * New upstream release 1.2.0
@@ -24,7 +24,7 @@ hyperkitty (1.2.1-1) UNRELEASED; urgency=medium
   * d/patches/0001-django-q-API-changed-Async-class-became-AsyncTask.patch:
     - Remove obsolete patch, got incorporated upstream
 
- -- Jonas Meurer <jonas@freesources.org>  Sun, 16 Sep 2018 23:29:30 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Mon, 17 Sep 2018 13:08:48 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 
