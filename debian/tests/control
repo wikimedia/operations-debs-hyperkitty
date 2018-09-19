@@ -1,4 +1,4 @@
-Test-Command: python2.7 $(which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty
+Test-Command: for python3 in $(shell py3versions -r); do $python3 $(which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; done
 Depends: @,
          python-bs4,
          python-mock,
