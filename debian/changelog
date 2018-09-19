@@ -25,8 +25,11 @@ hyperkitty (1.2.1-1) unstable; urgency=medium
     - Remove obsolete python2 lintian overrides
   * d/patches/0001-django-q-API-changed-Async-class-became-AsyncTask.patch:
     - Remove obsolete patch, got incorporated upstream
+  * d/python3-django-hyperkitty.lintian-overrides:
+    - Add lintian-overrides for jquery and fontawesome. In both cases, we
+      have to keep the shipped versions due to backwards-incompatible changes.
 
- -- Jonas Meurer <jonas@freesources.org>  Mon, 17 Sep 2018 13:43:15 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Wed, 19 Sep 2018 12:03:03 +0200
 
 hyperkitty (1.1.4-8) unstable; urgency=medium
 
