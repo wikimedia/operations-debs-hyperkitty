@@ -2,6 +2,9 @@ hyperkitty (1.2.1-4) UNRELEASED; urgency=medium
 
   * d/control:
     - Replace my Crans address by my Debian address in uploaders
+  * d/rules:
+    - Make the tests more verbose. Initially it was to debug garbage output,
+      but I prefer this output. It's more relevant.
 
  -- Pierre-Elliott Bécue <peb@debian.org>  Sun, 07 Oct 2018 02:48:25 +0200
 

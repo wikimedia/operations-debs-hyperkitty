@@ -14,7 +14,7 @@ override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	set -e; \
 	for python3 in $(shell py3versions -r); do \
-		$$python3 $(shell which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
+		$$python3 $(shell which django-admin) test -v 3 --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; \
 	done
 endif
 
