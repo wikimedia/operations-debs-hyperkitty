@@ -1,15 +1,18 @@
+From: Jonas Meurer <jonas@freesources.org>
+Date: Mon, 2 Oct 2017 00:08:06 +0200
+Subject: local-js-files
 Description: Replace JS script links to CDN with local copies
  Embedding JS files from commercial CDNs is - with a reason - considered
  a privacy breach for documents in Debian packages. This patch replaces
  the links to JS scripts at googleapis.com with local links.
 Forwarded: https://gitlab.com/mailman/hyperkitty/issues/158
-Author: Jonas Meurer <jonas@freesources.org>
-Last-Update: 2017-10-02
 
 ---
- hyperkitty/templates/hyperkitty/base.html |    3 +--
+ hyperkitty/templates/hyperkitty/base.html | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/hyperkitty/templates/hyperkitty/base.html b/hyperkitty/templates/hyperkitty/base.html
+index 760fc09..1c4ba58 100644
 --- a/hyperkitty/templates/hyperkitty/base.html
 +++ b/hyperkitty/templates/hyperkitty/base.html
 @@ -228,8 +228,7 @@

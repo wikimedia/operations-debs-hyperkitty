@@ -5,6 +5,9 @@ export PYBUILD_NAME = hyperkitty
 %:
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
 
+override_dh_clean:
+	dh_clean -X.txt.orig
+
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 	set -e; \
@@ -24,6 +27,8 @@ override_dh_auto_install:
 		ln -sf /usr/share/fonts-font-awesome/fonts/fontawesome-webfont.ttf {} \;
 	find debian/python-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
 		ln -sf /usr/share/fonts-font-awesome/fonts/FontAwesome.otf {} \;
+	find debian/python-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
+		ln -sf /usr/share/glewlwyd/webapp/fonts/glyphicons-halflings-regular.ttf {} \;
 	# Don't embed bootstrap/jquery JS scripts
 	find debian/python-django-hyperkitty -name 'bootstrap.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
@@ -37,3 +42,7 @@ override_dh_auto_install:
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod 644 debian/python-django-hyperkitty/usr/share/doc/python-django-hyperkitty/examples/wsgi.py
