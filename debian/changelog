@@ -1,3 +1,12 @@
+hyperkitty (1.1.4-8~bpo9+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+  * Don't implement the changes from 1.1.4-6
+  * d/control:
+    - Set my Debian address as uploader
+
+ -- Pierre-Elliott Bécue <peb@debian.org>  Mon, 22 Oct 2018 18:40:53 +0200
+
 hyperkitty (1.1.4-8) unstable; urgency=medium
 
   * d/control:

@@ -2,7 +2,7 @@ Source: hyperkitty
 Section: python
 Priority: optional
 Maintainer: Debian Mailman Team <pkg-mailman-hackers@lists.alioth.debian.org>
-Uploaders: Pierre-Elliott Bécue <becue@crans.org>,
+Uploaders: Pierre-Elliott Bécue <peb@debian.org>,
            Jonas Meurer <jonas@freesources.org>
 Build-Depends: debhelper (>= 11~),
                dh-python,
