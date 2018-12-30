@@ -19,8 +19,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 from rest_framework import serializers, generics
 from hyperkitty.models import Tag
 from .utils import MLChildHyperlinkedRelatedField

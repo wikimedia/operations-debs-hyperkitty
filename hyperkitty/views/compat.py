@@ -20,17 +20,18 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import (
-    with_statement, absolute_import, unicode_literals, print_function)
-
 import os
 import mailbox
 import datetime
 import tempfile
 import gzip
-from django.utils.six.moves import cStringIO as StringIO
+from io import StringIO
 
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    # For Django 2.0+
+    from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
 
@@ -51,7 +52,7 @@ def arch_month(request, list_name, year, month_name, summary_type="thread"):
     return redirect(reverse('hk_archives_with_month', kwargs={
         'mlist_fqdn': mlist.name,
         'year': year,
-        'month': str(month_name_to_num(month_name)).rjust(2, b"0"),
+        'month': str(month_name_to_num(month_name)).rjust(2, "0"),
         }))
 
 

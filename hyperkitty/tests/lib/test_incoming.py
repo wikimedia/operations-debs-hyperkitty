@@ -20,15 +20,16 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import datetime
-from email.message import Message
+import os
+from email.message import EmailMessage
+from email.policy import default
 from email import message_from_file
 
+import mock
 from django.utils import timezone
-from django.db import IntegrityError
-from django_mailman3.lib.cache import cache
+from django.db import IntegrityError, DataError
+from django.core.cache import cache
 
 from hyperkitty.models import MailingList, Email, Thread, Attachment
 from hyperkitty.lib.incoming import add_to_list, DuplicateMessage
@@ -39,7 +40,7 @@ from hyperkitty.tests.utils import TestCase, get_test_file
 class TestAddToList(TestCase):
 
     def test_basic(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Subject"] = "Fake Subject"
         msg["Message-ID"] = "<dummy>"
@@ -62,12 +63,12 @@ class TestAddToList(TestCase):
         self.assertEqual(m.thread.thread_id, m_hash)
 
     def test_no_message_id(self):
-        msg = Message()
+        msg = EmailMessage()
         self.assertRaises(ValueError, add_to_list,
                           "example-list", msg)
 
     def test_no_date(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -81,7 +82,7 @@ class TestAddToList(TestCase):
         self.assertTrue(stored_msg.date >= now)
 
     def test_date_naive(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["Date"] = "Fri, 02 Nov 2012 16:07:54"
@@ -98,7 +99,7 @@ class TestAddToList(TestCase):
         self.assertEqual(stored_msg.timezone, 0)
 
     def test_date_aware(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["Date"] = "Fri, 02 Nov 2012 16:07:54 +0100"
@@ -115,7 +116,7 @@ class TestAddToList(TestCase):
         self.assertEqual(stored_msg.timezone, 60)
 
     def test_duplicate(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -128,8 +129,8 @@ class TestAddToList(TestCase):
 
     def test_non_ascii_email_address(self):
         """Non-ascii email addresses should raise a ValueError exception"""
-        msg = Message()
-        msg["From"] = b"dummy-non-ascii-\xc3\xa9@example.com"
+        msg = EmailMessage(policy=default)
+        msg["From"] = "dummy-non-ascii-\xc3\xa9@example.com"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
         try:
@@ -143,26 +144,26 @@ class TestAddToList(TestCase):
             0)
 
     def test_duplicate_nonascii(self):
-        msg = Message()
-        msg["From"] = b"dummy-ascii@example.com"
+        msg = EmailMessage()
+        msg["From"] = "dummy-ascii@example.com"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
         add_to_list("example-list", msg)
         mlist = MailingList.objects.get(name="example-list")
         self.assertEqual(mlist.emails.count(), 1)
         self.assertTrue(mlist.emails.filter(message_id="dummy").exists())
-        msg.replace_header("From", b"dummy-non-ascii\xc3\xa9@example.com")
+        msg.replace_header("From", "dummy-non-ascii\xc3\xa9@example.com")
         try:
             self.assertRaises(
                 DuplicateMessage, add_to_list, "example-list", msg)
         except UnicodeDecodeError as e:
-            self.fail("Died on a non-ascii header message: %s" % unicode(e))
+            self.fail("Died on a non-ascii header message: %s" % (e))
         self.assertEqual(mlist.emails.count(), 1)
 
     def test_attachment_insert_order(self):
         """Attachments must not be inserted in the DB before the email"""
         with open(get_test_file("attachment-1.txt")) as email_file:
-            msg = message_from_file(email_file)
+            msg = message_from_file(email_file, EmailMessage, policy=default)
         try:
             add_to_list("example-list", msg)
         except IntegrityError as e:
@@ -170,19 +171,81 @@ class TestAddToList(TestCase):
         self.assertEqual(Email.objects.count(), 1)
         self.assertEqual(Attachment.objects.count(), 1)
 
+    def test_bytes_attachment(self):
+        """Some attachments have content as bytes."""
+        with open(get_test_file("attachment-2.txt")) as email_file:
+            msg = message_from_file(email_file, EmailMessage, policy=default)
+        try:
+            add_to_list("example-list", msg)
+        except IntegrityError as e:
+            self.fail(e)
+        self.assertEqual(Attachment.objects.count(), 1)
+
+    def test_string_no_cset_attachment(self):
+        """Some attachments have content as str with no specified encoding."""
+        with open(get_test_file("attachment-3.txt")) as email_file:
+            msg = message_from_file(email_file, EmailMessage, policy=default)
+        try:
+            add_to_list("example-list", msg)
+        except IntegrityError as e:
+            self.fail(e)
+        self.assertEqual(Attachment.objects.count(), 1)
+
+    def test_attachment_local_storage(self):
+        # The HYPERKITTY_ATTACHMENT_FOLDER config allows usage of a local
+        # folder for attachments.
+        with open(get_test_file("attachment-1.txt")) as email_file:
+            msg = message_from_file(email_file, EmailMessage, policy=default)
+        attachment_folder = os.path.join(self.tmpdir, "attachments")
+        with self.settings(HYPERKITTY_ATTACHMENT_FOLDER=attachment_folder):
+            add_to_list("list@example.com", msg)
+        self.assertEqual(Attachment.objects.count(), 1)
+        attachment = Attachment.objects.all().first()
+        self.assertIsNone(attachment.content, None)
+        self.assertEqual(attachment.size, 49)
+        filepath = os.path.join(
+            attachment_folder, "example.com", "list", "E3", "YP", "52",
+            "1", "2",
+        )
+        self.assertTrue(os.path.exists(filepath))
+        self.assertEqual(os.path.getsize(filepath), 49)
+
+    def test_attachment_local_storage_bad_list_name(self):
+        # The HYPERKITTY_ATTACHMENT_FOLDER config allows usage of a local
+        # folder for attachments. Verify that bad list names don't crash the
+        # app.
+        with open(get_test_file("attachment-1.txt")) as email_file:
+            msg = message_from_file(email_file, EmailMessage, policy=default)
+        attachment_folder = os.path.join(self.tmpdir, "attachments")
+        with self.settings(HYPERKITTY_ATTACHMENT_FOLDER=attachment_folder):
+            add_to_list("list.example.com", msg)
+            add_to_list("list@local@example.com", msg)
+        email1 = Email.objects.filter(
+            mailinglist__name="list.example.com").first()
+        email2 = Email.objects.filter(
+            mailinglist__name="list@local@example.com").first()
+        self.assertTrue(os.path.exists(os.path.join(
+            attachment_folder, "list.example.com", "none", "E3", "YP", "52",
+            str(email1.id), "2",
+        )))
+        self.assertTrue(os.path.exists(os.path.join(
+            attachment_folder, "example.com", "list@local", "E3", "YP", "52",
+            str(email2.id), "2",
+        )))
+
     def test_thread_neighbors(self):
         # Create 3 threads
-        msg_t1_1 = Message()
+        msg_t1_1 = EmailMessage()
         msg_t1_1["From"] = "dummy@example.com"
         msg_t1_1["Message-ID"] = "<id1_1>"
         msg_t1_1.set_payload("Dummy message")
         add_to_list("example-list", msg_t1_1)
-        msg_t2_1 = Message()
+        msg_t2_1 = EmailMessage()
         msg_t2_1["From"] = "dummy@example.com"
         msg_t2_1["Message-ID"] = "<id2_1>"
         msg_t2_1.set_payload("Dummy message")
         add_to_list("example-list", msg_t2_1)
-        msg_t3_1 = Message()
+        msg_t3_1 = EmailMessage()
         msg_t3_1["From"] = "dummy@example.com"
         msg_t3_1["Message-ID"] = "<id3_1>"
         msg_t3_1.set_payload("Dummy message")
@@ -211,7 +274,7 @@ class TestAddToList(TestCase):
         check_neighbors(3, 2, None)
         # now add a new message in thread 1, which becomes the most recently
         # active
-        msg_t1_2 = Message()
+        msg_t1_2 = EmailMessage()
         msg_t1_2["From"] = "dummy@example.com"
         msg_t1_2["Message-ID"] = "<id1_2>"
         msg_t1_2["In-Reply-To"] = "<id1_1>"
@@ -226,7 +289,7 @@ class TestAddToList(TestCase):
         # Some message-ids are more than 255 chars long
         # Check with assert here because SQLite will not enforce the limit
         # (http://www.sqlite.org/faq.html#q9)
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "X" * 260
         msg.set_payload("Dummy message")
@@ -243,11 +306,11 @@ class TestAddToList(TestCase):
     def test_long_message_id_reply(self):
         # Some message-ids are more than 255 chars long, we'll truncate them
         # but check that references are preserved
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "dummy@example.com"
         msg1["Message-ID"] = "<" + ("X" * 260) + ">"
         msg1.set_payload("Dummy message")
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "dummy@example.com"
         msg2["Message-ID"] = "<Y>"
         msg2["References"] = "<" + ("X" * 260) + ">"
@@ -272,7 +335,7 @@ class TestAddToList(TestCase):
             ]
         for name, email, count in expected:
             for num in range(count):
-                msg = Message()
+                msg = EmailMessage()
                 msg["From"] = "%s <%s>" % (name, email)
                 msg["Message-ID"] = "<%s_%s>" % (name, num)
                 msg.set_payload("Dummy message")
@@ -283,7 +346,7 @@ class TestAddToList(TestCase):
         self.assertEqual(expected, result)
 
     def test_get_sender_name(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Sender Name <dummy@example.com>"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -293,7 +356,7 @@ class TestAddToList(TestCase):
         self.assertEqual(stored_msg.sender_name, "Sender Name")
 
     def test_no_sender_address(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Sender Name <>"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -307,7 +370,7 @@ class TestAddToList(TestCase):
         self.assertEqual(stored_msg.sender.address, "sendername@example.com")
 
     def test_no_sender_name_or_address(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = ""
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -321,7 +384,7 @@ class TestAddToList(TestCase):
         self.assertEqual(stored_msg.sender.address, "unknown@example.com")
 
     def test_get_sender_name_if_empty(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -332,7 +395,7 @@ class TestAddToList(TestCase):
 
     def test_dont_update_sender_name(self):
         # This first part is equivalent to the test_get_sender_name test.
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Sender Name <dummy@example.com>"
         msg["Message-ID"] = "<dummy>"
         msg.set_payload("Dummy message")
@@ -341,7 +404,7 @@ class TestAddToList(TestCase):
         stored_msg = Email.objects.all()[0]
         self.assertEqual(stored_msg.sender_name, "Sender Name")
         # Send a second message with a different sender name
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Another Name <dummy@example.com>"
         msg["Message-ID"] = "<dummy2>"
         msg.set_payload("Dummy message")
@@ -353,7 +416,7 @@ class TestAddToList(TestCase):
         self.assertEqual(stored_msg.sender_name, "Sender Name")
 
     def test_long_subject(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<dummy>"
         msg["Subject"] = "x" * 600
@@ -369,7 +432,7 @@ class TestAddToList(TestCase):
     def test_orphans(self):
         # When a reply is received before the original message, it must be
         # re-attached when the original message arrives
-        orphan_msg = Message()
+        orphan_msg = EmailMessage()
         orphan_msg["From"] = "person@example.com"
         orphan_msg["Message-ID"] = "<msg2>"
         orphan_msg["In-Reply-To"] = "<msg1>"
@@ -378,7 +441,7 @@ class TestAddToList(TestCase):
         self.assertEqual(Email.objects.count(), 1)
         orphan = Email.objects.all()[0]
         self.assertIsNone(orphan.parent_id)
-        parent_msg = Message()
+        parent_msg = EmailMessage()
         parent_msg["From"] = "person@example.com"
         parent_msg["Message-ID"] = "<msg1>"
         parent_msg.set_payload("First message")
@@ -389,7 +452,7 @@ class TestAddToList(TestCase):
         self.assertEqual(orphan.parent_id, parent.id)
 
     def test_archived_date(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Subject"] = "Fake Subject"
         msg["Message-ID"] = "<dummy>"
@@ -404,7 +467,7 @@ class TestAddToList(TestCase):
             datetime.datetime(2013, 7, 21, 11, 59, 48, tzinfo=timezone.utc))
 
     def test_archived_date_unparseable(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Subject"] = "Fake Subject"
         msg["Message-ID"] = "<dummy>"
@@ -423,7 +486,7 @@ class TestAddToList(TestCase):
         cache.set("MailingList:%s:recent_threads" % mlist.pk, [42])
         cache.set("MailingList:%s:recent_threads_count" % mlist.pk,
                   "test-value")
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Subject"] = "Fake Subject"
         msg["Message-ID"] = "<dummy>"
@@ -437,7 +500,7 @@ class TestAddToList(TestCase):
             cache.get("MailingList:%s:recent_threads_count" % mlist.pk), 1)
 
     def test_existing_thread(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Subject"] = "Fake Subject"
         msg["Message-ID"] = "<dummy>"
@@ -457,3 +520,21 @@ class TestAddToList(TestCase):
         except Email.DoesNotExist:
             self.fail("No email found by id")
         self.assertEqual(email.thread, thread)
+
+    def test_data_error(self):
+        # Verify that a DataError exception when calling save() is propertly
+        # propagated.
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Subject"] = "Fake Subject"
+        msg["Message-ID"] = "<dummy>"
+        msg["Date"] = "Fri, 02 Nov 2012 16:07:54"
+        msg.set_payload("Fake Message")
+        email = mock.Mock()
+        email.save.side_effect = DataError("test error")
+        with mock.patch("hyperkitty.lib.incoming.Email") as Email:
+            Email.return_value = email
+            filter_mock = mock.Mock()
+            filter_mock.exists.return_value = False
+            Email.objects.filter.return_value = filter_mock
+            self.assertRaises(ValueError, add_to_list, "example-list", msg)

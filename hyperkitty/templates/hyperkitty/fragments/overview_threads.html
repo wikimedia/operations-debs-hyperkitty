@@ -20,13 +20,6 @@
             </h5>
             <div class="list-group-item-text">
                 {{ thread.date_active|date:"D M j, g:i a" }}
-                {% if use_mockups %}
-                {% if thread.category %}
-                    <span class="label category" style="background-color:{{thread.category.color}}">
-                        {{ thread.category.name|upper }}
-                    </span>
-                {% endif %}
-                {% endif %}
                 <ul class="list-unstyled pull-right list-stats">
                     <li>
                         <i class="fa fa-user"></i>

@@ -20,14 +20,12 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 import datetime
 import json
 import zlib
 
-from django.conf import settings
-from django.core.urlresolvers import reverse
+
+from django.urls import reverse
 from django.http import (
     Http404, HttpResponse, StreamingHttpResponse, HttpResponseBadRequest)
 from django.shortcuts import redirect, render, get_object_or_404
@@ -100,7 +98,7 @@ def _thread_list(request, mlist, threads,
     for thread in threads:
         # Favorites
         thread.favorite = False
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             try:
                 Favorite.objects.get(thread=thread, user=request.user)
             except Favorite.DoesNotExist:
@@ -126,31 +124,13 @@ def overview(request, mlist_fqdn=None):
     if not mlist_fqdn:
         return redirect('/')
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
-    threads = mlist.recent_threads
 
     # top authors are the ones that have the most kudos.  How do we determine
     # that?  Most likes for their post?
-    if getattr(settings, 'USE_MOCKUPS', False):
-        from hyperkitty.lib.mockup import generate_top_author
-        authors = generate_top_author()
-        authors = sorted(authors, key=lambda author: author.kudos)
-        authors.reverse()
-    else:
-        authors = []
+    authors = []
 
     # Threads by category
     threads_by_category = {}
-    if getattr(settings, 'USE_MOCKUPS', False):
-        active_threads = sorted(
-            threads, key=lambda t: t.date_active, reverse=True)
-        for thread in active_threads:
-            if not thread.category:
-                continue
-            # don't use defaultdict, use .setdefault():
-            # http://stackoverflow.com/questions/4764110/django-template-cant-loop-defaultdict
-            if len(threads_by_category.setdefault(thread.category, [])) >= 5:
-                continue
-            threads_by_category[thread.category].append(thread)
 
     # Export button
     recent_dates = [
@@ -223,7 +203,7 @@ def overview_top_threads(request, mlist_fqdn):
 def overview_favorites(request, mlist_fqdn):
     """Return the threads that the logged-in user has set as favorite."""
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         favorites = [f.thread for f in Favorite.objects.filter(
             thread__mailinglist=mlist, user=request.user)]
     else:
@@ -240,7 +220,7 @@ def overview_favorites(request, mlist_fqdn):
 def overview_posted_to(request, mlist_fqdn):
     """Return the threads that the logged-in user has posted to."""
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         mm_user_id = get_mailman_user_id(request.user)
         threads_posted_to = []
         if mm_user_id is not None:
@@ -326,8 +306,8 @@ def export_mbox(request, mlist_fqdn, filename):
         compressor = zlib.compressobj(6, zlib.DEFLATED, zlib.MAX_WBITS | 16)
         for email in query.order_by("archived_date").all():
             msg = email.as_message()
-            yield compressor.compress(msg.as_string(unixfrom=True))
-            yield compressor.compress("\n\n")
+            yield compressor.compress(msg.as_bytes(unixfrom=True))
+            yield compressor.compress(b"\n\n")
         yield compressor.flush()
     response = StreamingHttpResponse(
         stream_mbox(query), content_type="application/gzip")

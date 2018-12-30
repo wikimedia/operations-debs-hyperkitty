@@ -20,9 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
-from django_mailman3.lib.cache import cache
+from django.core.cache import cache
 
 
 class CachedValue(object):

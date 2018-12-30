@@ -1,0 +1,6 @@
+# We have to keep the shipped fontawesome fonts for now due to
+# backwards-incomaptible fontawesome upload. See #899124.
+python3-django-hyperkitty: duplicate-font-file
+# We have to keep the shipped jquery version as the one in Debians
+# package libjs-jquery is not compatible and breaks hyperkitty.
+python3-django-hyperkitty: embedded-javascript-library

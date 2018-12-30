@@ -23,17 +23,14 @@
 Import the content of a mbox file into the database.
 """
 
-from __future__ import (
-    absolute_import, print_function, unicode_literals, division)
-
 import mailbox
 import os
 import re
 from datetime import datetime
-from email.utils import unquote
+from email.utils import make_msgid, unquote
+from email import message_from_bytes, policy
 from traceback import print_exc
 from math import floor
-
 
 from dateutil.parser import parse as parse_date
 from dateutil import tz
@@ -126,6 +123,17 @@ class DbImporter(object):
         except ValueError:
             return False
 
+    def _get_date(self, message, header):
+        try:
+            date = message.get(header)
+        except TypeError as e:
+            if self.verbose:
+                self.stderr.write(
+                    "Can't get {} header in message {}: {}.".format(
+                        header, message["message-id"], e))
+            return None
+        return date
+
     def from_mbox(self, mbfile):
         """
         Insert all the emails contained in an mbox file into the database.
@@ -136,7 +144,22 @@ class DbImporter(object):
         progress_marker = ProgressMarker(self.verbose, self.stdout)
         if not self.since:
             progress_marker.total = len(mbox)
-        for message in mbox:
+        for msg in mbox:
+            # FIXME: this converts mailbox.mboxMessage to
+            # email.message.EmailMessage
+            msg_raw = msg.as_bytes(unixfrom=False)
+            unixfrom = msg.get_from()
+            message = message_from_bytes(msg_raw, policy=policy.default)
+            # Fix missing and wierd Date: headers.
+            date = (self._get_date(message, "date") or
+                    self._get_date(message, "resent-date"))
+            if unixfrom and not date:
+                date = " ".join(unixfrom.split()[1:])
+            if date:
+                try:
+                    message.replace_header('date', date)
+                except KeyError:
+                    message['Date'] = date
             if self._is_too_old(message):
                 continue
             progress_marker.tick(message["Message-Id"])
@@ -144,8 +167,10 @@ class DbImporter(object):
             if message["subject"]:
                 message.replace_header(
                     "subject", TEXTWRAP_RE.sub(" ", message["subject"]))
-            if message.get_from():
-                message.set_unixfrom(message.get_from())
+            if unixfrom:
+                message.set_unixfrom(unixfrom)
+            if message['message-id'] is None:
+                message['Message-ID'] = make_msgid('generated')
             # Now insert the message
             try:
                 with transaction.atomic():
@@ -155,18 +180,18 @@ class DbImporter(object):
                     self.stderr.write(
                         "Duplicate email with message-id '%s'" % e.args[0])
                 continue
-            except ValueError as e:
+            except (LookupError, UnicodeError, ValueError) as e:
                 self.stderr.write("Failed adding message %s: %s"
                                   % (message.get("Message-ID"), e))
-                if len(e.args) != 2:
-                    raise  # Regular ValueError exception
-                try:
-                    self.stderr.write(
-                        "%s from %s about %s"
-                        % (e.args[0], e.args[1].get("From"),
-                           e.args[1].get("Subject")))
-                except UnicodeDecodeError:
-                    pass
+                if len(e.args) == 2:
+                    try:
+                        self.stderr.write(
+                            "%s from %s about %s"
+                            % (e.args[0], e.args[1].get("From"),
+                               e.args[1].get("Subject")))
+                    except UnicodeDecodeError:
+                        pass
+                # Don't reraise the exception
                 continue
             except DatabaseError:
                 try:
@@ -189,6 +214,7 @@ class DbImporter(object):
             progress_marker.count_imported += 1
         # self.store.search_index.flush() # Now commit to the search index
         progress_marker.finish()
+        mbox.close()
 
 
 class Command(BaseCommand):
@@ -252,7 +278,7 @@ class Command(BaseCommand):
         #     != "django.db.backends.sqlite3":
         #     transaction.set_autocommit(False)
         settings.HYPERKITTY_BATCH_MODE = True
-        # Only import emails older than the latest email in the DB
+        # Only import emails newer than the latest email in the DB
         latest_email_date = Email.objects.filter(
                 mailinglist__name=list_address
             ).values("date").order_by("-date").first()
@@ -299,9 +325,12 @@ class Command(BaseCommand):
             #     transaction.commit()
         if options["verbosity"] >= 1:
             self.stdout.write("Warming up cache")
-            call_command("hyperkitty_warm_up_cache", list_address)
+        call_command("hyperkitty_warm_up_cache", list_address)
         if options["verbosity"] >= 1:
             self.stdout.write(
-                "The full-text search index will be updated every minute. Run "
-                "the 'manage.py runjob update_index' command to update it now."
+                "The full-text search index is not updated for this list. "
+                "It will not be updated by the 'minutely' incremental "
+                "update job. To update the index for this list, run the "
+                "'manage.py update_index_one_list {}' command."
+                .format(list_address)
                 )

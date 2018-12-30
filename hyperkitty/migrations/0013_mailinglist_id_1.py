@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
-from __future__ import unicode_literals
-
 import contextlib
 from django.apps.registry import Apps
 from django.db import migrations, models
@@ -37,7 +35,7 @@ class MailingListPrimaryKey(migrations.AlterField):
             'db_table': old_model._meta.db_table,
             'apps': Apps(),
         }
-        meta = type(b"Meta", tuple(), meta_contents)
+        meta = type("Meta", tuple(), meta_contents)
         body['Meta'] = meta
         body['__module__'] = old_model.__module__
 

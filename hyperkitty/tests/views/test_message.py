@@ -21,16 +21,17 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import json
+import os
 import uuid
-from email.message import Message
+from email import message_from_file
+from email.message import EmailMessage
+from email.policy import default
 
 from allauth.account.models import EmailAddress
 from mock import Mock, patch
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from hyperkitty.utils import reverse
 from django.core import mail
 from django.utils import timezone
 from django_gravatar.helpers import get_gravatar_url
@@ -38,10 +39,10 @@ from django_mailman3.tests.utils import get_flash_messages
 
 from hyperkitty.lib.utils import get_message_id_hash
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models.email import Email
+from hyperkitty.models.email import Email, Attachment
 from hyperkitty.models.mailinglist import MailingList
 from hyperkitty.models.thread import Thread
-from hyperkitty.tests.utils import TestCase
+from hyperkitty.tests.utils import TestCase, get_test_file
 
 
 class MessageViewsTestCase(TestCase):
@@ -51,7 +52,7 @@ class MessageViewsTestCase(TestCase):
                 'testuser', 'test@example.com', 'testPass')
         self.client.login(username='testuser', password='testPass')
         # Create a dummy message to test on
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -64,7 +65,7 @@ class MessageViewsTestCase(TestCase):
                       get_message_id_hash("msg")))
         resp = self.client.post(url, {"vote": "1"})
         self.assertEqual(resp.status_code, 200)
-        result = json.loads(resp.content)
+        result = json.loads(resp.content.decode(resp.charset))
         self.assertEqual(result["like"], 1)
         self.assertEqual(result["dislike"], 0)
 
@@ -73,12 +74,12 @@ class MessageViewsTestCase(TestCase):
                       get_message_id_hash("msg")))
         resp = self.client.post(url, {"vote": "-1"})
         self.assertEqual(resp.status_code, 200)
-        result = json.loads(resp.content)
+        result = json.loads(resp.content.decode(resp.charset))
         self.assertEqual(result["like"], 0)
         self.assertEqual(result["dislike"], 1)
 
     def test_vote_cancel(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg1>"
         msg.set_payload("Dummy message")
@@ -101,7 +102,7 @@ class MessageViewsTestCase(TestCase):
             votes = msg.get_votes()
             self.assertEqual(votes["likes"], 0)
             self.assertEqual(votes["dislikes"], 0)
-            result = json.loads(resp.content)
+            result = json.loads(resp.content.decode(resp.charset))
             self.assertEqual(result["like"], 0)
             self.assertEqual(result["dislike"], 0)
 
@@ -149,7 +150,7 @@ class MessageViewsTestCase(TestCase):
                 posting_fn.call_args[0][1:],
                 (mlist, 'Re: Dummy Subject', 'dummy reply content',
                  {'References': '<msg>', 'In-Reply-To': '<msg>'}))
-        result = json.loads(response.content)
+        result = json.loads(response.content.decode(response.charset))
         self.assertIn("Django User", result["message_html"])
         self.assertIn("dummy reply content", result["message_html"])
         self.assertIn(
@@ -170,7 +171,7 @@ class MessageViewsTestCase(TestCase):
             self.assertEqual(
                 posting_fn.call_args[0][1:],
                 (mlist, 'new subject', 'dummy reply content', {}))
-        result = json.loads(response.content)
+        result = json.loads(response.content.decode(response.charset))
         self.assertEqual(result["message_html"], None)
 
     def test_reply_different_sender(self):
@@ -200,7 +201,7 @@ class MessageViewsTestCase(TestCase):
                 (mlist, 'Re: Dummy Subject', 'dummy reply content',
                  {'From': 'otheremail@example.com',
                   'In-Reply-To': '<msg>', 'References': '<msg>'}))
-        result = json.loads(response.content)
+        result = json.loads(response.content.decode(response.charset))
         self.assertIn("Django User", result["message_html"])
         self.assertIn("dummy reply content", result["message_html"])
         self.assertIn(
@@ -282,7 +283,7 @@ class MessageViewsTestCase(TestCase):
         self.assertEqual(messages[0].tags, "success")
 
     def test_display_fixed(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -301,7 +302,7 @@ class MessageViewsTestCase(TestCase):
         self.assertContains(response2, "email-body fixed", status_code=200)
 
     def test_email_escaped_body(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -314,7 +315,7 @@ class MessageViewsTestCase(TestCase):
         self.assertNotContains(response, "email@example.com", status_code=200)
 
     def test_email_in_link_in_body(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -330,7 +331,7 @@ class MessageViewsTestCase(TestCase):
             status_code=200)
 
     def test_email_escaped_sender(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "someone-else@example.com"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -373,7 +374,7 @@ class MessageViewsTestCase(TestCase):
         self.user.is_staff = True
         self.user.save()
         msg = Email.objects.get(message_id="msg")
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "dummy@example.com"
         msg2["Message-ID"] = "<msg2>"
         msg2["In-Reply-To"] = "<msg>"
@@ -406,7 +407,7 @@ class MessageViewsTestCase(TestCase):
         self.user.is_staff = True
         self.user.save()
         msg = Email.objects.get(message_id="msg")
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "dummy@example.com"
         msg2["Message-ID"] = "<msg2>"
         msg2["In-Reply-To"] = "<msg>"
@@ -434,7 +435,7 @@ class MessageViewsTestCase(TestCase):
         self.user.save()
         msg = Email.objects.get(message_id="msg")
         # Add a message with the same message-id to a different list.
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "dummy@example.com"
         msg2["Message-ID"] = "<msg>"
         msg2.set_payload("Dummy message")
@@ -446,3 +447,65 @@ class MessageViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["mlist"], msg.mailinglist)
         self.assertEqual(response.context["thread"], msg.thread)
+
+    def test_attachment(self):
+        with open(get_test_file("attachment-1.txt")) as email_file:
+            msg = message_from_file(email_file, EmailMessage, policy=default)
+        add_to_list("list@example.com", msg)
+        url = reverse('hk_message_attachment', args=(
+            "list@example.com",
+            get_message_id_hash(msg["Message-Id"]),
+            "2", "puntogil.vcf",
+        ))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], "text/x-vcard")
+        self.assertEqual(response['Content-Length'], "49")
+        self.assertEqual(response['Content-Encoding'], "utf-8")
+        self.assertEqual(
+            response['Content-Disposition'],
+            "attachment; filename*=UTF-8''puntogil.vcf"
+        )
+        self.assertEqual(
+            response.content,
+            b'begin:vcard\nfn:gil\nn:;gil\nversion:2.1\nend:vcard\n\n'
+        )
+
+    def test_attachment_local_storage(self):
+        # Tests getting an attachment when it's stored on the filesystem.
+        msg = Email.objects.get(mailinglist__name="list@example.com",
+                                message_id="msg")
+        # Add the attachment object
+        att = Attachment.objects.create(
+            email=msg, counter=1, name="testattach.txt",
+            content_type="text/plain", encoding="ascii",
+        )
+        att.set_content("test_content")
+        att.save()
+        # Create the attachment on the filesystem
+        attachment_folder = os.path.join(self.tmpdir, "attachments")
+        filedir = os.path.join(
+            attachment_folder, "example.com", "list", "DH", "ZU", "5Y",
+            str(msg.id),
+        )
+        os.makedirs(filedir)
+        contents = "test content"
+        with open(os.path.join(filedir, "1"), "w") as f:
+            f.write(contents)
+        # Now get it.
+        url = reverse('hk_message_attachment', args=(
+            "list@example.com",
+            get_message_id_hash("msg"),
+            "1", "testattach.txt",
+        ))
+        with self.settings(HYPERKITTY_ATTACHMENT_FOLDER=attachment_folder):
+            response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], "text/plain")
+        self.assertEqual(response['Content-Length'], str(len(contents)))
+        self.assertEqual(response['Content-Encoding'], "ascii")
+        self.assertEqual(
+            response['Content-Disposition'],
+            "attachment; filename*=UTF-8''testattach.txt"
+        )
+        self.assertEqual(response.content, contents.encode("ascii"))

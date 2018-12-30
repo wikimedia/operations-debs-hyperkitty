@@ -23,8 +23,6 @@ Analysis of messages or threads of messages
 Author: Aurelien Bompard <abompard@fedoraproject.org>
 """
 
-from __future__ import absolute_import, unicode_literals
-
 import networkx as nx
 from django.db import transaction
 

@@ -1,11 +1,12 @@
 Metadata-Version: 1.1
 Name: HyperKitty
-Version: 1.1.4
+Version: 1.2.1
 Summary: A web interface to access GNU Mailman v3 archives
 Home-page: https://gitlab.com/mailman/hyperkitty
 Author: HyperKitty Developers
 Author-email: hyperkitty-devel@lists.fedorahosted.org
 License: GPLv3
+Description-Content-Type: UNKNOWN
 Description: ========================================
         HyperKitty - Archiver for GNU Mailman v3
         ========================================
@@ -63,5 +64,5 @@ Classifier: Framework :: Django
 Classifier: Development Status :: 4 - Beta
 Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
 Classifier: Topic :: Communications :: Email :: Mailing List Servers
-Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: JavaScript

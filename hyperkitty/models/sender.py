@@ -20,10 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
-
-from django.utils.six.moves.urllib.error import HTTPError
+from urllib.error import HTTPError
 
 from django.db import models
 from django_mailman3.lib.mailman import get_mailman_client

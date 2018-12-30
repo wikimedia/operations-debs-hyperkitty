@@ -10,7 +10,7 @@ The project page is https://gitlab.com/mailman/hyperkitty.
 There is a `demo server`_ available, but it's also a development server, so it
 may be broken at the time you access it. It's usually OK though.
 
-.. _demo server: https://lists.stg.fedoraproject.org/archives/
+.. _demo server: https://lists.fedoraproject.org/archives/
 
 
 The authors are listed in the ``AUTHORS.txt`` file.
@@ -48,7 +48,7 @@ The HyperKitty archiver addresses most of the drawbacks of Pipermail.
 Copyright
 =========
 
-Copyright (C) 2012 by the Free Software Foundation, Inc.
+Copyright (C) 2012-2018 by the Free Software Foundation, Inc.
 
 HyperKitty is free software: you can redistribute it and/or
 modify it under the terms of the GNU General Public License as

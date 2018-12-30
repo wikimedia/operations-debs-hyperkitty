@@ -20,11 +20,9 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import string
 import random
-from email.message import Message
+from email.message import EmailMessage
 
 from hyperkitty.lib.incoming import add_to_list
 from hyperkitty.models.email import Email
@@ -37,12 +35,12 @@ class ThreadTestCase(TestCase):
 
     def test_starting_message_1(self):
         # A basic thread: msg2 replies to msg1
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "sender1@example.com"
         msg1["Message-ID"] = "<msg1>"
         msg1.set_payload("message 1")
         add_to_list("example-list", msg1)
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "sender2@example.com"
         msg2["Message-ID"] = "<msg2>"
         msg2.set_payload("message 2")
@@ -54,13 +52,13 @@ class ThreadTestCase(TestCase):
 
     def test_starting_message_2(self):
         # A partially-imported thread: msg1 replies to something we don't have
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "sender1@example.com"
         msg1["Message-ID"] = "<msg1>"
         msg1["In-Reply-To"] = "<msg0>"
         msg1.set_payload("message 1")
         add_to_list("example-list", msg1)
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "sender2@example.com"
         msg2["Message-ID"] = "<msg2>"
         msg2["In-Reply-To"] = msg1["Message-ID"]
@@ -73,13 +71,13 @@ class ThreadTestCase(TestCase):
     def test_starting_message_3(self):
         # A thread where the reply has an anterior date to the first email
         # (the In-Reply-To header must win over the date sort)
-        msg1 = Message()
+        msg1 = EmailMessage()
         msg1["From"] = "sender1@example.com"
         msg1["Message-ID"] = "<msg1>"
         msg1["Date"] = "Fri, 02 Nov 2012 16:07:54 +0000"
         msg1.set_payload("message 1")
         add_to_list("example-list", msg1)
-        msg2 = Message()
+        msg2 = EmailMessage()
         msg2["From"] = "sender2@example.com"
         msg2["Message-ID"] = "<msg2>"
         msg2["Date"] = "Fri, 01 Nov 2012 16:07:54 +0000"
@@ -91,7 +89,7 @@ class ThreadTestCase(TestCase):
         self.assertEqual(thread.starting_email.message_id, "msg1")
 
     def test_subject(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "sender@example.com"
         msg["Message-ID"] = "<dummymsg>"
         msg["Date"] = "Fri, 02 Nov 2012 16:07:54 +0000"
@@ -112,10 +110,10 @@ class ThreadTestCase(TestCase):
         # with assertions here.
         # We use random chars to build the subject, if we use a single repeated
         # char, the index will never be big enough.
-        subject = [random.choice(string.letters + string.digits + " ")
+        subject = [random.choice(string.ascii_letters + string.digits + " ")
                    for i_ in range(3000)]
         subject = "".join(subject)
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "sender@example.com"
         msg["Message-ID"] = "<dummymsg>"
         msg["Date"] = "Fri, 02 Nov 2012 16:07:54 +0000"

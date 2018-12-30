@@ -20,17 +20,15 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 import datetime
 from enum import Enum
-from django.utils.six.moves.urllib.error import HTTPError
+from urllib.error import HTTPError
 
 import dateutil.parser
 from django.conf import settings
 from django.db import models
 from django.utils.timezone import now, utc
-from django_mailman3.lib.cache import cache
+from django.core.cache import cache
 from django_mailman3.lib.mailman import get_mailman_client
 from mailmanclient import MailmanConnectionError
 

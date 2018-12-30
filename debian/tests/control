@@ -1,7 +1,8 @@
-Test-Command: python2.7 $(which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty
+Test-Command: for python3 in $(py3versions -r); do $python3 $(which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; done
 Depends: @,
-         python-bs4,
-         python-mock,
-         python-whoosh
+         python3-all,
+         python3-bs4,
+         python3-mock,
+         python3-whoosh
 Restrictions: build-needed,
               allow-stderr

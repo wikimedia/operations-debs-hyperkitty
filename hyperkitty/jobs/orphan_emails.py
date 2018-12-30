@@ -30,8 +30,6 @@ This can happen if HK receives the reply before the original message (when a
 mail server in the chain has an issue, or in case of greylisting for example).
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django_extensions.management.jobs import BaseJob
 from hyperkitty.models import Email
 

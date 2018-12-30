@@ -21,18 +21,16 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import json
 import re
-import urlparse
-from email.message import Message
+import urllib
+from email.message import EmailMessage
 
 from bs4 import BeautifulSoup
 from mock import patch
 
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from hyperkitty.utils import reverse
 from django_mailman3.tests.utils import get_flash_messages
 
 from hyperkitty.lib.incoming import add_to_list
@@ -53,7 +51,7 @@ class ReattachTestCase(SearchEnabledTestCase):
         # Create 2 threads
         self.messages = []
         for msgnum in range(2):
-            msg = Message()
+            msg = EmailMessage()
             msg["From"] = "dummy@example.com"
             msg["Message-ID"] = "<id%d>" % (msgnum+1)
             msg["Subject"] = "Dummy message"
@@ -166,7 +164,7 @@ class ThreadTestCase(TestCase):
     def _make_msg(self, msgid, headers=None):
         if headers is None:
             headers = {}
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<%s>" % msgid
         msg["Subject"] = "Dummy message"
@@ -183,7 +181,7 @@ class ThreadTestCase(TestCase):
         url = reverse('hk_tags', args=["list@example.com", self.threadid])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
-        return json.loads(response.content)
+        return json.loads(response.content.decode(response.charset))
 
     def test_add_tag(self):
         result = self.do_tag_post({"tag": "testtag", "action": "add"})
@@ -201,7 +199,7 @@ class ThreadTestCase(TestCase):
         tag = Tag.objects.create(name="testtag")
         Tagging.objects.create(tag=tag, thread=thread, user=self.user)
         result = self.do_tag_post({"tag": "testtag", "action": "add"})
-        self.assertEqual(result["tags"], [u"testtag"])
+        self.assertEqual(result["tags"], ["testtag"])
         self.assertEqual(Tag.objects.count(), 1)
         self.assertEqual(Tagging.objects.count(), 1)
 
@@ -274,9 +272,9 @@ class ThreadTestCase(TestCase):
             self.assertTrue(link is not None)
             link_mo = re.match(r'mailto:list@example.com\?(.+)', link["href"])
             self.assertTrue(link_mo is not None)
-            params = urlparse.parse_qs(link_mo.group(1))
-            self.assertEqual(params, {u'In-Reply-To': [u'<msgid>'],
-                                      u'Subject':     [u'Re: Dummy message']})
+            params = urllib.parse.parse_qs(link_mo.group(1))
+            self.assertEqual(params, {'In-Reply-To': ['<msgid>'],
+                                      'Subject':     ['Re: Dummy message']})
         url = reverse('hk_thread', args=["list@example.com", self.threadid])
         # Authenticated request
         response = self.client.get(url)
@@ -319,7 +317,7 @@ class ThreadTestCase(TestCase):
                 "Message %s changed subject" % email.message_id)
 
     def test_display_fixed(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msgid2>"
         msg["Subject"] = "Dummy message"
@@ -333,7 +331,7 @@ class ThreadTestCase(TestCase):
         self.assertContains(response, '"email-body "', count=1)
 
     def test_email_escaped_body(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -346,7 +344,7 @@ class ThreadTestCase(TestCase):
         self.assertNotContains(response, "email@example.com", status_code=200)
 
     def test_email_in_link_in_body(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Subject"] = "Dummy Subject"
         msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
@@ -381,14 +379,17 @@ class ThreadTestCase(TestCase):
         url = reverse('hk_thread_replies', args=["list@example.com", threadid])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        resp = json.loads(response.content)
+        resp = json.loads(response.content.decode(response.charset))
         self.assertNotIn("Starting email", resp["replies_html"])
         self.assertEqual(
             resp["replies_html"].count('div class="email unread">'), 3)
         self.assertFalse(resp["more_pending"])
         self.assertIsNone(resp["next_offset"])
 
-    def test_replies_without_pending_emails(self):
+    def test_replies_without_thread_order_show_in_ui(self):
+        # In certain cases, emails without thread_order should show up in UI,
+        # even though they are somewhat staggered in order.
+        # See https://gitlab.com/mailman/hyperkitty/issues/151
         msg = self._make_msg("id1", {"Subject": "Starting email"})
         threadid = msg["Message-ID-Hash"]
         self._make_msg("id2", {
@@ -408,9 +409,10 @@ class ThreadTestCase(TestCase):
         url = reverse('hk_thread_replies', args=["list@example.com", threadid])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        resp = json.loads(response.content)
+        resp = json.loads(response.content.decode(response.charset))
         self.assertNotIn("Starting email", resp["replies_html"])
+        # Make sure there are three emails in the reply.
         self.assertEqual(
-            resp["replies_html"].count('div class="email unread">'), 1)
+            resp["replies_html"].count('div class="email unread">'), 3)
         self.assertFalse(resp["more_pending"])
         self.assertIsNone(resp["next_offset"])

@@ -20,8 +20,6 @@
 # Author: Aurélien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import
-
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -35,17 +33,17 @@ class TextInputWithButton(forms.TextInput):
     Use the 'button_text' class attribute to set the button's text.
     """
 
-    def render(self, name, value, attrs=None):
-        button_text = self.attrs.pop("button_text", u"")
+    def render(self, name, value, attrs=None, renderer=None):
+        button_text = self.attrs.pop("button_text", "")
         initial_rendering = forms.TextInput.render(
-                self, name, value, attrs)
+                self, name, value, attrs, renderer=renderer)
         button = mark_safe(
-            u'<span class="input-group-btn"><button type="submit" '
-            u'class="btn btn-default">%s</button></span>'
+            '<span class="input-group-btn"><button type="submit" '
+            'class="btn btn-default">%s</button></span>'
             % button_text)
         return "".join([
-            u'<span class="input-append"><div class="input-group">',
-            initial_rendering, button, u'</div></span>'])
+            '<span class="input-append"><div class="input-group">',
+            initial_rendering, button, '</div></span>'])
 
 
 class AddTagForm(forms.Form):
@@ -75,14 +73,14 @@ class AttachmentFileInput(forms.FileInput):
 <a href="#" class="attach-files-add">%(attach_another_text)s</a>
 """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         substitutions = {
             'attach_first_text': self.attach_first_text,
             'attach_another_text': self.attach_another_text,
             'rm_text': self.rm_text,
         }
         substitutions['input'] = super(AttachmentFileInput, self).render(
-            name, value, attrs)
+            name, value, attrs, renderer=renderer)
         return mark_safe(self.template % substitutions)
 
 

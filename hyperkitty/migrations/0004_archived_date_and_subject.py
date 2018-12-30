@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 import django.utils.timezone
 

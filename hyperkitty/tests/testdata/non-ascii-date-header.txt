@@ -1,0 +1,11 @@
+From xxx@korea.com  Wed Jun 27 15:23:36 2001
+From:  <xxx@korea.com>
+To: mailman-developers@python.org
+Date: ¼ö, 27 6 2001 15:23:36
+Message-Id: <263.386743.235@korea.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Subject: Bad Date
+
+
+Original had much non-ascii in headers and purported ascii body.

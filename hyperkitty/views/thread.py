@@ -21,21 +21,20 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 import datetime
 import re
 import json
 
 import robot_detection
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.utils.timezone import utc
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 from haystack.query import SearchQuerySet
 
 from hyperkitty.models import (
@@ -64,19 +63,23 @@ def _get_thread_replies(request, thread, limit, offset=0):
 
     mlist = thread.mailinglist
     initial_subject = stripped_subject(mlist, thread.starting_email.subject)
-    emails = list(thread.emails.filter(
-            thread_order__isnull=False
-        ).exclude(
+    emails = list(thread.emails.exclude(
             pk=thread.starting_email.pk
         ).order_by(sort_mode)[offset:offset+limit])
     for email in emails:
         # Extract all the votes for this message
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             email.myvote = email.votes.filter(user=request.user).first()
         else:
             email.myvote = None
         # Threading position
         if sort_mode == "thread_order":
+            # If the email's thread_order is None, we set it to 1 by
+            # default. This field should be re-computed when the async job
+            # compute_thread_order_depth runs for this new email comes in
+            # and fix things.
+            if email.thread_order is None:
+                email.thread_order = 1
             email.level = email.thread_depth - 1  # replies start ragged left
             if email.level > 5:
                 email.level = 5
@@ -102,7 +105,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
     starting_email = thread.starting_email
 
     sort_mode = request.GET.get("sort", "thread")
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         starting_email.myvote = starting_email.votes.filter(
             user=request.user).first()
     else:
@@ -113,7 +116,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
 
     # Favorites
     fav_action = "add"
-    if request.user.is_authenticated() and Favorite.objects.filter(
+    if request.user.is_authenticated and Favorite.objects.filter(
             thread=thread, user=request.user).exists():
         fav_action = "rm"
 
@@ -129,7 +132,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
 
     # Last view
     last_view = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         last_view_obj, created = LastView.objects.get_or_create(
                 thread=thread, user=request.user)
         if not created:
@@ -137,7 +140,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
             last_view_obj.save()  # update timestamp
     # get the number of unread messages
     if last_view is None:
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             unread_count = thread.emails_count
         else:
             unread_count = 0
@@ -190,7 +193,7 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
         # The limit is a safety measure, don't let a bot kill the DB
         context["replies"] = _get_thread_replies(request, thread, limit=1000)
 
-    return render(request, "hyperkitty/thread.html", context)
+    return render(request, "hyperkitty/thread.html", context=context)
 
 
 @check_mlist_private
@@ -231,17 +234,16 @@ def replies(request, mlist_fqdn, threadid):
                         content_type='application/javascript')
 
 
+@require_POST
 @check_mlist_private
 def tags(request, mlist_fqdn, threadid):
     """ Add or remove one or more tags on a given thread. """
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to add a tag',
                             content_type="text/plain", status=403)
     thread = get_object_or_404(
         Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
 
-    if request.method != 'POST':
-        raise SuspiciousOperation
     action = request.POST.get("action")
 
     if action == "add":
@@ -300,14 +302,13 @@ def suggest_tags(request, mlist_fqdn, threadid):
                         content_type='application/javascript')
 
 
+@require_POST
 @check_mlist_private
 def favorite(request, mlist_fqdn, threadid):
     """ Add or remove from favorites"""
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to have favorites',
                             content_type="text/plain", status=403)
-    if request.method != 'POST':
-        raise SuspiciousOperation
 
     thread = get_object_or_404(
         Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)
@@ -320,14 +321,13 @@ def favorite(request, mlist_fqdn, threadid):
     return HttpResponse("success", content_type='text/plain')
 
 
+@require_POST
 @check_mlist_private
 def set_category(request, mlist_fqdn, threadid):
     """ Set the category for a given thread. """
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse('You must be logged in to add a tag',
                             content_type="text/plain", status=403)
-    if request.method != 'POST':
-        raise SuspiciousOperation
 
     thread = get_object_or_404(
         Thread, mailinglist__name=mlist_fqdn, thread_id=threadid)

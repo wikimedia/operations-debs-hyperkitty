@@ -21,20 +21,19 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import os
 import datetime
 import gzip
 import mailbox
 import shutil
-from email.message import Message
+from email import message_from_bytes, policy
+from email.message import EmailMessage
 
 from mock import Mock
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-from django_mailman3.lib.cache import cache
+from hyperkitty.utils import reverse
+from django.core.cache import cache
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 
 from hyperkitty.models import (
@@ -47,7 +46,7 @@ class ListArchivesTestCase(TestCase):
 
     def setUp(self):
         # Create the list by adding a dummy message
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg>"
         msg.set_payload("Dummy message")
@@ -156,7 +155,7 @@ class ExportMboxTestCase(TestCase):
 
     def setUp(self):
         # Create the list by adding a dummy message
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg>"
         msg.set_payload("Dummy message")
@@ -190,14 +189,16 @@ class ExportMboxTestCase(TestCase):
     def test_basic(self):
         mbox = self._get_mbox()
         content = open(mbox._path).read()
-        self.assertTrue(content.startswith("From dummy at example.com "))
+        self.assertTrue(content.startswith("From dummy@example.com "))
         self.assertEqual(len(mbox), 1)
-        email = mbox.values()[0]
-        self.assertEqual(email["From"], "dummy at example.com")
+        msg = mbox.values()[0]
+        msg_raw = msg.as_bytes(unixfrom=False)
+        email = message_from_bytes(msg_raw, policy=policy.default)
+        self.assertEqual(email["From"], "dummy@example.com")
         self.assertEqual(email["Message-ID"], "<msg>")
         self.assertTrue(email.is_multipart())
         content = email.get_payload()[0]
-        self.assertEqual(content.get_payload(decode=True), "Dummy message")
+        self.assertEqual(content.get_payload(), "Dummy message\n")
 
     def test_with_sender_name(self):
         email = Email.objects.get(message_id="msg")
@@ -205,12 +206,12 @@ class ExportMboxTestCase(TestCase):
         email.save()
         mbox = self._get_mbox()
         email = mbox.values()[0]
-        self.assertEqual(email["From"], "Dummy Sender <dummy at example.com>")
+        self.assertEqual(email["From"], "Dummy Sender <dummy@example.com>")
 
     def test_between_dates(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
-        msg["Date"] = "2015-09-01 00:00:00"
+        msg["Date"] = "01 Sep 2015 00:00:00"
         msg["Message-ID"] = "<msg2>"
         msg.set_payload("Dummy message")
         add_to_list("list@example.com", msg)
@@ -220,14 +221,14 @@ class ExportMboxTestCase(TestCase):
         self.assertEqual(mbox_msg["Message-ID"], "<msg2>")
 
     def test_thread(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg2>"
         msg["In-Reply-To"] = "<msg>"
         msg.set_payload("Dummy message")
         add_to_list("list@example.com", msg)
         # Add a message in a different thread:
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg3>"
         msg.set_payload("Dummy message")
@@ -239,7 +240,7 @@ class ExportMboxTestCase(TestCase):
             [m["Message-ID"] for m in mbox], ["<msg>", "<msg2>"])
 
     def test_message(self):
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg2>"
         msg["In-Reply-To"] = "<msg>"
@@ -268,7 +269,7 @@ class PrivateArchivesTestCase(TestCase):
         MailingList.objects.create(
             name="list@example.com", subject_prefix="[example] ",
             archive_policy=ArchivePolicy.private.value)
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msgid>"
         msg["Subject"] = "Dummy message"
@@ -340,10 +341,10 @@ class MonthsListTestCase(TestCase):
         # Create the list by adding a dummy message
         # The message must be old to create multiple year accordion panels in
         # the months list.
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msg>"
-        msg["Date"] = "2010-02-01 00:00:00 UTC"
+        msg["Date"] = "01 Feb 2010 00:00:00 UTC"
         msg.set_payload("Dummy message")
         add_to_list("list@example.com", msg)
 

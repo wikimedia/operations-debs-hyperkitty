@@ -21,10 +21,8 @@
 #
 
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
-from django.core.urlresolvers import reverse
+from email.message import EmailMessage
+from hyperkitty.utils import reverse
 from hyperkitty.models import MailingList
 from hyperkitty.lib.incoming import add_to_list
 from hyperkitty.tests.utils import TestCase
@@ -34,7 +32,7 @@ class CompatURLsTestCase(TestCase):
 
     def setUp(self):
         MailingList.objects.create(name="list@example.com")
-        msg = Message()
+        msg = EmailMessage()
         msg["From"] = "dummy@example.com"
         msg["Message-ID"] = "<msgid>"
         msg["Subject"] = "Dummy message"

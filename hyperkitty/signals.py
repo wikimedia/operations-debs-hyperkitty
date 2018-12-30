@@ -19,8 +19,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 from django.conf import settings
 from django.db.models.signals import (
     post_init, pre_save, post_save, pre_delete, post_delete)

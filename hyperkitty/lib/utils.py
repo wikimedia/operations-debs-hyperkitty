@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 import email.utils
 import errno
 import logging
@@ -31,7 +29,8 @@ import re
 from base64 import b32encode
 from contextlib import contextmanager
 from datetime import timedelta
-from email.header import decode_header
+from email.parser import BytesHeaderParser, HeaderParser
+from email.policy import default
 from hashlib import sha1
 from tempfile import gettempdir
 
@@ -54,12 +53,12 @@ def get_message_id_hash(msg_id):
     See <http://wiki.list.org/display/DEV/Stable+URLs#StableURLs-Headers> for
     details. Example:
     """
-    msg_id = email.utils.unquote(msg_id)
-    return unicode(b32encode(sha1(msg_id).digest()))
+    msg_id = email.utils.unquote(msg_id).encode('utf-8')
+    return b32encode(sha1(msg_id).digest()).decode('utf-8')
 
 
 def get_message_id(message):
-    msg_id = email.utils.unquote(message['Message-Id']).decode("ascii")
+    msg_id = email.utils.unquote(message['Message-Id'])
     # Protect against extremely long Message-Ids (there is no limit in the
     # email spec), it's set to VARCHAR(255) in the database
     if len(msg_id) >= 255:
@@ -78,8 +77,10 @@ def get_ref(message):
             "In-Reply-To" not in message):
         return None
     ref_id = message.get("In-Reply-To")
-    if ref_id is not None:
-        ref_id = ref_id.decode('ascii', 'ignore')
+
+    # EmailMessage will always return instances of str
+    assert ref_id is None or isinstance(ref_id, str)
+
     if ref_id is None or not ref_id.strip():
         ref_id = message.get("References")
         if ref_id is not None and ref_id.strip():
@@ -91,7 +92,7 @@ def get_ref(message):
             if ref_id:
                 ref_id = ref_id.group(1)
     if ref_id is not None:
-        ref_id = ref_id[:254].decode("ascii")
+        ref_id = ref_id[:254]
     return ref_id
 
 
@@ -131,31 +132,23 @@ def parsedate(datestring):
 
 
 def header_to_unicode(header):
-    """
-    See also:
-    http://ginstrom.com/scribbles/2007/11/19/parsing-multilingual-email-with-python/
-    """
-    h_decoded = []
-    for text, charset in decode_header(header):
-        if charset is None:
-            try:
-                h_decoded.append(unicode(text))
-            except UnicodeDecodeError:
-                h_decoded.append(unicode(text, "ascii", "replace"))
-        else:
-            try:
-                h_decoded.append(text.decode(charset))
-            except (LookupError, UnicodeDecodeError):
-                # Unknown encoding or decoding failed
-                h_decoded.append(text.decode("ascii", "replace"))
-    return " ".join(h_decoded)
+    if header is None:
+        header = str(header)
+    if isinstance(header, str):
+        msg = HeaderParser(policy=default).parsestr('dummy: ' + header)
+    elif isinstance(header, bytes):
+        msg = BytesHeaderParser(policy=default).parsebytes(b'dummy: ' + header)
+    else:
+        raise ValueError('header must be str or bytes, but is ' + type(header))
+
+    return msg['dummy']
 
 
 def stripped_subject(mlist, subject):
     if mlist is None:
         return subject
     if not subject:
-        return u"(no subject)"
+        return "(no subject)"
     if not mlist.subject_prefix:
         return subject
     if subject.lower().startswith(mlist.subject_prefix.lower()):

@@ -20,9 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals, print_function
-
-from django.contrib import admin
 from django.db import models
 from paintstore.fields import ColorPickerField
 
@@ -34,14 +31,5 @@ class ThreadCategory(models.Model):
     class Meta:
         verbose_name_plural = "Thread categories"
 
-    def __unicode__(self):
-        return u'Thread category "%s"' % (unicode(self.name))
-
-
-class ThreadCategoryAdmin(admin.ModelAdmin):
-    def save_model(self, request, obj, form, change):
-        obj.name = obj.name.lower()
-        return super(ThreadCategoryAdmin, self).save_model(
-                     request, obj, form, change)
-
-admin.site.register(ThreadCategory, ThreadCategoryAdmin)  # noqa: E305
+    def __str__(self):
+        return 'Thread category "%s"' % self.name

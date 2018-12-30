@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 import django.db.models.deletion
 import paintstore.fields
@@ -78,7 +76,7 @@ class Migration(migrations.Migration):
                 ('display_name', models.CharField(max_length=255)),
                 ('description', models.TextField()),
                 ('subject_prefix', models.CharField(max_length=255)),
-                ('archive_policy', models.IntegerField(default=2, choices=[(0, b'never'), (1, b'private'), (2, b'public')])),
+                ('archive_policy', models.IntegerField(default=2, choices=[(0, 'never'), (1, 'private'), (2, 'public')])),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
             ],
             options={
@@ -91,7 +89,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('karma', models.IntegerField(default=1)),
                 ('timezone', models.CharField(default='', max_length=100, choices=TIMEZONES)),
-                ('user', models.OneToOneField(related_name='hyperkitty_profile', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(related_name='hyperkitty_profile', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -123,7 +121,7 @@ class Migration(migrations.Migration):
             name='Tagging',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('tag', models.ForeignKey(to='hyperkitty.Tag')),
+                ('tag', models.ForeignKey(to='hyperkitty.Tag', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -157,8 +155,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('value', models.SmallIntegerField(db_index=True)),
-                ('email', models.ForeignKey(related_name='votes', to='hyperkitty.Email')),
-                ('user', models.ForeignKey(related_name='votes', to=settings.AUTH_USER_MODEL)),
+                ('email', models.ForeignKey(related_name='votes', to='hyperkitty.Email', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='votes', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -171,13 +169,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='thread',
             name='category',
-            field=models.ForeignKey(related_name='threads', to='hyperkitty.ThreadCategory', null=True),
+            field=models.ForeignKey(related_name='threads', to='hyperkitty.ThreadCategory', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='thread',
             name='mailinglist',
-            field=models.ForeignKey(related_name='threads', to='hyperkitty.MailingList'),
+            field=models.ForeignKey(related_name='threads', to='hyperkitty.MailingList', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -187,13 +185,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tagging',
             name='thread',
-            field=models.ForeignKey(to='hyperkitty.Thread'),
+            field=models.ForeignKey(to='hyperkitty.Thread', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='tagging',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -211,49 +209,51 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lastview',
             name='thread',
-            field=models.ForeignKey(related_name='lastviews', to='hyperkitty.Thread'),
+            field=models.ForeignKey(related_name='lastviews', to='hyperkitty.Thread', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='lastview',
             name='user',
-            field=models.ForeignKey(related_name='lastviews', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='lastviews', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='favorite',
             name='thread',
-            field=models.ForeignKey(related_name='favorites', to='hyperkitty.Thread'),
+            field=models.ForeignKey(related_name='favorites', to='hyperkitty.Thread', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='favorite',
             name='user',
-            field=models.ForeignKey(related_name='favorites', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='favorites', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='email',
             name='mailinglist',
-            field=models.ForeignKey(related_name='emails', to='hyperkitty.MailingList'),
+            field=models.ForeignKey(related_name='emails', to='hyperkitty.MailingList', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='email',
             name='parent',
-            field=models.ForeignKey(related_name='children', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='hyperkitty.Email', null=True),
+            field=models.ForeignKey(related_name='children',
+                                    on_delete=django.db.models.deletion.SET_NULL,
+                                    blank=True, to='hyperkitty.Email', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='email',
             name='sender',
-            field=models.ForeignKey(related_name='emails', to='hyperkitty.Sender'),
+            field=models.ForeignKey(related_name='emails', to='hyperkitty.Sender', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='email',
             name='thread',
-            field=models.ForeignKey(related_name='emails', to='hyperkitty.Thread'),
+            field=models.ForeignKey(related_name='emails', to='hyperkitty.Thread', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -263,7 +263,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attachment',
             name='email',
-            field=models.ForeignKey(related_name='attachments', to='hyperkitty.Email'),
+            field=models.ForeignKey(related_name='attachments', to='hyperkitty.Email', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

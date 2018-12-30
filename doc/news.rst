@@ -2,6 +2,34 @@
 News / Changelog
 ================
 
+1.2.1
+=====
+(2018-08-30)
+
+- Several message defects that would cause ``hyperkitty_import`` to abort will
+  now just cause the message to be skipped and allow importing to continue.
+  (#183)
+- If an imported message has no Date: header, ``hyperkitty_import`` will now
+  look for Resent-Date: and the unixfrom date before archiving the message
+  with the current date.  (#184)
+- Add support for Django 2.1. Hyperkitty now supports Django 1.11-2.1 (#193)
+
+
+1.2.0
+=====
+(2018-07-10)
+
+- Handle email attachments returned by Scrubber as bytes or as strings with
+  no specified encoding. (#171)
+- Remove robotx.txt from Hyperkitty. It wasn't working correctly anyway.
+  If you still need it, serve it from the webserver directly. (#176)
+- Add the possibility to store attachments on the filesystem, using the
+  ``HYPERKITTY_ATTACHMENT_FOLDER`` config variable.
+- If a message in the mbox passed to ``hyperkitty_import`` is missing a
+  ``Message-ID``, a generated one will be added. (#180)
+- There is a new management command ``update_index_one_list`` to update the
+  search index for a single list. (#175)
+
 
 1.1.4
 =====

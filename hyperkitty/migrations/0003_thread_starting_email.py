@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 
 
@@ -28,7 +26,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='thread',
             name='starting_email',
-            field=models.OneToOneField(related_name='started_thread', null=True, to='hyperkitty.Email'),
+            field=models.OneToOneField(related_name='started_thread',
+                                       null=True, to='hyperkitty.Email',
+                                       on_delete=models.CASCADE),
         ),
         migrations.RunPython(find_starting_email),
     ]

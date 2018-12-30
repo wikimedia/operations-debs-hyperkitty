@@ -20,8 +20,6 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, unicode_literals
-
 import datetime
 from functools import wraps
 
@@ -142,7 +140,7 @@ def is_mlist_authorized(request, mlist):
         return True
     if request.user.is_superuser:
         return True
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return False
     # Private list and logged-in user: check subscriptions
     if mlist.list_id in get_subscriptions(request.user):
@@ -154,7 +152,7 @@ def is_mlist_authorized(request, mlist):
 def get_posting_form(formclass, request, mlist, data=None):
     form = formclass(data, initial={
         "sender": get_sender(request, mlist)})
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         form.fields['sender'].choices = [
             (a, a) for a in request.user.hyperkitty_profile.addresses]
     return form

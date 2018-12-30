@@ -20,9 +20,7 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-from email.message import Message
+from email.message import EmailMessage
 
 from django.apps import apps
 from haystack.query import SearchQuerySet
@@ -43,13 +41,13 @@ class SearchIndexTestCase(SearchEnabledTestCase):
         # Restore automatic update
         apps.get_app_config('haystack').signal_processor.setup()
 
-    def _add_message(self, msgid="msg"):
-        msg = Message()
+    def _add_message(self, msgid="msg", list="list@example.com"):
+        msg = EmailMessage()
         msg["From"] = "Dummy Sender <dummy@example.com>"
         msg["Message-ID"] = "<%s>" % msgid
         msg["Subject"] = "Dummy message"
         msg.set_payload("Dummy content with keyword")
-        return add_to_list("list@example.com", msg)
+        return add_to_list(list, msg)
 
     def test_update_index(self):
         self._add_message()
@@ -69,4 +67,12 @@ class SearchIndexTestCase(SearchEnabledTestCase):
         Email.objects.get(message_id="msgid2").delete()
         # Update the index with the remove option
         update_index(remove=True)
+        self.assertEqual(SearchQuerySet().count(), 1)
+
+    def test_update_index_one_list(self):
+        self._add_message()
+        self._add_message("msgid2", "list2@example.com")
+        self.assertEqual(SearchQuerySet().count(), 0)
+        # Update the index for only list2
+        update_index(listname="list2@example.com")
         self.assertEqual(SearchQuerySet().count(), 1)

@@ -5,5 +5,5 @@ Abstract: This manual describes how to use Hyperkitty, the Mailman3 archiver
 Section: Network/Communication
 
 Format: HTML
-Index: /usr/share/doc/python-django-hyperkitty/html/index.html
-Files: /usr/share/doc/python-django-hyperkitty/html/*
+Index: /usr/share/doc/python3-django-hyperkitty/html/index.html
+Files: /usr/share/doc/python3-django-hyperkitty/html/*

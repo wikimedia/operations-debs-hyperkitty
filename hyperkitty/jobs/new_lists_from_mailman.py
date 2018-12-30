@@ -24,8 +24,6 @@ Import new lists from Mailman over REST.
 Those lists have no archived email yet.
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django_extensions.management.jobs import BaseJob
 from hyperkitty.lib.mailman import get_new_lists_from_mailman
 
