@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -22,7 +22,7 @@
 
 import datetime
 from email.message import EmailMessage
-from email import message_from_file
+from email import message_from_file, message_from_string
 from traceback import format_exc
 
 from django.utils import timezone
@@ -215,6 +215,18 @@ class TestUtils(TestCase):
         msg = EmailMessage()
         msg["Message-Id"] = '<%s>' % ('x' * 300)
         self.assertEqual(utils.get_message_id(msg), 'x' * 254)
+
+    def test_get_folded_message_id(self):
+        msg = message_from_string("""\
+From: dummy@example.com
+To: list@example.com
+Subject: Test message
+Message-ID:
+ <a.folded.message.id>
+
+Dummy Message
+""")
+        self.assertEqual(utils.get_message_id(msg), 'a.folded.message.id')
 
     def test_non_ascii_ref(self):
         msg = EmailMessage()

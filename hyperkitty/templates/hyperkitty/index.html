@@ -89,16 +89,7 @@
             {% if all_lists %}
             <p class="hide-switches">
                 <label><input type="checkbox" value="inactive" checked="checked" />{% trans "Hide inactive" %}</label>
-                <label
-                    {% if sort_mode == "active" or sort_mode == "popular" %}
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="{% trans 'Private lists are always hidden in this sort mode' %}"
-                    {% endif %}
-                    ><input type="checkbox" value="private"
-                            {% if sort_mode == "active" or sort_mode == "popular" %}
-                            checked="checked" disabled="disabled"
-                            {% endif %}
-                            />{% trans "Hide private" %}</label>
+                <label><input type="checkbox" value="private" />{% trans "Hide private" %}</label>
             </p>
             {% endif %}
     </div>
@@ -153,20 +144,12 @@
                         <ul class="list-stats list-unstyled">
                             <li>
                                 <i class="fa fa-user"></i>
-                                {% if mlist.can_view %}
                                 {{ mlist.recent_participants_count|default_if_none:"..." }}
-                                {% else %}
-                                ...
-                                {% endif %}
                                 {% trans 'participants' %}
                             </li>
                             <li>
                                 <i class="fa fa-comments"></i>
-                                {% if mlist.can_view %}
                                 {{ mlist.recent_threads_count|default_if_none:"..." }}
-                                {% else %}
-                                ...
-                                {% endif %}
                                 {% trans 'discussions' %}
                             </li>
                         </ul>
@@ -234,20 +217,12 @@
                         <ul class="list-stats list-unstyled">
                             <li>
                                 <i class="fa fa-user"></i>
-                                {% if mlist.can_view %}
                                 {{ mlist.recent_participants_count|default_if_none:"..." }}
-                                {% else %}
-                                ...
-                                {% endif %}
                                 {% trans 'participants' %}
                             </li>
                             <li>
                                 <i class="fa fa-comments"></i>
-                                {% if mlist.can_view %}
                                 {{ mlist.recent_threads_count|default_if_none:"..." }}
-                                {% else %}
-                                ...
-                                {% endif %}
                                 {% trans 'discussions' %}
                             </li>
                         </ul>

@@ -59,7 +59,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_gravatar',
-    'paintstore',
     'compressor',
     'haystack',
     'django_extensions',
