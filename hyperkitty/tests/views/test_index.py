@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -24,6 +24,10 @@
 import json
 from email.message import EmailMessage
 
+from django.contrib.auth.models import User
+from django_mailman3.tests.utils import FakeMMMember, FakeMMList
+from mock import Mock
+
 from hyperkitty.utils import reverse
 from django.test import override_settings
 
@@ -45,16 +49,105 @@ class PrivateListTestCase(TestCase):
         msg.set_payload("Dummy message")
         msg["Message-ID-Hash"] = self.msgid = add_to_list(
             "list@example.com", msg)
+        self.mailman_client.get_list.side_effect = \
+            lambda name: FakeMMList(name)
+
+        User.objects.create_user(
+            'superuser', 'super@example.com', 'testPass', is_superuser=True)
+
+        self.mm_subbed_user = self._create_user(
+            'subbeduser', 'subbed@example.com')
+        self.mm_subbed_user.subscriptions = [
+            FakeMMMember("list.example.com", 'subbed@example.com'),
+        ]
+        self.mm_unsubbed_user = self._create_user(
+            'unsubbeduser', 'unsubbed@example.com')
+        self.mm_unsubbed_user.subscriptions = []
+
+        def mm_get_user(email):
+            if email == 'subbed@example.com':
+                return self.mm_subbed_user
+            else:
+                return self.mm_unsubbed_user
+        self.mailman_client.get_user.side_effect = mm_get_user
+
+    def tearDown(self):
+        self.client.logout()
+
+    def _create_user(self, username, email):
+        User.objects.create_user(username, email, 'testPass')
+        mm_user = Mock()
+        mm_user.user_id = "dummy"
+        mm_user.addresses = [email]
+        return mm_user
 
     def _do_test(self, sort_mode):
         response = self.client.get(reverse("hk_root"), {"sort": sort_mode})
         self.assertNotContains(response, "list@example.com", status_code=200)
+
+    def _do_test_contains(self, sort_mode):
+        response = self.client.get(reverse("hk_root"), {"sort": sort_mode})
+        self.assertContains(response, "list@example.com", status_code=200)
 
     def test_sort_active(self):
         self._do_test("active")
 
     def test_sort_popular(self):
         self._do_test("popular")
+
+    def test_sort_name(self):
+        self._do_test("name")
+
+    def test_sort_creation(self):
+        self._do_test("creation")
+
+    def test_sort_active_subbed(self):
+        self.client.login(username='subbeduser', password='testPass')
+        self._do_test_contains("active")
+
+    def test_sort_popular_subbed(self):
+        self.client.login(username='subbeduser', password='testPass')
+        self._do_test_contains("popular")
+
+    def test_sort_name_subbed(self):
+        self.client.login(username='subbeduser', password='testPass')
+        self._do_test_contains("name")
+
+    def test_sort_creation_subbed(self):
+        self.client.login(username='subbeduser', password='testPass')
+        self._do_test_contains("creation")
+
+    def test_sort_active_unsubbed(self):
+        self.client.login(username='unsubbeduser', password='testPass')
+        self._do_test("active")
+
+    def test_sort_popular_unsubbed(self):
+        self.client.login(username='unsubbeduser', password='testPass')
+        self._do_test("popular")
+
+    def test_sort_name_unsubbed(self):
+        self.client.login(username='unsubbeduser', password='testPass')
+        self._do_test("name")
+
+    def test_sort_creation_unsubbed(self):
+        self.client.login(username='unsubbeduser', password='testPass')
+        self._do_test("creation")
+
+    def test_sort_active_super(self):
+        self.client.login(username='superuser', password='testPass')
+        self._do_test_contains("active")
+
+    def test_sort_popular_super(self):
+        self.client.login(username='superuser', password='testPass')
+        self._do_test_contains("popular")
+
+    def test_sort_name_super(self):
+        self.client.login(username='superuser', password='testPass')
+        self._do_test_contains("name")
+
+    def test_sort_creation_super(self):
+        self.client.login(username='superuser', password='testPass')
+        self._do_test_contains("creation")
 
 
 class FindTestCase(TestCase):

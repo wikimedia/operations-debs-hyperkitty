@@ -1,0 +1,25 @@
+From zzz@cse.unl.edu  Mon Nov  8 21:54:11 1999
+Message-ID: <msg@id>
+Reply-To: "Some One" <zzz@cse.unl.edu>
+From: "Some One" <zzz@cse.unl.edu>
+To: <mailman-developers@python.org>
+Date: Mon, 8 Nov 1999 20:53:05 -0600
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+        boundary="----=_NextPart_000_0271_01BF2A2B.411F64C0"
+Subject: A message with bogus Content-Type:
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0271_01BF2A2B.411F64C0
+Content-Type: text/plain
+
+Some text
+
+------=_NextPart_000_0271_01BF2A2B.411F64C0
+Content-Type: binary/octet-stream
+
+Binary data
+
+------=_NextPart_000_0271_01BF2A2B.411F64C0--
+

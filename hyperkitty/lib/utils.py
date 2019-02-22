@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ def get_message_id_hash(msg_id):
 
 
 def get_message_id(message):
-    msg_id = email.utils.unquote(message['Message-Id'])
+    msg_id = email.utils.unquote(re.sub(r'\s', '', message['Message-Id']))
     # Protect against extremely long Message-Ids (there is no limit in the
     # email spec), it's set to VARCHAR(255) in the database
     if len(msg_id) >= 255:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2015-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2015-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -51,7 +51,7 @@ def config_check(app_configs, **kwargs):
                 with open(filepath, "w") as f:
                     f.write("check")
                 os.remove(filepath)
-            except OSError as e:
+            except OSError:
                 errors.append(
                     Error(
                         'Could not write to HyperKitty\'s attachment folder',

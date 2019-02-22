@@ -93,6 +93,8 @@ hyperkitty/migrations/0014_mailinglist_id_2.py
 hyperkitty/migrations/0015_mailinglist_id_3.py
 hyperkitty/migrations/0016_auto_20180309_0056.py
 hyperkitty/migrations/0017_file_attachments.py
+hyperkitty/migrations/0018_threadcategory_color.py
+hyperkitty/migrations/0019_auto_20190127_null_description.py
 hyperkitty/migrations/__init__.py
 hyperkitty/models/__init__.py
 hyperkitty/models/category.py
@@ -370,6 +372,7 @@ hyperkitty/tests/testdata/another-wrong-encoding.txt
 hyperkitty/tests/testdata/attachment-1.txt
 hyperkitty/tests/testdata/attachment-2.txt
 hyperkitty/tests/testdata/attachment-3.txt
+hyperkitty/tests/testdata/bad_content_type.txt
 hyperkitty/tests/testdata/non-ascii-date-header.txt
 hyperkitty/tests/testdata/non-ascii-headers.txt
 hyperkitty/tests/testdata/payload-utf8-wrong.txt

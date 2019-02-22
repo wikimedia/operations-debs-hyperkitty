@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2012-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -29,13 +29,11 @@ from unittest import SkipTest
 import mailmanclient
 from django.apps import apps
 from django.conf import settings
-from django.contrib.messages.storage.cookie import CookieStorage
 from django.core.management import call_command
 from django.db import connection
-from django.db.migrations import Migration, RunSQL, RunPython
+from django.db.migrations import RunSQL, RunPython
 from django.db.migrations.executor import MigrationExecutor
-from django.test import (
-    RequestFactory, TestCase as DjangoTestCase, TransactionTestCase)
+from django.test import TestCase as DjangoTestCase, TransactionTestCase
 from django.core.cache import cache
 from mock import Mock, patch
 
@@ -108,7 +106,7 @@ class SearchEnabledTestCase(TestCase):
 
     def _pre_setup(self):
         try:
-            import whoosh  # flake8: noqa
+            import whoosh  # noqa: F401
         except ImportError:
             raise SkipTest("The Whoosh library is not available")
         super(SearchEnabledTestCase, self)._pre_setup()
@@ -120,8 +118,8 @@ class SearchEnabledTestCase(TestCase):
 
 
 class MigrationTestCase(TransactionTestCase):
-    """
-    Inpired by https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations/
+    """ Inpired by
+https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations
     """
 
     migrate_from = None
@@ -134,13 +132,16 @@ class MigrationTestCase(TransactionTestCase):
     def _pre_setup(self):
         super(MigrationTestCase, self)._pre_setup()
         assert self.migrate_from and self.migrate_to, \
-            "TestCase '{}' must define migrate_from and migrate_to properties".format(type(self).__name__)
+            "TestCase '{}' must define migrate_from and migrate_to properties"\
+            .format(type(self).__name__)
         self.migrate_from = [(self.app, self.migrate_from)]
         self.migrate_to = [(self.app, self.migrate_to)]
         self.executor = MigrationExecutor(connection)
-        self.old_apps = self.executor.loader.project_state(self.migrate_from).apps
+        self.old_apps = \
+            self.executor.loader.project_state(self.migrate_from).apps
         # Make non-reversible operations reversible.
-        for migration, _backwards in self.executor.migration_plan(self.migrate_from):
+        for migration, _backwards in \
+                self.executor.migration_plan(self.migrate_from):
             for operation in migration.operations:
                 if not operation.reversible:
                     if isinstance(operation, RunPython):
@@ -161,4 +162,6 @@ class MigrationTestCase(TransactionTestCase):
 
 def get_test_file(*fileparts):
     return os.path.join(os.path.dirname(__file__), "testdata", *fileparts)
+
+
 get_test_file.__test__ = False

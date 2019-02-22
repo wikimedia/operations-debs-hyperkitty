@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -57,7 +57,7 @@ class Sender(models.Model):
                 return  # User not found in Mailman
             # normalize all possible error types
             raise MailmanConnectionError(e)
-        except ValueError as e:
+        except ValueError:
             # This smells like a badly formatted email address (saw it in the
             # wild)
             logger.warning(
