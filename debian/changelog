@@ -6,8 +6,10 @@ hyperkitty (1.2.2-1) unstable; urgency=medium
     - Add breaks for mailman3-suite (>> 0+20180916-5~) to reflect the
       removed dependency on paintstore.
     - Bump standards-version to 4.3.0, no changes required.
+  * d/p/0001_README_remove_embedded_images.patch:
+    - Remove embedded images from README.rst
 
- -- Jonas Meurer <jonas@freesources.org>  Fri, 22 Feb 2019 21:18:42 +0100
+ -- Jonas Meurer <jonas@freesources.org>  Fri, 22 Feb 2019 21:25:00 +0100
 
 hyperkitty (1.2.1-4) unstable; urgency=medium
 
