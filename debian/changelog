@@ -1,3 +1,9 @@
+hyperkitty (1.2.2-1~bpo9+1) stretch-backports; urgency=medium
+
+  * Rebuild for stretch-backports.
+
+ -- Jonas Meurer <jonas@freesources.org>  Sun, 10 Mar 2019 00:24:28 +0100
+
 hyperkitty (1.2.2-1) unstable; urgency=medium
 
   * New upstream release 1.2.2
