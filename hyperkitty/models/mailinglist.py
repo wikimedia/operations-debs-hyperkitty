@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -59,7 +59,7 @@ class MailingList(models.Model):
     name = models.CharField(max_length=254, unique=True)
     list_id = models.CharField(max_length=254, null=True, unique=True)
     display_name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(null=True)
     subject_prefix = models.CharField(max_length=255)
     archive_policy = models.IntegerField(
         choices=[(p.value, p.name) for p in ArchivePolicy],
@@ -96,8 +96,8 @@ class MailingList(models.Model):
 
     @property
     def is_new(self):
-        return self.created_at and \
-                now() - self.created_at <= datetime.timedelta(days=30)
+        return (self.created_at and
+                now() - self.created_at <= datetime.timedelta(days=30))
 
     def get_recent_dates(self):
         today = now()
@@ -199,7 +199,7 @@ class MailingList(models.Model):
             self.list_id = self.name.replace("@", ".")
 
     def on_thread_added(self, thread):
-        pass
+        self.cached_values["recent_threads"].add_thread(thread)
 
     def on_thread_deleted(self, thread):
         from hyperkitty.tasks import (
@@ -257,7 +257,8 @@ class RecentThreads(ModelCachedValue):
         begin_date, end_date = self.instance.get_recent_dates()
         thread_ids = self.instance.get_threads_between(
             begin_date, end_date).values_list("id", flat=True)
-        return thread_ids
+        # Convert QuerySet to a list, so that we can add/remove thread_ids.
+        return list(thread_ids)
 
     def rebuild(self):
         value = super(RecentThreads, self).rebuild()

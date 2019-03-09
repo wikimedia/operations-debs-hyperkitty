@@ -2,6 +2,19 @@
 News / Changelog
 ================
 
+
+1.2.2
+=====
+(2019-02-22)
+
+- ``paintstore`` is no longer a dependency of Hyperkitty. This change requires
+  that people change their ``settings.py`` and remove ``paintstore`` from
+  ``INSTALLED_APPS``. (See #72)
+- Folded Message-ID headers will no longer break threading.  (#216)
+- MailingList descriptions are no longer a required field. This makes HyperKity
+  more aligned with Core. (Closes #211)
+
+
 1.2.1
 =====
 (2018-08-30)

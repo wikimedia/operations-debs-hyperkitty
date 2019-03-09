@@ -11,7 +11,7 @@ package is named ``rubygem-sass``, so you can install it with::
 
     sudo yum install rubygem-sass
 
-On Debian and Ubuntu, the Ruby pacakge is available in the ``ruby-sass``
+On Debian and Ubuntu, the Ruby package is available in the ``ruby-sass``
 package, which you can install with::
 
     sudo apt-get install ruby-sass

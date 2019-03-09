@@ -1,0 +1,42 @@
+Description: Remove embedded remote images from README.rst
+ The documentation files shipped with Debian packages should not embed
+ remote images, especially not from sources that are known to track
+ users (like shields.io).
+ .
+Forwarded: not-needed
+Author: Jonas Meurer <jonas@freesources.org>
+Last-Update: 2019-02-22
+From: Jonas Meurer <jonas@freesources.org>
+Date: Fri, 22 Feb 2019 21:21:55 +0100
+Subject: _README_remove_embedded_images
+
+---
+ README.rst | 15 ---------------
+ 1 file changed, 15 deletions(-)
+
+diff --git a/README.rst b/README.rst
+index 660b392..f5a569b 100644
+--- a/README.rst
++++ b/README.rst
+@@ -2,21 +2,6 @@
+ HyperKitty - Archiver for GNU Mailman v3
+ ========================================
+ 
+-.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/build.svg
+-    :target: https://gitlab.com/mailman/hyperkitty/commits/master
+-
+-.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/coverage.svg?job=coverage
+-    :target: https://gitlab.com/mailman/hyperkitty/commits/master
+-
+-.. image:: https://readthedocs.org/projects/hyperkitty/badge/?version=latest
+-    :target: https://hyperkitty.readthedocs.io
+-
+-.. image:: http://img.shields.io/pypi/v/hyperkitty.svg
+-    :target: https://pypi.python.org/pypi/hyperkitty
+-
+-.. image:: http://img.shields.io/pypi/dm/hyperkitty.svg
+-    :target: https://pypi.python.org/pypi/hyperkitty
+-
+ HyperKitty is an open source Django application under development. It aims to
+ provide a web interface to access GNU Mailman v3 archives.
+ 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2017-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2017-2019 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -75,13 +75,13 @@ def process_task_result(task):
 
     """
     if not task.success:
-        log.info(
+        log.error(
             'AsyncTask task "{0}" with args "{1}" and kwargs "{2}" finished with errors.'.format(  # noqa: E501
                 task.func,
                 task.args,
                 task.kwargs)
         )
-        log.debug(task.result)
+        log.error(task.result)
 
 
 class SingletonAsync(AsyncTask):

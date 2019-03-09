@@ -296,6 +296,33 @@ class CommandTestCase(TestCase):
         self.assertEqual(MailingList.objects.count(), 1)
         self.assertEqual(Email.objects.count(), 1)
 
+    def test_bad_content_type(self):
+        # Content-Type: binary/octet-stream throws KeyError.
+        with open(get_test_file("bad_content_type.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        # Second message
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Message-ID"] = "<msg1>"
+        msg["Date"] = "01 Feb 2015 12:00:00"
+        msg.set_payload("msg1")
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # Message 1 must have been rejected, but no crash
+        self.assertIn("Failed adding message <msg@id>:",
+                      output.getvalue())
+        # Message 2 must have been accepted
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
     def test_weird_timezone(self):
         # An email has a timezone with a strange offset (seen in the wild).
         # Make sure it does not break our _is_old_enough() method.

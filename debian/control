@@ -14,7 +14,6 @@ Build-Depends: debhelper (>= 11~),
                python3-django-gravatar2,
                python3-django-haystack (>= 2.8.0),
                python3-django-mailman3 (>= 1.2.0),
-               python3-django-paintstore,
                python3-django-q (>= 0.9.4-2),
                python3-djangorestframework,
                python3-lockfile,
@@ -26,7 +25,7 @@ Build-Depends: debhelper (>= 11~),
                python3-tz,
                python3-whoosh,
                python3-sphinx
-Standards-Version: 4.2.1
+Standards-Version: 4.3.0
 Homepage: https://gitlab.com/mailman/hyperkitty
 Vcs-Browser: https://salsa.debian.org/mailman-team/hyperkitty
 Vcs-Git: https://salsa.debian.org/mailman-team/hyperkitty.git/
@@ -42,7 +41,6 @@ Depends: fonts-font-awesome,
          python3-django-gravatar2,
          python3-django-haystack (>= 2.8.0),
          python3-django-mailman3 (>= 1.2.0),
-         python3-django-paintstore,
          python3-django-q (>= 0.9.4-2),
          python3-djangorestframework,
          python3-lockfile,
@@ -53,6 +51,7 @@ Depends: fonts-font-awesome,
          ${misc:Depends},
          ${python3:Depends}
 Recommends: mailman3-web
+Breaks: mailman3-suite (<< 0+20180916-5~)
 Conflicts: python-django-hyperkitty
 Replaces: python-django-hyperkitty
 Description: Web user interface to access GNU Mailman3 archives

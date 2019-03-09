@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2017 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -27,8 +27,8 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django_mailman3.lib.paginator import paginate
+from django_mailman3.lib.mailman import get_subscriptions
 
-from hyperkitty.lib.view_helpers import is_mlist_authorized
 from hyperkitty.models import MailingList, ArchivePolicy
 
 
@@ -56,20 +56,30 @@ def index(request):
             return redirect(
                 'hk_list_overview', mlist_fqdn=mlists.first().name)
 
+    # Access Filtering
+    if request.user.is_superuser:
+        # Superusers see everything
+        pass
+    elif request.user.is_authenticated:
+        # For authenticated users show only their subscriptions
+        # and public lists
+        mlists = mlists.filter(
+            Q(list_id__in=get_subscriptions(request.user)) |
+            Q(archive_policy=ArchivePolicy.public.value)
+        )
+    else:
+        # Unauthenticated users only see public lists
+        mlists = mlists.filter(
+            archive_policy=ArchivePolicy.public.value)
+
     # Sorting
     if sort_mode == "name":
         mlists = mlists.order_by("name")
     elif sort_mode == "active":
-        # Don't show private lists when sorted by activity, to avoid disclosing
-        # info about the private list's activity
-        mlists = list(mlists.exclude(
-            archive_policy=ArchivePolicy.private.value))
+        mlists = list(mlists)
         mlists.sort(key=lambda l: l.recent_threads_count, reverse=True)
     elif sort_mode == "popular":
-        # Don't show private lists when sorted by popularity, to avoid
-        # disclosing info about the private list's popularity.
-        mlists = list(mlists.exclude(
-            archive_policy=ArchivePolicy.private.value))
+        mlists = list(mlists)
         mlists.sort(key=lambda l: l.recent_participants_count, reverse=True)
     elif sort_mode == "creation":
         mlists = mlists.order_by("-created_at")
@@ -79,16 +89,6 @@ def index(request):
 
     mlists = paginate(mlists, request.GET.get('page'),
                       request.GET.get('count'))
-
-    # Permissions
-    for mlist in mlists:
-        if not mlist.is_private:
-            mlist.can_view = True
-        else:
-            if is_mlist_authorized(request, mlist):
-                mlist.can_view = True
-            else:
-                mlist.can_view = False
 
     context = {
         'view_name': 'all_lists',
