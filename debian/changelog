@@ -5,8 +5,11 @@ hyperkitty (1.2.2-2) UNRELEASED; urgency=medium
       Louis-Philippe Véronneau for bugreport and patch. (Closes: #924410)
   * d/patches/0003-run-sassc-at-build-time.patch:
     - Compress sassc files using sassc at build time (Related to #924961)
+  * d/control:
+    - Add breaks for mailman3-web (<< 0+20180916-10~) to ensure that
+      'django-admin collectstatic' is run after this update.
 
- -- Jonas Meurer <jonas@freesources.org>  Sat, 08 Jun 2019 19:27:36 +0200
+ -- Jonas Meurer <jonas@freesources.org>  Sat, 08 Jun 2019 19:40:32 +0200
 
 hyperkitty (1.2.2-1) unstable; urgency=medium
 

@@ -52,7 +52,7 @@ Depends: fonts-glewlwyd,
          ${misc:Depends},
          ${python3:Depends}
 Recommends: mailman3-web
-Breaks: mailman3-suite (<< 0+20180916-5~)
+Breaks: mailman3-web (<< 0+20180916-10~)
 Conflicts: python-django-hyperkitty
 Replaces: python-django-hyperkitty
 Description: Web user interface to access GNU Mailman3 archives
