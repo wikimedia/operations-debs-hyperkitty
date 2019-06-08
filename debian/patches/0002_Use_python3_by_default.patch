@@ -1,0 +1,12 @@
+On systems running both python2 and python3 and where python2 is the default,
+running 'example_project/manage.py' fails, since this is a python3 package.
+Index: hyperkitty/example_project/manage.py
+===================================================================
+--- hyperkitty.orig/example_project/manage.py
++++ hyperkitty/example_project/manage.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python3
+ import os
+ import sys
+
