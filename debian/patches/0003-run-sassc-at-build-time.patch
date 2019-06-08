@@ -1,0 +1,44 @@
+From: Jonas Meurer <jonas@freesources.org>
+Date: Sat, 8 Jun 2019 18:04:08 +0200
+Subject: Run sassc at build-time
+
+Forwarded: not-needed
+Last-Update: 2019-06-08
+
+In the Debian package, we compile the scss files at build-time with
+sassc to prevent the run-time dependency on sassc. This patch
+replaces the scss reference in the base.html template with the
+pre-built css file reference.
+---
+ example_project/settings.py               | 4 ----
+ hyperkitty/templates/hyperkitty/base.html | 2 +-
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/example_project/settings.py b/example_project/settings.py
+index 8a1c405..48b4cfa 100644
+--- a/example_project/settings.py
++++ b/example_project/settings.py
+@@ -310,10 +310,6 @@ SOCIALACCOUNT_PROVIDERS = {
+ # django-compressor
+ # https://pypi.python.org/pypi/django_compressor
+ #
+-COMPRESS_PRECOMPILERS = (
+-   ('text/x-scss', 'sassc -t compressed {infile} {outfile}'),
+-   ('text/x-sass', 'sassc -t compressed {infile} {outfile}'),
+-)
+ # On a production setup, setting COMPRESS_OFFLINE to True will bring a
+ # significant performance improvement, as CSS files will not need to be
+ # recompiled on each requests. It means running an additional "compress"
+diff --git a/hyperkitty/templates/hyperkitty/base.html b/hyperkitty/templates/hyperkitty/base.html
+index b2319aa..25415a8 100644
+--- a/hyperkitty/templates/hyperkitty/base.html
++++ b/hyperkitty/templates/hyperkitty/base.html
+@@ -18,7 +18,7 @@
+         <link rel="stylesheet" href="{% static 'hyperkitty/libs/fonts/icomoon/icomoon.css' %}" type="text/css" media="all" />
+         <link rel="stylesheet" href="{% static 'hyperkitty/libs/fonts/droid/droid.css' %}" type="text/css" media="all" />
+         <link rel="stylesheet" href="{% static 'django-mailman3/css/main.css' %}" />
+-        <link rel="stylesheet" type="text/x-scss" media="all" href="{% static 'hyperkitty/sass/hyperkitty.scss' %}" />
++        <link rel="stylesheet" href="{% static 'hyperkitty/libs/hyperkitty.css' %}" type="text/css" media="all" />
+         {% endcompress %}
+         {% block additional_stylesheets %} {% endblock %}
+         {% include 'hyperkitty/headers.html' %}

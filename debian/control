@@ -24,7 +24,8 @@ Build-Depends: debhelper (>= 11~),
                python3-setuptools,
                python3-tz,
                python3-whoosh,
-               python3-sphinx
+               python3-sphinx,
+               sassc
 Standards-Version: 4.3.0
 Homepage: https://gitlab.com/mailman/hyperkitty
 Vcs-Browser: https://salsa.debian.org/mailman-team/hyperkitty

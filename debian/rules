@@ -25,7 +25,7 @@ override_dh_auto_build:
 override_dh_python3:
 	dh_python3
 	# Due to bug #908999, dh_python3 removes the empty directory
-	# 'usr/share/python3-django-postorius', so run mkdir manually.
+	# 'usr/share/python3-django-hyperkitty', so run mkdir manually.
 	mkdir -p debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty
 	# Move static files outside of the lib directory
 	mv debian/python3-django-hyperkitty/usr/lib/python3/dist-packages/hyperkitty/static \
@@ -45,6 +45,9 @@ override_dh_python3:
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
 	find debian/python3-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
+	# Compile scss + css files using sassc
+	sassc hyperkitty/static/hyperkitty/sass/hyperkitty.scss \
+		debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty/static/hyperkitty/libs/hyperkitty.css
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
