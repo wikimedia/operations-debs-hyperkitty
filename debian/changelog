@@ -1,3 +1,11 @@
+hyperkitty (1.2.2-2) UNRELEASED; urgency=medium
+
+  * d/patches/0002_Use_python3_by_default.patch:
+    - Use python3 by default instead of /usr/bin/env python. Thanks to
+      Louis-Philippe Véronneau for bugreport and patch. (Closes: #924410)
+
+ -- Jonas Meurer <jonas@freesources.org>  Sat, 08 Jun 2019 17:55:08 +0200
+
 hyperkitty (1.2.2-1) unstable; urgency=medium
 
   * New upstream release 1.2.2
