@@ -19,9 +19,10 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from rest_framework import serializers, permissions
-from hyperkitty.models import MailingList
+from rest_framework import permissions, serializers
+
 from hyperkitty.lib.view_helpers import is_mlist_authorized
+from hyperkitty.models import MailingList
 
 
 class MLChildHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):

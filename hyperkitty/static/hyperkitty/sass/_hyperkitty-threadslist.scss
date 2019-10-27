@@ -28,7 +28,7 @@
 /*
  * Thread summary
  */
- 
+
 
 #thread-list .thread {
 
@@ -67,9 +67,9 @@
             font-size: 110%;
             padding-bottom: 0.25em;
         }
-        
+
         .thread-fav {
-			text-align: right;
+            text-align: right;
         }
 
         .likestatus + span {
@@ -90,7 +90,10 @@
             }
         }
     }
+}
 
+#thread-list .unread {
+    border-left: 2px solid #08c;
 }
 
 // for viewports larger than XS, add more spacing
@@ -129,14 +132,14 @@
 
 
 /*
- * Part containing the body of the mail which can be shown/hidden 
+ * Part containing the body of the mail which can be shown/hidden
  */
 
 .expander {
 
     display: block;
     vertical-align: top;
-    
+
     white-space: pre-wrap;
     word-wrap: break-word;
 }
@@ -156,13 +159,17 @@
 
 .thread-email {
 
-	.list-stats {
-		margin-top: 1.5em;
-	}
+  .list-stats {
+    margin-top: 1.5em;
+  }
 
-	.expander.collapsed {
-		white-space: normal;
-	}
+  .expander.collapsed {
+    white-space: normal;
+  }
+
+  .gravatar {
+      margin-left:5px;
+  }
 }
 
 //=== search result thread list ==/
@@ -186,7 +193,7 @@
 // for small screen sizes
 @media (max-width: 991px) {
 
-// for monthly thread list, to align 
+// for monthly thread list, to align
 // collapsed right column underneath
 // left in smaller screen width
 .thread-email {

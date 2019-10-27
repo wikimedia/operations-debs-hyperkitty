@@ -26,23 +26,26 @@ Import the content of a mbox file into the database.
 import mailbox
 import os
 import re
+from contextlib import suppress
 from datetime import datetime
-from email.utils import make_msgid, unquote
 from email import message_from_bytes, policy
-from traceback import print_exc
+from email.utils import make_msgid, unquote
 from math import floor
+from traceback import print_exc
 
-from dateutil.parser import parse as parse_date
-from dateutil import tz
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
-from django.db import transaction, Error as DatabaseError
+from django.db import Error as DatabaseError
+from django.db import transaction
 from django.utils.timezone import utc
 
-from hyperkitty.lib.incoming import add_to_list, DuplicateMessage
-from hyperkitty.lib.mailman import sync_with_mailman
+from dateutil import tz
+from dateutil.parser import parse as parse_date
+
 from hyperkitty.lib.analysis import compute_thread_order_and_depth
+from hyperkitty.lib.incoming import DuplicateMessage, add_to_list
+from hyperkitty.lib.mailman import sync_with_mailman
 from hyperkitty.lib.utils import get_message_id
 from hyperkitty.management.utils import setup_logging
 from hyperkitty.models import Email, Thread
@@ -132,6 +135,7 @@ class DbImporter(object):
                     "Can't get {} header in message {}: {}.".format(
                         header, message["message-id"], e))
             return None
+
         return date
 
     def from_mbox(self, mbfile):
@@ -155,11 +159,15 @@ class DbImporter(object):
                     self._get_date(message, "resent-date"))
             if unixfrom and not date:
                 date = " ".join(unixfrom.split()[1:])
+
             if date:
-                try:
-                    message.replace_header('date', date)
-                except KeyError:
+                # Make sure this date can be parsed before setting it as as the
+                # header. If not, a TypeError is raised and we just keep the
+                # old Header.
+                with suppress(TypeError):
+                    del message['Date']
                     message['Date'] = date
+
             if self._is_too_old(message):
                 continue
             progress_marker.tick(message["Message-Id"])
@@ -201,6 +209,14 @@ class DbImporter(object):
                 self.stderr.write(
                     "Message %s failed to import, skipping"
                     % unquote(message["Message-Id"]))
+                continue
+            except Exception as e:
+                # In case of *any* exception, log and continue to import the
+                # rest of the archive.
+                self.stderr.write(
+                    "Message {} failed to import, skipping".format(
+                        unquote(message["Message-ID"])))
+                self.stderr.write(e)
                 continue
             email = Email.objects.get(
                 mailinglist__name=self.list_address,

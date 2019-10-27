@@ -20,31 +20,32 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-import urllib
 import datetime
 import json
+import logging
+import urllib
 
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation
 from django.db import DatabaseError
-from django.http import HttpResponse, Http404
-from django.shortcuts import redirect, render, get_object_or_404
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from hyperkitty.forms import MessageDeleteForm, PostForm, ReplyForm
 from hyperkitty.lib.mailman import ModeratedListException
-from hyperkitty.lib.posting import post_to_list, PostingFailed, reply_subject
+from hyperkitty.lib.posting import PostingFailed, post_to_list, reply_subject
 from hyperkitty.lib.view_helpers import (
-    get_months, check_mlist_private, get_posting_form)
-from hyperkitty.models.email import Email, Attachment
+    check_mlist_private, get_months, get_posting_form)
+from hyperkitty.models.email import Attachment, Email
 from hyperkitty.models.mailinglist import MailingList
 from hyperkitty.models.thread import Thread
-from hyperkitty.forms import PostForm, ReplyForm, MessageDeleteForm
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 

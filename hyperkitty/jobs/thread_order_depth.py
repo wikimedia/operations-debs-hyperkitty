@@ -24,8 +24,9 @@ Compute thread order and depth for all threads
 """
 
 from django_extensions.management.jobs import BaseJob
-from hyperkitty.models import Thread
+
 from hyperkitty.lib.analysis import compute_thread_order_and_depth
+from hyperkitty.models import Thread
 
 
 class Job(BaseJob):

@@ -18,7 +18,5 @@
 # HyperKitty.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-try:
-    from django.core.urlresolvers import reverse                # noqa: F401
-except ImportError:
-    from django.urls import reverse                             # noqa: F401
+
+from django.urls import reverse  # noqa: F401

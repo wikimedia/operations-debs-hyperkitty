@@ -22,12 +22,13 @@
 
 from email.message import EmailMessage
 
+from mock import patch
+
 from hyperkitty import tasks
 from hyperkitty.lib.incoming import add_to_list
 from hyperkitty.models.email import Email
 from hyperkitty.models.thread import Thread
 from hyperkitty.tests.utils import TestCase
-from mock import patch
 
 
 class TaskTestCase(TestCase):
@@ -64,7 +65,7 @@ class TaskTestCase(TestCase):
         with patch("hyperkitty.tasks.check_orphans") as mock_co:
             add_to_list("example-list", msg_reply)
             add_to_list("example-list", msg_orig)
-            self.assertEqual(mock_co.delay.call_count, 2)
+            self.assertEqual(mock_co.call_count, 2)
         orig = Email.objects.get(message_id="msgid1")
         reply = Email.objects.get(message_id="msgid2")
         self.assertIsNone(reply.parent)

@@ -7,7 +7,7 @@
 
         <div class="thread-info">
                 <div class="thread-email row">
-                        <div class="hidden-tn hidden-xxs hidden-xs col-sm-1 sender gravatar">
+                        <div class="hidden-tn hidden-xxs hidden-xs col-sm-1 sender gravatar circle">
                                 {% if starting_email.sender.address %}
                                 {% gravatar starting_email.sender.address 120 %}
                                         <br />
@@ -24,9 +24,6 @@
                                                 <i class="fa fa-star saved" title="{% trans 'Favorite' %}"></i>
                                         {% else %}
                                                 <i class="fa fa-star-o notsaved" title="{% trans 'Favorite' %}"></i>
-                                        {% endif %}
-                                        {% if thread|is_unread_by:request.user %}
-                                                <i class="fa fa-envelope" title="{% trans 'New messages in this thread' %}"></i>
                                         {% endif %}
                                         {{ starting_email.subject|strip_subject:mlist }}
                                 </a>

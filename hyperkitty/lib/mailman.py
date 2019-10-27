@@ -20,14 +20,15 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
+import logging
 from urllib.error import HTTPError
 
 from django.core.cache import cache
+
 from django_mailman3.lib.mailman import get_mailman_client
 from mailmanclient import MailmanConnectionError
 
 
-import logging
 logger = logging.getLogger(__name__)
 
 

@@ -12,20 +12,25 @@
     <h1>{% trans "User posting activity" %} <small>{% trans "for" %} {{ user }}</small></h1>
 
     <ul class="nav nav-tabs">
-        <li role="presentation" {% if subpage == "profile" %} class="active" {% endif %}>
-            <a href="{% url "hk_user_profile" %}">{% trans "Posting activity" %}</a>
+        <li role="presentation" {% if subpage == "profile" %} class="active"{% endif %}>
+          {% if subpage != "profile" %}<a href="{% url "hk_user_profile" %}">{% trans "Posting activity" %}</a>
+	  {% else %}<a>{% trans "Posting activity" %}</a>{% endif %}
+	</li>
+        <li role="presentation" {% if subpage == "favorites" %} class="active"{% endif %}>
+          {% if subpage != "favorites" %}  <a href="{% url "hk_user_favorites" %}">{% trans "Favorites" %}</a>
+	  {% else %}  <a>{% trans "Favorites" %}</a>{% endif %}
         </li>
-        <li role="presentation" {% if subpage == "favorites" %} class="active" {% endif %}>
-            <a href="{% url "hk_user_favorites" %}">{% trans "Favorites" %}</a>
+        <li role="presentation" {% if subpage == "last_views" %} class="active"{% endif %}>
+          {% if subpage != "last_views" %} <a href="{% url "hk_user_last_views" %}">{% trans "Threads you have read" %}</a>
+	  {% else %} <a>{% trans "Threads you have read" %}</a>{% endif %}
         </li>
-        <li role="presentation" {% if subpage == "last_views" %} class="active" {% endif %}>
-            <a href="{% url "hk_user_last_views" %}">{% trans "Threads you have read" %}</a>
+        <li role="presentation" {% if subpage == "votes" %} class="active"{% endif %}>
+          {% if subpage != "votes" %}  <a href="{% url "hk_user_votes" %}">{% trans "Votes" %}</a>
+	  {% else %}  <a>{% trans "Votes" %}</a>{% endif %}
         </li>
-        <li role="presentation" {% if subpage == "votes" %} class="active" {% endif %}>
-            <a href="{% url "hk_user_votes" %}">{% trans "Votes" %}</a>
-        </li>
-        <li role="presentation" {% if subpage == "subscriptions" %} class="active" {% endif %}>
-            <a href="{% url "hk_user_subscriptions" %}">{% trans "Subscriptions" %}</a>
+        <li role="presentation" {% if subpage == "subscriptions" %} class="active"{% endif %}>
+          {% if subpage != "subscriptions" %}<a href="{% url "hk_user_subscriptions" %}">{% trans "Subscriptions" %}</a>
+	  {% else %}<a>{% trans "Subscriptions" %}</a>{% endif %}
         </li>
     </ul>
 

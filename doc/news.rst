@@ -3,6 +3,35 @@ News / Changelog
 ================
 
 
+1.3.0
+=====
+(2019-09-04)
+
+- Unread messages now have a blue envelope icon, instead of a gray one before to
+  to make them more visible.
+- Quoted text in emails have different visual background to improve readability.
+- Quoted text is now visually quoted to 3 levels of replies with different visual
+  background to improve readability.
+- Add a new "All Threads" button in MailingList overview page to point to all the
+  the threads in reverse date order. This should give a continuous list of threads.
+- Fixes a bug where "All Threads" button leads to 500 page if there aren't any
+  threads. (Closes #230)
+- Add support for Django 2.2.
+- Fix a bug where bad Date header could cause ``hyperkitty_import`` to exit with
+  ``TypeError`` due to bad date type.
+- Change the Overview page to remove the List of months from left side bar and
+  convert different thread categories into tabs.
+- Replace unmaintained ``lockfile`` dependency with ``flufl.lock``.
+- Remove ``SingletonAsync`` implementation of ``AsyncTask`` and use the upstream
+  version for better maintenance.  
+- Run update_index job hourly by default instead of minutely for performance
+  reasons of whoosh.
+- Email body now preserves leading whitespaces on lines and wraps around line
+  boundary. (Closes #239)
+- Do not indent replies on small screens. (Closes #224)
+- Add a keyboard shortcut ``?`` to bring up list of keyboard shortcuts.
+	(Closes #240)
+
 1.2.2
 =====
 (2019-02-22)

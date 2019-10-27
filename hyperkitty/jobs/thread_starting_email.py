@@ -24,6 +24,7 @@ Find the starting email for threads which don't have one set already.
 """
 
 from django_extensions.management.jobs import BaseJob
+
 from hyperkitty.models.email import Email
 from hyperkitty.models.thread import Thread
 

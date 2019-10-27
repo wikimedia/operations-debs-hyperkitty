@@ -24,23 +24,24 @@ import datetime
 from functools import wraps
 
 from django.http import Http404
-from django.utils.timezone import utc
-from django.utils.decorators import available_attrs
 from django.shortcuts import render
+from django.utils.decorators import available_attrs
+from django.utils.timezone import utc
+
 from django_mailman3.lib.mailman import get_subscriptions
 
-from hyperkitty.models import ThreadCategory, MailingList
 from hyperkitty.forms import CategoryForm
 from hyperkitty.lib.posting import get_sender
+from hyperkitty.models import MailingList, ThreadCategory
 
 
 def get_months(mlist):
-    """ Return a dictionnary of years, months for which there are
+    """Return a dictionnary of years, months for which there are
     potentially archives available for a given list (based on the
     oldest post on the list).
 
-    :arg list_name, name of the mailing list in which this email
-    should be searched.
+    :param mlist: name of the mailing list in which this email should be
+    searched.
     """
     date_first = mlist.cached_values["first_date"]()
     now = datetime.datetime.now()

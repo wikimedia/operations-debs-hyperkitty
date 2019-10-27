@@ -24,6 +24,7 @@ Refresh the recent threads cache for each mailing list.
 """
 
 from django_extensions.management.jobs import BaseJob
+
 from hyperkitty.models import MailingList
 
 

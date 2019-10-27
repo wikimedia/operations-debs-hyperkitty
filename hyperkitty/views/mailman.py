@@ -21,25 +21,27 @@
 #
 
 import json
+import logging
 from email import message_from_binary_file
 from email.message import EmailMessage
 from email.policy import default
 from functools import wraps
+from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured
-from django.urls import reverse
+from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 from django.http import HttpResponse
+from django.urls import reverse
 from django.utils.http import urlunquote
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django_mailman3.models import MailDomain
-from urllib.parse import urljoin
 
-from hyperkitty.lib.incoming import add_to_list, DuplicateMessage
+from django_mailman3.models import MailDomain
+
+from hyperkitty.lib.incoming import DuplicateMessage, add_to_list
 from hyperkitty.lib.utils import get_message_id_hash
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 

@@ -21,8 +21,8 @@
 #
 
 import datetime
-from email.message import EmailMessage
 from email import message_from_file, message_from_string
+from email.message import EmailMessage
 from traceback import format_exc
 
 from django.utils import timezone

@@ -23,11 +23,14 @@
 from django.core.management.base import CommandError
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
+
 from haystack import indexes
-from haystack.query import SearchQuerySet
 from haystack.management.commands.update_index import \
     Command as UpdateIndexCommand
+from haystack.query import SearchQuerySet
+
 from hyperkitty.models import Email, MailingList
+
 
 # Create a global for the listname.
 LISTNAME = None

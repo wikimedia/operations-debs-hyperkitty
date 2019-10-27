@@ -22,8 +22,8 @@
 
 import re
 
-from django.db import models
 from django.core.validators import RegexValidator
+from django.db import models
 from django.forms import TextInput
 
 

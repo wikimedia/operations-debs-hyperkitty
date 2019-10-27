@@ -19,7 +19,8 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from rest_framework import serializers, generics
+from rest_framework import generics, serializers
+
 from hyperkitty.models import Tag
 from .utils import MLChildHyperlinkedRelatedField
 

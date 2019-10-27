@@ -24,6 +24,7 @@ Sync properties from Mailman into HyperKitty
 """
 
 from django.core.management.base import BaseCommand, CommandError
+
 from hyperkitty.lib.mailman import sync_with_mailman
 from hyperkitty.management.utils import setup_logging
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from django.db import migrations, models, connection
+from django.db import connection, migrations, models
 
 
 def populate_sender_name(apps, schema_editor):

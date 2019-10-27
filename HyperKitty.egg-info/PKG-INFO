@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: HyperKitty
-Version: 1.2.2
+Version: 1.3.0
 Summary: A web interface to access GNU Mailman v3 archives
 Home-page: https://gitlab.com/mailman/hyperkitty
 Author: HyperKitty Developers
@@ -33,8 +33,8 @@ Description: ========================================
         
         - Full documentation: https://hyperkitty.readthedocs.org
         - Project page and feedback: https://gitlab.com/mailman/hyperkitty
-        - Demo server: https://lists.stg.fedoraproject.org/
-        - Local development setup: http://wiki.list.org/HyperKitty/DevelopmentSetupGuide
+        - Demo server: https://lists.mailman3.org/
+        - Local development setup: http://docs.mailman3.org/en/latest/devsetup.html
         
         License
         =======
@@ -50,7 +50,7 @@ Description: ========================================
         IRC channel: `#mailman on irc.freenode.net <https://webchat.freenode.net/?channels=mailman>`_.
         You can also subscribe to our `mailing list <https://lists.fedorahosted.org/admin/lists/hyperkitty-devel.lists.fedorahosted.org/>`_ of developers.
         
-        To report bugs, please create `a ticket here <https://gitlab.com/mailman/hyperkitty>`_ or contact us on IRC.
+        To report bugs, please create `a ticket here <https://gitlab.com/mailman/hyperkitty/issues>`_ or contact us on IRC.
         
         About other links of feedback, please see below.
         

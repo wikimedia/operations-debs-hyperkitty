@@ -20,29 +20,25 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
+import logging
 from urllib.error import HTTPError
 
-import dateutil.parser
-import mailmanclient
-
-from allauth.account.models import EmailAddress
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    # For Django 2.0+
-    from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
+from django.urls import reverse
+
+import dateutil.parser
+import mailmanclient
+from allauth.account.models import EmailAddress
 from django_mailman3.lib.mailman import (
     get_mailman_client, get_mailman_user_id, get_subscriptions)
 from django_mailman3.lib.paginator import paginate
 
-from hyperkitty.models import Favorite, LastView, MailingList, Email, Vote
 from hyperkitty.lib.view_helpers import is_mlist_authorized
+from hyperkitty.models import Email, Favorite, LastView, MailingList, Vote
 
 
-import logging
 logger = logging.getLogger(__name__)
 
 

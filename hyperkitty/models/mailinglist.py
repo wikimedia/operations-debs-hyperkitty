@@ -21,14 +21,16 @@
 #
 
 import datetime
+import logging
 from enum import Enum
 from urllib.error import HTTPError
 
-import dateutil.parser
 from django.conf import settings
+from django.core.cache import cache
 from django.db import models
 from django.utils.timezone import now, utc
-from django.core.cache import cache
+
+import dateutil.parser
 from django_mailman3.lib.mailman import get_mailman_client
 from mailmanclient import MailmanConnectionError
 
@@ -36,7 +38,7 @@ from hyperkitty.lib.utils import pgsql_disable_indexscan
 from .common import ModelCachedValue
 from .thread import Thread
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -90,6 +92,9 @@ class MailingList(models.Model):
                 ]
             ]
 
+    def __str__(self):
+        return '<MailingList {}>'.format(self.name)
+
     @property
     def is_private(self):
         return self.archive_policy == ArchivePolicy.private.value
@@ -117,9 +122,15 @@ class MailingList(models.Model):
             ).values("sender_id").distinct().count()
 
     def get_threads_between(self, begin_date, end_date):
+        """Get MailingList threads between the dates.
+
+        :param begin_date: The cutoff for oldest thread, decided by the posting
+            date of the first email.
+        :param end_date: The cutoff for the newest thread.
+        """
         return self.threads.filter(
-                starting_email__date__lt=end_date,
-                date_active__gte=begin_date
+            starting_email__date__lt=end_date,
+            date_active__gte=begin_date
             ).order_by("-date_active")
 
     @property
@@ -209,8 +220,8 @@ class MailingList(models.Model):
         begin_date, end_date = self.get_recent_dates()
         if thread.date_active >= begin_date and thread.date_active < end_date:
             # It's a recent thread
-            rebuild_mailinglist_cache_recent.delay(self.name)
-        rebuild_mailinglist_cache_for_month.delay(
+            rebuild_mailinglist_cache_recent(self.name)
+        rebuild_mailinglist_cache_for_month(
             self.name, thread.date_active.year, thread.date_active.month)
 
     def on_email_added(self, email):
@@ -223,8 +234,8 @@ class MailingList(models.Model):
             rebuild_mailinglist_cache_recent,
             rebuild_mailinglist_cache_for_month,
             )
-        rebuild_mailinglist_cache_recent.delay(self.name)
-        rebuild_mailinglist_cache_for_month.delay(
+        rebuild_mailinglist_cache_recent(self.name)
+        rebuild_mailinglist_cache_for_month(
             self.name, email.date.year, email.date.month)
 
     def on_email_deleted(self, email):
@@ -242,7 +253,7 @@ class MailingList(models.Model):
 
     def on_vote_added(self, vote):
         from hyperkitty.tasks import rebuild_cache_popular_threads
-        rebuild_cache_popular_threads.delay(self.name)
+        rebuild_cache_popular_threads(self.name)
 
     on_vote_deleted = on_vote_added
 

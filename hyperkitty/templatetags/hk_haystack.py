@@ -24,6 +24,7 @@ from xml.sax.saxutils import escape
 
 from django import template
 
+
 register = template.Library()
 
 

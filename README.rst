@@ -25,8 +25,8 @@ Links
 
 - Full documentation: https://hyperkitty.readthedocs.org
 - Project page and feedback: https://gitlab.com/mailman/hyperkitty
-- Demo server: https://lists.stg.fedoraproject.org/
-- Local development setup: http://wiki.list.org/HyperKitty/DevelopmentSetupGuide
+- Demo server: https://lists.mailman3.org/
+- Local development setup: http://docs.mailman3.org/en/latest/devsetup.html
 
 License
 =======
@@ -42,7 +42,7 @@ developers, or ask any other questions about HyperKitty, you can hang out in the
 IRC channel: `#mailman on irc.freenode.net <https://webchat.freenode.net/?channels=mailman>`_.
 You can also subscribe to our `mailing list <https://lists.fedorahosted.org/admin/lists/hyperkitty-devel.lists.fedorahosted.org/>`_ of developers.
 
-To report bugs, please create `a ticket here <https://gitlab.com/mailman/hyperkitty>`_ or contact us on IRC.
+To report bugs, please create `a ticket here <https://gitlab.com/mailman/hyperkitty/issues>`_ or contact us on IRC.
 
 About other links of feedback, please see below.
 

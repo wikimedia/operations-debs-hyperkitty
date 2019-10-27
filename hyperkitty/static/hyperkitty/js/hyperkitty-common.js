@@ -297,6 +297,13 @@ function setup_expander() {
     });
 }
 
+// Setup keybaord shortcuts on all pages. This
+function setup_keyboard_shortcuts() {
+    Mousetrap.bind('?', function() {
+        $("#keyboard-shortcuts").modal('toggle');
+    });
+}
+
 
 /*
  * Activate
@@ -310,4 +317,5 @@ $(document).ready(function() {
     setup_send_as();
     setup_expander();
     setup_fixed_font();
+    setup_keyboard_shortcuts();
 });

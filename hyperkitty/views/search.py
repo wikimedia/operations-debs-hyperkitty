@@ -25,14 +25,15 @@ from django.forms import ValidationError
 from django.http import Http404
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+
 from django_mailman3.lib.mailman import get_subscriptions
 from django_mailman3.lib.paginator import paginate
 from haystack import DEFAULT_ALIAS
-from haystack.query import EmptySearchQuerySet, RelatedSearchQuerySet
 from haystack.forms import SearchForm
+from haystack.query import EmptySearchQuerySet, RelatedSearchQuerySet
 
-from hyperkitty.models import MailingList, ArchivePolicy
 from hyperkitty.lib.view_helpers import is_mlist_authorized
+from hyperkitty.models import ArchivePolicy, MailingList
 
 
 def search(request):

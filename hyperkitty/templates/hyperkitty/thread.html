@@ -14,7 +14,7 @@
 
 <div class="row view-thread">
 
-{% include 'hyperkitty/fragments/month_list.html' %}
+{% include 'hyperkitty/fragments/thread_left_nav.html' with pagename='thread' %}
 
     <div class="col-tn-12 col-sm-10">
 
@@ -144,6 +144,7 @@
         // Load the replies
         update_thread_replies("{% url 'hk_thread_replies' threadid=thread.thread_id mlist_fqdn=mlist.name %}?sort={{sort_mode}}&last_view={{last_view|date:'U'}}");
         setup_unreadnavbar("#unreadnavbar");
+        setup_thread_keyboard_shortcuts();
     });
 </script>
 

@@ -25,6 +25,7 @@ import re
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.core.mail import EmailMessage
+
 from django_mailman3.lib.mailman import get_subscriptions
 from mailmanclient import MailmanConnectionError
 

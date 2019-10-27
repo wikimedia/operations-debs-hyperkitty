@@ -21,25 +21,26 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-import os
 import datetime
 import gzip
 import mailbox
+import os
 import shutil
 from email import message_from_bytes, policy
 from email.message import EmailMessage
 
-from mock import Mock
-from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
-from hyperkitty.utils import reverse
 from django.core.cache import cache
-from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 
-from hyperkitty.models import (
-    MailingList, ArchivePolicy, Sender, Thread, Favorite, Email)
+from bs4 import BeautifulSoup
+from django_mailman3.tests.utils import FakeMMList, FakeMMMember
+from mock import Mock
+
 from hyperkitty.lib.incoming import add_to_list
+from hyperkitty.models import (
+    ArchivePolicy, Email, Favorite, MailingList, Sender, Thread)
 from hyperkitty.tests.utils import TestCase
+from hyperkitty.utils import reverse
 
 
 class ListArchivesTestCase(TestCase):
@@ -52,18 +53,28 @@ class ListArchivesTestCase(TestCase):
         msg.set_payload("Dummy message")
         add_to_list("list@example.com", msg)
 
-    def test_no_date(self):
-        today = datetime.date.today()
+    def test_latest_archives(self):
         response = self.client.get(reverse(
                 'hk_archives_latest', args=['list@example.com']))
-        final_url = reverse(
-            'hk_archives_with_month',
-            kwargs={
-                'mlist_fqdn': 'list@example.com',
-                'year': today.year,
-                'month': today.month,
-            })
-        self.assertRedirects(response, final_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["threads"]), 1)
+        self.assertEqual(response.context["no_results_text"],
+                         "for this MailingList")
+        self.assertEqual(response.context["list_title"], "")
+
+    def test_latest_archives_no_threads(self):
+        # Remove all messages.
+        Thread.objects.all().delete()
+        response = self.client.get(reverse(
+            'hk_archives_latest', args=['list@example.com']))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["threads"]), 0)
+        self.assertEqual(response.context["no_results_text"],
+                         "for this MailingList")
+        self.assertEqual(response.context["list_title"], "")
+        self.assertTrue(
+            "Sorry no email threads could be found for this MailingList."
+            in response.content.decode())
 
     def test_wrong_date(self):
         response = self.client.get(reverse(
@@ -376,11 +387,19 @@ class MonthsListTestCase(TestCase):
             else:
                 self._assertCollapsed(panel)
 
+    def _assertMonthsDropdown(self, html):
+        """
+        Checks that there is a months dropdown.
+        """
+        soup = BeautifulSoup(html, "html.parser")
+        months_list = soup.find(id="navbarMonthsListDrop")
+        self.assertIsNotNone(months_list)
+
     def test_overview(self):
         response = self.client.get(reverse(
             'hk_list_overview', args=["list@example.com"]))
         self.assertEqual(response.status_code, 200)
-        self._assertActivePanel(response.content, 0)
+        self._assertMonthsDropdown(response.content)
 
     def test_month_list(self):
         response = self.client.get(reverse(

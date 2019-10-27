@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 def populate_list_id(apps, schema_editor):

@@ -22,6 +22,7 @@ Update the search index for a single list.
 """
 
 from django.core.management.base import BaseCommand
+
 from hyperkitty.management.utils import setup_logging
 from hyperkitty.search_indexes import update_index
 

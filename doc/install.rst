@@ -92,16 +92,16 @@ then add the following lines to ``mailman.cfg``::
     [archiver.hyperkitty]
     class: mailman_hyperkitty.Archiver
     enable: yes
-    configuration: /path/to/example_project/hyperkitty.cfg
+    configuration: /path/to/example_project/mailman-hyperkitty.cfg
 
-An `example of the hyperkitty.cfg file`_ is shipped with the `mailman-hyperkitty`_ package.
+An `example of the mailman-hyperkitty.cfg file`_ is shipped with the `mailman-hyperkitty`_ package.
 You must set the URL to your HyperKitty installation in that file.
 It is also highly recommanded to change the API secret key and in the
 ``MAILMAN_ARCHIVER_KEY`` variable in ``settings.py`` (or
 ``settings_local.py``).
 
 .. _mailman-hyperkitty: http://pypi.python.org/pypi/mailman-hyperkitty
-.. _`example of the hyperkitty.cfg file`: https://gitlab.com/mailman/mailman-hyperkitty/blob/master/mailman-hyperkitty.cfg
+.. _`example of the mailman-hyperkitty.cfg file`: https://gitlab.com/mailman/mailman-hyperkitty/blob/master/mailman-hyperkitty.cfg
 
 After having made these changes, you must restart Mailman. Check its log files
 to make sure the emails are correctly archived. You should not see "``Broken
@@ -149,6 +149,14 @@ would rather have them stored on the filesystem, you can set the
 
 Make sure that the user running the Django process (for example, ``apache`` or
 ``www-data``) has the permissions to write in this directory.
+
+
+If you want to disable support for gravatars_ in Hyperkitty, you can set
+``GRAVATAR_SECURE_URL = ''``. This will prevent Hyperkitty to go out to
+gravatar to load images for email senders.
+
+.. _gravatars: https://en.gravatar.com/
+
 
 
 Upgrading

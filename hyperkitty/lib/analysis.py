@@ -23,8 +23,9 @@ Analysis of messages or threads of messages
 Author: Aurelien Bompard <abompard@fedoraproject.org>
 """
 
-import networkx as nx
 from django.db import transaction
+
+import networkx as nx
 
 
 def compute_thread_order_and_depth(thread):

@@ -22,27 +22,28 @@
 #
 
 import datetime
-import re
 import json
+import re
 
-import robot_detection
 from django.contrib import messages
-from django.urls import reverse
 from django.core.exceptions import SuspiciousOperation
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
+from django.urls import reverse
 from django.utils.timezone import utc
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
+
+import robot_detection
 from haystack.query import SearchQuerySet
 
-from hyperkitty.models import (
-    Tag, Tagging, Favorite, LastView, Thread, MailingList)
 from hyperkitty.forms import AddTagForm, ReplyForm
 from hyperkitty.lib.utils import stripped_subject
 from hyperkitty.lib.view_helpers import (
-    get_months, get_category_widget, check_mlist_private, get_posting_form)
+    check_mlist_private, get_category_widget, get_months, get_posting_form)
+from hyperkitty.models import (
+    Favorite, LastView, MailingList, Tag, Tagging, Thread)
 
 
 REPLY_RE = re.compile(r'^(re:\s*)*', re.IGNORECASE)
@@ -295,9 +296,9 @@ def suggest_tags(request, mlist_fqdn, threadid):
             name__istartswith=term)
     else:
         tags_db = Tag.objects.all()
-    tag_names = [
-        t.encode("utf-8") for t in tags_db.exclude(
-            name__in=current_tags).values_list("name", flat=True)[:20]]
+
+    tag_names = list(tags_db.exclude(
+        name__in=current_tags).values_list("name", flat=True)[:20])
     return HttpResponse(json.dumps(tag_names),
                         content_type='application/javascript')
 

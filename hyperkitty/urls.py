@@ -22,16 +22,16 @@
 #
 
 from django.conf.urls import include, url
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import TemplateView
 
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-from hyperkitty.api import (
-    mailinglist as api_mailinglist, email as api_email,
-    thread as api_thread, tag as api_tag)
+from hyperkitty.api import email as api_email
+from hyperkitty.api import mailinglist as api_mailinglist
+from hyperkitty.api import tag as api_tag
+from hyperkitty.api import thread as api_thread
 from hyperkitty.views import (
-    index, accounts, users, mlist, message, thread, search, categories, tags,
-    mailman, compat)
+    accounts, categories, compat, index, mailman, message, mlist, search,
+    tags, thread, users)
 
 
 # flake8: noqa

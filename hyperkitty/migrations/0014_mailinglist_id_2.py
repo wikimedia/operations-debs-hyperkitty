@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.db import migrations, connection
+from django.db import connection, migrations
 
 
 def update_thread_and_email(apps, schema_editor):
