@@ -15,10 +15,10 @@ pre-built css file reference.
  2 files changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/example_project/settings.py b/example_project/settings.py
-index 8a1c405..48b4cfa 100644
+index 1c965f5..a37792d 100644
 --- a/example_project/settings.py
 +++ b/example_project/settings.py
-@@ -310,10 +310,6 @@ SOCIALACCOUNT_PROVIDERS = {
+@@ -312,10 +312,6 @@ SOCIALACCOUNT_PROVIDERS = {
  # django-compressor
  # https://pypi.python.org/pypi/django_compressor
  #
@@ -30,7 +30,7 @@ index 8a1c405..48b4cfa 100644
  # significant performance improvement, as CSS files will not need to be
  # recompiled on each requests. It means running an additional "compress"
 diff --git a/hyperkitty/templates/hyperkitty/base.html b/hyperkitty/templates/hyperkitty/base.html
-index b2319aa..25415a8 100644
+index 7f1938d..700990c 100644
 --- a/hyperkitty/templates/hyperkitty/base.html
 +++ b/hyperkitty/templates/hyperkitty/base.html
 @@ -18,7 +18,7 @@

@@ -1,4 +1,4 @@
-From: Louis-Philippe_Véronneau <pollo@debian.org>
+From: =?utf-8?q?Louis-Philippe=5FV=C3=A9ronneau?= <pollo@debian.org>
 Date: Tue, 12 Mar 2019 13:51:37 -0400
 Subject: Use python3 by default instead of /usr/bin/env python
 
@@ -12,7 +12,7 @@ running 'example_project/manage.py' fails, since this is a python3 package.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/example_project/manage.py b/example_project/manage.py
-index f9726f9..dc7af6b 100755
+index b5a2943..e9b9ab0 100755
 --- a/example_project/manage.py
 +++ b/example_project/manage.py
 @@ -1,4 +1,4 @@
@@ -20,4 +20,4 @@ index f9726f9..dc7af6b 100755
 +#!/usr/bin/python3
  import os
  import sys
-
+ 
