@@ -26,16 +26,16 @@ import re
 import urllib
 from email.message import EmailMessage
 
+from django.contrib.auth.models import User
+
 from bs4 import BeautifulSoup
+from django_mailman3.tests.utils import get_flash_messages
 from mock import patch
 
-from django.contrib.auth.models import User
-from hyperkitty.utils import reverse
-from django_mailman3.tests.utils import get_flash_messages
-
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models import MailingList, Thread, Tag, Tagging, Email
-from hyperkitty.tests.utils import TestCase, SearchEnabledTestCase
+from hyperkitty.models import Email, MailingList, Tag, Tagging, Thread
+from hyperkitty.tests.utils import SearchEnabledTestCase, TestCase
+from hyperkitty.utils import reverse
 
 
 class ReattachTestCase(SearchEnabledTestCase):
@@ -161,7 +161,7 @@ class ThreadTestCase(TestCase):
         msg = self._make_msg("msgid")
         self.threadid = msg["Message-ID-Hash"]
 
-    def _make_msg(self, msgid, headers=None):
+    def _make_msg(self, msgid, headers=None, listname="list@example.com"):
         if headers is None:
             headers = {}
         msg = EmailMessage()
@@ -174,7 +174,7 @@ class ThreadTestCase(TestCase):
                 msg.replace_header(header, value)
             else:
                 msg[header] = value
-        msg["Message-ID-Hash"] = add_to_list("list@example.com", msg)
+        msg["Message-ID-Hash"] = add_to_list(listname, msg)
         return msg
 
     def do_tag_post(self, data):
@@ -182,6 +182,18 @@ class ThreadTestCase(TestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
         return json.loads(response.content.decode(response.charset))
+
+    def do_tag_suggest(self, mlist_fqdn, threadid):
+        url = reverse('hk_suggest_tags', args=[mlist_fqdn, threadid])
+        return self.client.get(url)
+
+    def test_suggest_tag(self):
+        self.do_tag_post({"tag": "testtag", "action": "add"})
+
+        msg2 = self._make_msg(msgid="msgid2", listname="list2@example.com")
+        threadid = msg2["Message-ID-Hash"]
+        response = self.do_tag_suggest("list2@example.com", threadid)
+        self.assertEqual(response.status_code, 200)
 
     def test_add_tag(self):
         result = self.do_tag_post({"tag": "testtag", "action": "add"})

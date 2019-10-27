@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 
-import os.path
 import mailbox
-from email.message import EmailMessage
-from email import message_from_file
-from io import StringIO
+import os.path
 from datetime import datetime
-from unittest import SkipTest
+from email import message_from_file
+from email.message import EmailMessage
+from io import StringIO
 from traceback import format_exc
+from unittest import SkipTest
 
-from mock import patch, Mock
 from django.conf import settings
 from django.core.management import call_command
 from django.db import DEFAULT_DB_ALIAS
 from django.utils.timezone import utc
 
-from hyperkitty.management.commands.hyperkitty_import import Command
+from mock import Mock, patch
+
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models import MailingList, Email
+from hyperkitty.management.commands.hyperkitty_import import Command
+from hyperkitty.models import Email, MailingList
 from hyperkitty.tests.utils import TestCase, get_test_file
 
 

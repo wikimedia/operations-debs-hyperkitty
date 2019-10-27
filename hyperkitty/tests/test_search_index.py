@@ -23,10 +23,11 @@
 from email.message import EmailMessage
 
 from django.apps import apps
+
 from haystack.query import SearchQuerySet
 
-from hyperkitty.models import Email
 from hyperkitty.lib.incoming import add_to_list
+from hyperkitty.models import Email
 from hyperkitty.search_indexes import update_index
 from hyperkitty.tests.utils import SearchEnabledTestCase
 

@@ -8,7 +8,7 @@
 
     <div id="{{email.message_id_hash}}" class="email-header">
         <div class="gravatar-wrapper">
-            <div class="gravatar">
+            <div class="gravatar circle">
                 {% gravatar email.sender.address 120 %}
             </div>
             <div class="email-author">
@@ -29,13 +29,13 @@
             {% endif %}
             {% ifchanged %}
             <span class="date hidden-tn">
-                {{email.date|date:"l, j F"}}
+                {{email.date|date:"j M"}}
                 {% if unfolded %}
                     {{email.date|date:"Y"}}
                 {% endif %}
             </span>
             <span class="date hidden-xs hidden-sm hidden-md hidden-lg">
-                {{email.date|date:"D, j M"}}
+                {{email.date|date:"j M"}}
                 {% if unfolded %}
                 '{{email.date|date:"y"}}
                 {% endif %}
@@ -46,25 +46,15 @@
             </div>
 
         </div>
-        <div class="messagelink right">
-            <span class="fa fa-font cursor-pointer toggle-font"
-                  title="{% trans "Display in fixed font" %}"
-                  data-toggle="tooltip" data-placement="bottom"></span>
-            <a href="{% url 'hk_message_index' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}"
-               title="{% trans "Permalink for this message" %}"
-               data-toggle="tooltip" data-placement="bottom"><i class="fa fa-link"></i></a>
-        </div>
-
         {% if email.changed_subject %}
         <div class="subject">
-            New subject: {{ email.changed_subject }}
+          {% trans 'New subject:' %} {{ email.changed_subject }}
         </div>
         {% endif %}
-
     </div> <!-- /email-header: gravatar, author-info, date, peramlink, changed_subject -->
 
     <div class="email-body {% if email.display_fixed %}fixed{% endif %}">
-{{ email.content|snip_quoted|snip_pgp|wordwrap:90|urlizetrunc:76|escapeemaillinks }}
+      {{ email.content|snip_quoted|snip_pgp|wordwrap:90|urlizetrunc:76|escapeemaillinks }}
     </div>
 
     {% if unfolded and email.attachments.count %}
@@ -81,8 +71,16 @@
     {% endif %}
 
     <div class="email-info">
-        <div class="likeform-wrapper right">
-            {% include "hyperkitty/fragments/like_form.html" with message_id_hash=email.message_id_hash object=email %}
+      <div class="likeform-wrapper right">
+        <div class="messagelink pull-right">
+          <span class="fa fa-font cursor-pointer toggle-font"
+                title="{% trans "Display in fixed font" %}"
+                data-toggle="tooltip" data-placement="bottom"></span>
+          <a href="{% url 'hk_message_index' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}"
+             title="{% trans "Permalink for this message" %}"
+             data-toggle="tooltip" data-placement="bottom"><i class="fa fa-link"></i></a>
+        </div>
+        {% include "hyperkitty/fragments/like_form.html" with message_id_hash=email.message_id_hash object=email %}
         </div>
 
         <!-- Reply link -->
@@ -122,7 +120,6 @@
             </ul>
         </div>
         {% endif %}
-
         <!-- Reply form -->
         {% if user.is_authenticated %}
         <div class="reply-form dropdown">

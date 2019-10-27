@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from django.db import migrations, models
 import django.utils.timezone
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):

@@ -11,7 +11,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
+import sys
+
+from hyperkitty import VERSION
+
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -48,7 +52,6 @@ copyright = '2012-2015, HyperKitty Developers'
 # built documents.
 #
 import sys; sys.path.append('..')
-from hyperkitty import VERSION
 # The short X.Y version.
 version = '.'.join(VERSION.split('.')[0:2])
 # The full version, including alpha/beta/rc tags.

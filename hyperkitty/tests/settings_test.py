@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# Compatibility with Bootstrap 3
+from django.contrib.messages import constants as messages  # noqa: E402
+
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 TESTING = True
@@ -225,8 +229,6 @@ LOGOUT_URL = 'account_logout'
 # SERVER_EMAIL = 'root@your-domain.org'
 
 
-# Compatibility with Bootstrap 3
-from django.contrib.messages import constants as messages  # noqa: E402
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }

@@ -25,11 +25,12 @@ import json
 from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django_mailman3.lib.paginator import paginate
-from django_mailman3.lib.mailman import get_subscriptions
+from django.shortcuts import redirect, render
 
-from hyperkitty.models import MailingList, ArchivePolicy
+from django_mailman3.lib.mailman import get_subscriptions
+from django_mailman3.lib.paginator import paginate
+
+from hyperkitty.models import ArchivePolicy, MailingList
 
 
 def index(request):
@@ -37,7 +38,7 @@ def index(request):
     sort_mode = request.GET.get("sort", "popular")
 
     # Domain filtering
-    if settings.FILTER_VHOST:
+    if getattr(settings, 'FILTER_VHOST', False):
         domain = request.get_host().split(":")[0]
         if domain.startswith("www."):
             domain = domain[4:]

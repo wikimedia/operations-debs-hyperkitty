@@ -78,8 +78,6 @@ $headerNavPadding: 7px;
 }
 .all-lists table.lists {
 
-    border-collapse: separate;
-    border-spacing: 0 0.5em;
 
     th {
         @extend .small-caps;
@@ -100,7 +98,7 @@ $headerNavPadding: 7px;
 
     td {
         vertical-align: middle;
-        padding: 5px 8px;
+        padding: 8px 12px;
         border-top: 1px solid $rowBorderColor;
         border-bottom: 1px solid $rowBorderColor;
     }

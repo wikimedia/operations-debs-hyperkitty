@@ -36,7 +36,7 @@ nav {
     // general links
     ul.nav-pills li:first-child {
         padding-top: 2px;
-    }   
+    }
 
     // login/logout
     ul.auth a:last-child {
@@ -63,4 +63,19 @@ nav {
     nav .input-group {
         width: 200px;
     }
+}
+
+
+.circle img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  /* width and height can be anything, as long as they're equal */
+}
+
+.circle-small img {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  /* width and height can be anything, as long as they're equal */
 }

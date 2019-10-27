@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-from django.db import migrations, models, IntegrityError, connection, utils
+from django.db import IntegrityError, connection, migrations, models, utils
 
 
 PROVIDERS_MAP = {

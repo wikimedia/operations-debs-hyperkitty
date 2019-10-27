@@ -23,11 +23,11 @@
 # flake8:noqa
 
 from .category import ThreadCategory
-from .email import Email, Attachment
+from .email import Attachment, Email
 from .favorite import Favorite
 from .mailinglist import ArchivePolicy, MailingList
-from .thread import Thread, LastView
 from .profile import Profile
 from .sender import Sender
+from .tag import Tag, Tagging
+from .thread import LastView, Thread
 from .vote import Vote
-from .tag import Tagging, Tag

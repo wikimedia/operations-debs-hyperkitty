@@ -385,3 +385,18 @@ function setup_fixed_font() {
         $(this).parents('.email').find('.email-body').toggleClass('fixed')
     });
 }
+
+
+/*
+ * Setup keyboard shortcuts.
+ */
+
+function setup_thread_keyboard_shortcuts() {
+    // First, setup the shortcut to goto all threads.
+    Mousetrap.bind('j a', function() {
+        window.location.href = '../../latest';
+    });
+    Mousetrap.bind('j l', function() {
+        window.location.href = '../../';
+    });
+}

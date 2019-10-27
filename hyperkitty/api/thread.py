@@ -19,16 +19,15 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
-from rest_framework import serializers, generics
+from django.shortcuts import get_object_or_404
 
-from hyperkitty.models import Thread, MailingList
+from rest_framework import generics, serializers
+
 from hyperkitty.lib.view_helpers import is_mlist_authorized
+from hyperkitty.models import MailingList, Thread
 from .utils import (
-    MLChildHyperlinkedRelatedField,
-    IsMailingListPublicOrIsMember,
-    )
+    IsMailingListPublicOrIsMember, MLChildHyperlinkedRelatedField)
 
 
 class ThreadShortSerializer(serializers.HyperlinkedModelSerializer):

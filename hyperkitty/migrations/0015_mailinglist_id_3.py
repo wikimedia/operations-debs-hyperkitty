@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 import django
-from django.db import migrations, models, connection
+from django.db import connection, migrations, models
 
 
 def hotpatch_schema_editor(apps, schema_editor):

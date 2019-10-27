@@ -20,11 +20,13 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-import re
 import datetime
+import re
 
 from django.http import Http404
+
 from hyperkitty.models import MailingList
+
 
 PORT_IN_URL = re.compile(r':\d+$')
 

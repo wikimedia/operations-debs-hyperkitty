@@ -24,54 +24,73 @@ import datetime
 import json
 import zlib
 
-
-from django.urls import reverse
 from django.http import (
-    Http404, HttpResponse, StreamingHttpResponse, HttpResponseBadRequest)
-from django.shortcuts import redirect, render, get_object_or_404
+    Http404, HttpResponse, HttpResponseBadRequest, StreamingHttpResponse)
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import formats, timezone
 from django.utils.dateformat import format as date_format
 from django.utils.translation import gettext as _
 from django.views.decorators.cache import cache_page
+
 from django_mailman3.lib.mailman import get_mailman_user_id
 from django_mailman3.lib.paginator import paginate
 
-from hyperkitty.models import Favorite, MailingList
 from hyperkitty.lib.view_helpers import (
-    get_category_widget, get_months, get_display_dates, daterange,
-    check_mlist_private)
+    check_mlist_private, daterange, get_category_widget,
+    get_display_dates, get_months)
+from hyperkitty.models import Email, Favorite, MailingList
 
 
 @check_mlist_private
 def archives(request, mlist_fqdn, year=None, month=None, day=None):
-    if year is None and month is None:
-        today = datetime.date.today()
-        return redirect(reverse(
-                'hk_archives_with_month', kwargs={
-                    "mlist_fqdn": mlist_fqdn,
-                    'year': today.year,
-                    'month': today.month}))
+    """List of threads in MailingList.
 
-    try:
-        begin_date, end_date = get_display_dates(year, month, day)
-    except ValueError:
-        # Wrong date format, for example 9999/0/0
-        raise Http404("Wrong date format")
+    If year & month is None, we return *all* the threads and render a view with
+    all the threads of a MailingList.
+    """
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
-    threads = mlist.get_threads_between(begin_date, end_date)
-    if day is None:
-        list_title = date_format(begin_date, "F Y")
-        no_results_text = "for this month"
+
+    if year is None and month is None:
+        # If the year and month is None, we set the begin date to the date of
+        # the first email and end date to be today.
+        end_date = datetime.date.today()
+        # Since we don't need any special filtering, just return *all* the
+        # threads ordered by date_active.
+        threads = mlist.threads.order_by("-date_active")
+        if threads:
+            begin_date = Email.objects.order_by('date').first().date
+        else:
+            begin_date = end_date
+        # Set the month and year to be today's.
+        year = end_date.year
+        month = end_date.month
+        # The list title for all the threads.
+        list_title = ""
+        no_results_text = "for this MailingList"
     else:
-        list_title = formats.date_format(begin_date)  # works with i18n
-        no_results_text = "for this day"
+        try:
+            begin_date, end_date = get_display_dates(year, month, day)
+        except ValueError:
+            # Wrong date format, for example 9999/0/0
+            raise Http404("Wrong date format")
+
+        threads = mlist.get_threads_between(begin_date, end_date)
+
+        if day is None:
+            list_title = date_format(begin_date, "F Y")
+            no_results_text = _("for this month")
+        else:
+            list_title = formats.date_format(begin_date)  # works with i18n
+            no_results_text = _("for this day")
+
     # Export button
     export = {
         "url": "%s?start=%s&end=%s" % (
             reverse("hk_list_export_mbox", kwargs={
                     "mlist_fqdn": mlist.name,
                     "filename": "%s-%s" % (
-                        mlist.name, begin_date.strftime("%Y-%m"))}),
+                        mlist.name, end_date.strftime("%Y-%m"))}),
             begin_date.strftime("%Y-%m-%d"),
             end_date.strftime("%Y-%m-%d")),
         "message": _("Download"),

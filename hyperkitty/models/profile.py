@@ -20,14 +20,16 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from allauth.account.models import EmailAddress
+import logging
+
 from django.conf import settings
 from django.db import models
+
+from allauth.account.models import EmailAddress
 
 from .email import Email
 
 
-import logging
 logger = logging.getLogger(__name__)
 
 

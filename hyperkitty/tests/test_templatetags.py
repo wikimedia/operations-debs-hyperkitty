@@ -20,10 +20,9 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from hyperkitty.tests.utils import TestCase
-
 from hyperkitty.templatetags.hk_generic import snip_quoted
 from hyperkitty.templatetags.hk_haystack import nolongterms
+from hyperkitty.tests.utils import TestCase
 
 
 class SnipQuotedTestCase(TestCase):
@@ -41,9 +40,31 @@ This is the response.
             """
 On Fri, 09.11.12 11:27, Someone wrote:
 <div class="quoted-switch"><a style="font-weight:normal" href="#">%s</a>"""
-            """</div><div class="quoted-text"> This is the first quoted line
+            """</div><div class="quoted-text quoted-text-0">  This is the first quoted line
  This is the second quoted line </div>This is the response.
 """) % self.quotemsg
+        result = snip_quoted(contents, self.quotemsg)
+        self.assertEqual(result, expected)
+
+    def test_quote_2(self):
+        contents = """
+On Fri, 09.11.12 11:27, Someone wrote:
+&gt; This is the first quoted line
+&gt; On Fri 07.25.12, Aperson wrote:
+&gt; &gt; This is the second quoted line.
+&gt; This is the second quoted line
+This is the response.
+"""
+        result = snip_quoted(contents, self.quotemsg)
+        expected = (
+            """
+On Fri, 09.11.12 11:27, Someone wrote:
+<div class="quoted-switch"><a style="font-weight:normal" href="#">{}</a></div>"""   # noqa: E501
+            """<div class="quoted-text quoted-text-0">  This is the first quoted line
+ On Fri 07.25.12, Aperson wrote:
+<div class="quoted-text quoted-text-1">  This is the second quoted line. </div>"""   # noqa: E501
+            """ This is the second quoted line </div>This is the response.
+""").format(self.quotemsg)
         result = snip_quoted(contents, self.quotemsg)
         self.assertEqual(result, expected)
 

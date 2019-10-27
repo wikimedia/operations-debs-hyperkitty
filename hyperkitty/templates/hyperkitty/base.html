@@ -148,7 +148,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <input name="q" type="text" class="form-control"
-                                   placeholder="Search {% if mlist %}this list{% else %}all lists{% endif %}"
+                                   placeholder="{% if mlist %}{% trans 'Search this list' %}{% else %}{% trans 'Search all lists' %}{% endif %}"
                                    {% if query %}value="{{ query }}"{% endif %}
                                    />
                             <span class="input-group-btn">
@@ -181,16 +181,34 @@
     </div>
     {% endif %}
 
-    <div class="container">
+     <div class="modal fade" tabindex="-1" role="dialog" id="keyboard-shortcuts">
+       <div class="modal-dialog" role="document">
+         <div class="modal-content">
+           <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+             <h4 class="modal-title">{% trans "Keyboard Shortcuts" %}</h4>
+           </div>
+           <div class="modal-body">
+             <h3>{% trans "Thread View" %}</h3>
+             <ul>
+               <li><code>j</code>: {% trans "Next unread message" %} </li>
+               <li><code>k</code>: {% trans "Previous unread message" %} </li>
+               <li><code>j a</code>: {% trans "Jump to all threads" %}
+               <li><code>j l</code>: {% trans "Jump to MailingList overview" %}
+             </ul>
+           </div>
+         </div><!-- /.modal-content -->
+       </div><!-- /.modal-dialog -->
+     </div><!-- /.modal -->
 
+     <div class="container">
         {% block content %} {% endblock %}
-
     </div> <!-- /container for content -->
 
     <footer class="footer">
       <div class="container">
         <p class="text-muted">
-            Powered by <a href="http://hyperkitty.readthedocs.org">HyperKitty</a> version {{ HYPERKITTY_VERSION }}.
+            {% trans 'Powered by' %} <a href="http://hyperkitty.readthedocs.org">HyperKitty</a> {% trans 'version' %} {{ HYPERKITTY_VERSION }}.
         </p>
       </div>
     </footer>
@@ -199,6 +217,7 @@
     <script src="{% static 'hyperkitty/libs/jquery/jquery-ui-1.10.3.custom.min.js' %}"></script>
     {% compress js %}
     <script type="text/javascript" src="{% static 'hyperkitty/libs/bootstrap/javascripts/bootstrap.min.js' %}" />
+    <script type="text/javascript" src="{% static 'hyperkitty/libs/mousetrap/mousetrap.min.js' %}" />
     <script type="text/javascript" src="{% static 'hyperkitty/libs/jquery.expander.js' %}" />
     <script type="text/javascript" src="{% static 'hyperkitty/libs/d3.v2.min.js' %}" />
     <script type="text/javascript" src="{% static 'hyperkitty/libs/jquery.hotkeys.js' %}" />

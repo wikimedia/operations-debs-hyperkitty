@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 import contextlib
+
 from django.apps.registry import Apps
 from django.db import migrations, models
 

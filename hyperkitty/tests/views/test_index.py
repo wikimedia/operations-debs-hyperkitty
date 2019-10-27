@@ -25,15 +25,15 @@ import json
 from email.message import EmailMessage
 
 from django.contrib.auth.models import User
-from django_mailman3.tests.utils import FakeMMMember, FakeMMList
-from mock import Mock
-
-from hyperkitty.utils import reverse
 from django.test import override_settings
 
-from hyperkitty.models import MailingList, ArchivePolicy
+from django_mailman3.tests.utils import FakeMMList, FakeMMMember
+from mock import Mock
+
 from hyperkitty.lib.incoming import add_to_list
+from hyperkitty.models import ArchivePolicy, MailingList
 from hyperkitty.tests.utils import TestCase
+from hyperkitty.utils import reverse
 
 
 class PrivateListTestCase(TestCase):

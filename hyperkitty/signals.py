@@ -21,12 +21,13 @@
 
 from django.conf import settings
 from django.db.models.signals import (
-    post_init, pre_save, post_save, pre_delete, post_delete)
+    post_delete, post_init, post_save, pre_delete, pre_save)
 from django.dispatch import receiver
+
 from django_mailman3.signals import mailinglist_created, mailinglist_modified
 
 from hyperkitty.lib.mailman import import_list_from_mailman
-from hyperkitty.models.email import Email, Attachment
+from hyperkitty.models.email import Attachment, Email
 from hyperkitty.models.mailinglist import MailingList
 from hyperkitty.models.profile import Profile
 from hyperkitty.models.thread import Thread

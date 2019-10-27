@@ -20,21 +20,23 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-import os
 import logging
+import os
 import shutil
 import tempfile
 from unittest import SkipTest
 
-import mailmanclient
 from django.apps import apps
 from django.conf import settings
+from django.core.cache import cache
 from django.core.management import call_command
 from django.db import connection
-from django.db.migrations import RunSQL, RunPython
+from django.db.migrations import RunPython, RunSQL
 from django.db.migrations.executor import MigrationExecutor
-from django.test import TestCase as DjangoTestCase, TransactionTestCase
-from django.core.cache import cache
+from django.test import TestCase as DjangoTestCase
+from django.test import TransactionTestCase
+
+import mailmanclient
 from mock import Mock, patch
 
 

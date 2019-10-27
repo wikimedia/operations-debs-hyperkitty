@@ -26,18 +26,18 @@ import uuid
 from email.message import EmailMessage
 from traceback import format_exc
 
-from allauth.account.models import EmailAddress
-from mock import Mock
 from django.conf import settings
 from django.contrib.auth.models import User
-from hyperkitty.utils import reverse
-from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 
-from hyperkitty.lib.utils import get_message_id_hash
+from allauth.account.models import EmailAddress
+from django_mailman3.tests.utils import FakeMMList, FakeMMMember
+from mock import Mock
+
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models import (
-    LastView, MailingList, Thread, Email, Favorite)
+from hyperkitty.lib.utils import get_message_id_hash
+from hyperkitty.models import Email, Favorite, LastView, MailingList, Thread
 from hyperkitty.tests.utils import TestCase
+from hyperkitty.utils import reverse
 
 
 class AccountViewsTestCase(TestCase):
@@ -275,8 +275,10 @@ class LastViewsTestCase(TestCase):
         now = datetime.datetime.now()
         response = self.client.get(reverse('hk_archives_with_month', args=(
                     "list@example.com", now.year, now.month)))
-        self.assertContains(response, "fa-envelope",
-                            count=2, status_code=200)
+        # Two count comes from the keyboard shortcut models and two should come
+        # from here.
+        self.assertContains(response, "unread",
+                            count=4, status_code=200)
 
     def test_overview_top_threads(self):
         response = self.client.get(reverse(

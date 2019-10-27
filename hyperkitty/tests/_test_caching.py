@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 # flake8: noqa
 
-import unittest
 import datetime
+import unittest
 import uuid
 from urllib.error import HTTPError
 
-from mock import Mock
 from mailman.email.message import Message
 from mailman.interfaces.archiver import ArchivePolicy
+from mock import Mock
+
 
 #import kittystore.utils
 #from kittystore import get_store

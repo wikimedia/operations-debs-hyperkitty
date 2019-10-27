@@ -20,8 +20,8 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-import string
 import random
+import string
 from email.message import EmailMessage
 
 from hyperkitty.lib.incoming import add_to_list

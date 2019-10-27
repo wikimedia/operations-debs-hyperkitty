@@ -25,6 +25,7 @@ Those lists have no archived email yet.
 """
 
 from django_extensions.management.jobs import BaseJob
+
 from hyperkitty.lib.mailman import get_new_lists_from_mailman
 
 

@@ -24,9 +24,9 @@ from email.message import EmailMessage
 
 from django.utils.timezone import now
 
-from hyperkitty.models import MailingList, Email, Thread, Sender
 from hyperkitty.lib.analysis import compute_thread_order_and_depth
 from hyperkitty.lib.incoming import add_to_list
+from hyperkitty.models import Email, MailingList, Sender, Thread
 from hyperkitty.tests.utils import TestCase
 
 

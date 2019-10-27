@@ -23,9 +23,9 @@ Communication channels
 ======================
 
 Hang out on IRC and ask questions on ``#mailman`` or join the `mailing list`_
-``hyperkitty-devel@lists.fedorahosted.org``.
+``mailman-users@mailman3.org``.
 
-.. _mailing list: https://lists.fedorahosted.org/mailman/listinfo/hyperkitty-devel
+.. _mailing list: https://lists.mailman3.org/mailman3/lists/mailman-users.mailman3.org/
 
 
 Setting up HyperKitty for development
@@ -51,8 +51,8 @@ Then download the components of HyperKitty::
 Configuration
 =============
 
-For a development setup, you should create a
-``example_project/settings_local.py`` file with at least the following
+For a development setup, you should create a file
+``example_project/settings_local.py`` with at least the following
 content::
 
     DEBUG = True

@@ -22,10 +22,11 @@
 
 
 from email.message import EmailMessage
-from hyperkitty.utils import reverse
-from hyperkitty.models import MailingList
+
 from hyperkitty.lib.incoming import add_to_list
+from hyperkitty.models import MailingList
 from hyperkitty.tests.utils import TestCase
+from hyperkitty.utils import reverse
 
 
 class CompatURLsTestCase(TestCase):

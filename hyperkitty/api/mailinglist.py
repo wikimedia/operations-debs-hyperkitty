@@ -19,9 +19,9 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from rest_framework import serializers, generics
+from rest_framework import generics, serializers
 
-from hyperkitty.models import MailingList, ArchivePolicy
+from hyperkitty.models import ArchivePolicy, MailingList
 from .utils import EnumField, IsMailingListPublicOrIsMember
 
 

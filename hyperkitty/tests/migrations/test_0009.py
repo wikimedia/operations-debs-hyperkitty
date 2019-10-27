@@ -26,6 +26,7 @@ https://www.caktusgroup.com/blog/2016/02/02/writing-unit-tests-django-migrations
 """
 
 from django.utils.timezone import now
+
 from hyperkitty.tests.utils import MigrationTestCase
 
 

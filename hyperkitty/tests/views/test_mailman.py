@@ -24,15 +24,16 @@ import json
 from email.message import EmailMessage
 from io import BytesIO
 
-import mock
 from django.conf import settings
 from django.contrib.sites.models import Site
+
+import mock
 from django_mailman3.models import MailDomain
 
 from hyperkitty.models.email import Email
+from hyperkitty.tests.utils import TestCase
 from hyperkitty.utils import reverse
 from hyperkitty.views.mailman import _get_url
-from hyperkitty.tests.utils import TestCase
 
 
 class PrivateListTestCase(TestCase):

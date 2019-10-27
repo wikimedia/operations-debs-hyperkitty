@@ -20,23 +20,19 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-import os
-import mailbox
 import datetime
-import tempfile
 import gzip
+import mailbox
+import os
+import tempfile
 from io import StringIO
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    # For Django 2.0+
-    from django.urls import reverse
-from django.http import HttpResponse, Http404
-from django.shortcuts import redirect, get_object_or_404
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 
-from hyperkitty.models import Email, MailingList
 from hyperkitty.lib.compat import get_list_by_name, month_name_to_num
+from hyperkitty.models import Email, MailingList
 
 
 def summary(request, list_name=None):

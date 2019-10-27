@@ -22,14 +22,15 @@
 import uuid
 from email.message import EmailMessage
 
-from mock import Mock, patch
 from django.contrib.auth.models import User
-from hyperkitty.utils import reverse
+
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
+from mock import Mock, patch
 
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models import MailingList, ArchivePolicy
+from hyperkitty.models import ArchivePolicy, MailingList
 from hyperkitty.tests.utils import SearchEnabledTestCase
+from hyperkitty.utils import reverse
 
 
 class SearchViewsTestCase(SearchEnabledTestCase):

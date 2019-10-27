@@ -20,18 +20,19 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 from email.message import EmailMessage
 from random import shuffle
 
 from django.contrib.auth.models import User
 from django.utils.timezone import utc
+
 from django_mailman3.tests.utils import FakeMMList
 
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models import MailingList, Thread, ArchivePolicy
+from hyperkitty.models import ArchivePolicy, MailingList, Thread
 from hyperkitty.models.mailinglist import (
-    RecentThreads, TopThreads, PopularThreads, FirstDate)
+    FirstDate, PopularThreads, RecentThreads, TopThreads)
 from hyperkitty.tests.utils import TestCase
 
 

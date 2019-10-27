@@ -31,7 +31,7 @@ from hyperkitty.search_indexes import update_index
 
 class Job(BaseJob):
     help = "Update the full-text index"
-    when = "minutely"
+    when = "hourly"
 
     def execute(self):
         run_with_lock(update_index, remove=False)

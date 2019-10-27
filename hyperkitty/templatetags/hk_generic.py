@@ -21,18 +21,20 @@
 #
 
 import datetime
+import json
 import re
 from collections import OrderedDict
 
-import json
-from dateutil.tz import tzoffset
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.timezone import utc
 
+from dateutil.tz import tzoffset
+
 import hyperkitty.lib.posting
 from hyperkitty.lib.utils import stripped_subject
+
 
 register = template.Library()
 
@@ -121,8 +123,29 @@ def date_with_senders_timezone(email):
 
 
 @register.filter(needs_autoescape=True)
-def snip_quoted(content, quotemsg="...", autoescape=None):
-    """Snip quoted text in messages"""
+def snip_quoted(content, quotemsg="...",
+                autoescape=None, add_switch=True, quote_index=0):
+    """Snip quoted text in messages.
+
+    This method recursively tries to find quoted text in an email and return
+    HTML with proper quotes. We process only 4 levels of indent so as to
+    prevent too much processing of text.
+
+    :param content: The content to be quoted.
+    :param quotemsg: The content of the switch which shows and hides the
+        quoted text.
+    :param add_switch: Boolean specifying if we should add the switch to
+         show-hide quoted content. To prevent having too many switches,
+         we only add a single switch to the top-level quoted text.
+    :param quote_index: Which level of nested quote we are in. This is
+         incremented on a recursive call and we limit it to a maximum
+         of 3, starting from 0.
+
+    """
+    # We don't want to go into infinite loop of quoting, so we limit the
+    # quoting to 0-3, 4 levels only.
+    if quote_index > 3 or quote_index < 0:
+        return content
     if autoescape:
         content = conditional_escape(content)
     quoted = []
@@ -140,12 +163,25 @@ def snip_quoted(content, quotemsg="...", autoescape=None):
                 quoted.append((current_quote_orig[:], current_quote[:]))
                 current_quote = []
                 current_quote_orig = []
+
     for quote_orig, quote in quoted:
-        replaced = (
-            '<div class="quoted-switch">'
-            '<a style="font-weight:normal" href="#">{quotemsg}</a></div>'
-            '<div class="quoted-text">{quote} </div>'
-            ).format(quotemsg=quotemsg, quote="\n".join(quote))
+        replaced = ''
+        # Add a switch if we are needed to, usually, this is used for the first
+        # level of quoting. Any further nested levels do not require a switch.
+        if add_switch:
+            replaced = (
+                '<div class="quoted-switch">'
+                '<a style="font-weight:normal" href="#">{quotemsg}</a>'
+                '</div>').format(quotemsg=quotemsg)
+        # Finally, generate the quoted content. We recursively call
+        # `snip_quoted` to process further levels of quotes in the message.
+        replaced += (
+            '<div class="quoted-text quoted-text-{index}"> {quote} </div>'
+        ).format(
+            quote=snip_quoted("\n".join(quote),
+                              add_switch=False, quote_index=quote_index+1),
+            index=quote_index)
+        # Replace the original content with the new one.
         content = content.replace("\n".join(quote_orig), replaced)
     return mark_safe(content)
 

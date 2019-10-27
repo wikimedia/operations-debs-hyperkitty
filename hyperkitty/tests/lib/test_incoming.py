@@ -22,18 +22,19 @@
 
 import datetime
 import os
+from email import message_from_file
 from email.message import EmailMessage
 from email.policy import default
-from email import message_from_file
+
+from django.core.cache import cache
+from django.db import DataError, IntegrityError
+from django.utils import timezone
 
 import mock
-from django.utils import timezone
-from django.db import IntegrityError, DataError
-from django.core.cache import cache
 
-from hyperkitty.models import MailingList, Email, Thread, Attachment
-from hyperkitty.lib.incoming import add_to_list, DuplicateMessage
+from hyperkitty.lib.incoming import DuplicateMessage, add_to_list
 from hyperkitty.lib.utils import get_message_id_hash
+from hyperkitty.models import Attachment, Email, MailingList, Thread
 from hyperkitty.tests.utils import TestCase, get_test_file
 
 

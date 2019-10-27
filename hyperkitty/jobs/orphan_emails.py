@@ -31,6 +31,7 @@ mail server in the chain has an issue, or in case of greylisting for example).
 """
 
 from django_extensions.management.jobs import BaseJob
+
 from hyperkitty.models import Email
 
 

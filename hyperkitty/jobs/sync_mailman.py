@@ -24,6 +24,7 @@ Sync list properties and user mailman_id's with Mailman over REST
 """
 
 from django_extensions.management.jobs import BaseJob
+
 from hyperkitty.lib.mailman import sync_with_mailman
 
 

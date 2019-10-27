@@ -20,21 +20,23 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
+import logging
 import re
 from email.message import EmailMessage
 
 from django.conf import settings
 from django.db import DataError
 from django.utils import timezone
+
 from django_mailman3.lib.scrub import Scrubber
 
 from hyperkitty.lib.utils import (
-    get_ref, parseaddr, parsedate, header_to_unicode, get_message_id)
+    get_message_id, get_ref, header_to_unicode, parseaddr, parsedate)
 from hyperkitty.models import (
-    MailingList, Sender, Email, Attachment, ArchivePolicy)
-from hyperkitty.tasks import update_from_mailman, sender_mailman_id
+    ArchivePolicy, Attachment, Email, MailingList, Sender)
+from hyperkitty.tasks import sender_mailman_id, update_from_mailman
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -52,7 +54,7 @@ def add_to_list(list_name, message):
     # timeit("1 start")
     mlist = MailingList.objects.get_or_create(name=list_name)[0]
     if not getattr(settings, "HYPERKITTY_BATCH_MODE", False):
-        update_from_mailman.delay(mlist.name)
+        update_from_mailman(mlist.name)
     mlist.save()
     if mlist.archive_policy == ArchivePolicy.never.value:
         logger.info("Archiving disabled by list policy for %s", list_name)
@@ -92,7 +94,7 @@ def add_to_list(list_name, message):
     sender = Sender.objects.get_or_create(address=sender_address)[0]
     email.sender = sender
     if not getattr(settings, "HYPERKITTY_BATCH_MODE", False):
-        sender_mailman_id.delay(sender.pk)
+        sender_mailman_id(sender.pk)
     # timeit("3 after sender, before email content")
 
     # Headers

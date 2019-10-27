@@ -28,21 +28,22 @@ from email import message_from_file
 from email.message import EmailMessage
 from email.policy import default
 
-from allauth.account.models import EmailAddress
-from mock import Mock, patch
 from django.contrib.auth.models import User
-from hyperkitty.utils import reverse
 from django.core import mail
 from django.utils import timezone
+
+from allauth.account.models import EmailAddress
 from django_gravatar.helpers import get_gravatar_url
 from django_mailman3.tests.utils import get_flash_messages
+from mock import Mock, patch
 
-from hyperkitty.lib.utils import get_message_id_hash
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models.email import Email, Attachment
+from hyperkitty.lib.utils import get_message_id_hash
+from hyperkitty.models.email import Attachment, Email
 from hyperkitty.models.mailinglist import MailingList
 from hyperkitty.models.thread import Thread
 from hyperkitty.tests.utils import TestCase, get_test_file
+from hyperkitty.utils import reverse
 
 
 class MessageViewsTestCase(TestCase):

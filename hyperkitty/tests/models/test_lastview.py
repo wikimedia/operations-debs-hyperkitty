@@ -23,8 +23,9 @@
 from email.message import EmailMessage
 
 from django.contrib.auth.models import User
+
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models.thread import Thread, LastView
+from hyperkitty.models.thread import LastView, Thread
 from hyperkitty.tests.utils import TestCase
 
 

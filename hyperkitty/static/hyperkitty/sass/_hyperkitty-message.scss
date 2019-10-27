@@ -40,9 +40,14 @@ $oddEmailColor: rgb(238, 238, 238);
     a {
         position: absolute;
         top: -95px;
-    }   
+    }
 }
 
+.view-thread {
+    .unread {
+        border-left: 2px solid #08c;
+    }
+}
 //=== Main section with the whole thread ==/
 
 // First email of the thread
@@ -72,6 +77,10 @@ $oddEmailColor: rgb(238, 238, 238);
         a {
             color: rgb(167, 169, 172);
         }
+    }
+
+    .fa {
+        color: #08c;
     }
 
 }
@@ -108,7 +117,7 @@ $oddEmailColor: rgb(238, 238, 238);
 }
 
 .email-body {
-    white-space: pre-line;
+    white-space: pre-wrap;
     word-wrap: break-word;
 
     span.read-more a,
@@ -132,8 +141,46 @@ $oddEmailColor: rgb(238, 238, 238);
 
 .email-info {
     position: relative;
+    .messagelink {
+        display: inline;
+        font-style: italic;
+        font-size: 90%;
+        color: rgb(167, 169, 172);
+        a {
+            color: rgb(167, 169, 172);
+        }
+    }
+    .messagelink span, .messagelink a {
+        padding: 5px;
+        margin-left: 2px;
+        border-radius: 2px;
+    }
+    .messagelink span:hover, .messagelink a:hover {
+        background: grey;
+    }
+
+    .vote {
+        padding: 5px;
+        marging-left: 2px;
+        border-radius: 2px;
+    }
+
+    .youlike:hover {
+        background: #E1F4A2;
+    }
+
+    .youdislike:hover {
+        background: #FFAAAA
+    }
+    .reply {
+        padding: 10px;
+        border-radius: 4px;
+    }
+    .reply:hover {
+        background: #e8ecf2;
+    }
     .likeform-wrapper {
-        position: absolute;
+        position: relative;
         top: 0;
         right: 0;
     }
@@ -184,17 +231,54 @@ $oddEmailColor: rgb(238, 238, 238);
         }
     }
 
+
 }
 
 
 .email-first .email-info {
     padding: 0 0 20px 0;
-    border-bottom: 1px solid $rowBorderColor;
+    // border-bottom: 1px solid $rowBorderColor;
+}
+
+.email-first {
+    padding-left: 10px;
+}
+
+.email-first .email-body {
+    padding-left: 25px;
 }
 
 .sort-mode {
     text-align: right;
     padding-top: 10px;
+}
+
+
+/* Set the indent of the replies based on the size of the screen.*/
+.reply-level-1 {
+    margin-left: 2em;
+}
+.reply-level-2 {
+    margin-left: 4em;
+}
+.reply-level-3 {
+    margin-left: 6em;
+}
+.reply-level-4 {
+    margin-left: 8em;
+}
+.reply-level-5 {
+    margin-left: 10em;
+}
+
+
+/* On smaller screens, do not indent replies as it gets harder to read emails
+ *  at level 5.
+ */
+@media (max-width: 768px) {
+    .reply-level-1, .reply-level-2, .reply-level-3, .reply-level-4, .reply-level-5 {
+        margin-left: 0em;
+    }
 }
 
 
@@ -216,25 +300,26 @@ $oddEmailColor: rgb(238, 238, 238);
     }
     .subject {
         text-align: center;
-        clear: both;
+        // clear: both;
         font-style: italic;
     }
     .email-body {
-        padding: 5px;
+        // padding: 5px;
+        padding-left: 25px;
         background-color: rgb(255, 255, 255);
     }
 }
-.even .email {
-    background-color: $evenEmailColor;
-}
-.odd .email {
-    background-color: $oddEmailColor;
-}
+// .even .email {
+//     background-color: $evenEmailColor;
+// }
+// .odd .email {
+//     background-color: $oddEmailColor;
+// }
 .temporary .email {
     background-color: rgb(215, 215, 229);
     display: none;
 }
- 
+
 
 // === Thread general information column
 
@@ -353,10 +438,32 @@ $oddEmailColor: rgb(238, 238, 238);
     }
 }
 .quoted-text {
-    border-left: 2px solid rgb(55, 113, 200);
-    padding-left: 0.2em;
+    border-left: 2px solid  rgb(55, 113, 200);
+    padding: 0.5em;
+    background: #e8ecf2;
+    border-radius: 10px;
 }
 
+.quoted-text-1 {
+    border-left: 2px solid  #1d3e0f;
+    padding: 0.5em;
+    background: #e4f1df;
+    border-radius: 10px;
+}
+
+.quoted-text-2 {
+    border-left: 2px solid  #5c0a0a;
+    padding: 0.5em;
+    background: #f7d4d4;
+    border-radius: 10px;
+}
+
+.quoted-text-3 {
+    border-left: 2px solid  rgb(55, 113, 200);
+    padding: 0.5em;
+    background: #e8ecf2;
+    border-radius: 10px;
+}
 
 //=== Navigation for unread messages ==/
 #unreadnavbar {

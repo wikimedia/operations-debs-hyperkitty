@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/{{ docs_version }}/howto/deployment/wsgi/
 
 import os
 
+from django.core.wsgi import get_wsgi_application
+
+
 # import sys
 # import site
 
@@ -31,7 +34,6 @@ import os
 #         sys.path.remove(item)
 #         sys.path[:0] = new_sys_path
 
-from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 

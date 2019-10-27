@@ -27,6 +27,7 @@ import datetime
 
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
+
 from hyperkitty.management.utils import setup_logging
 from hyperkitty.models import MailingList
 

@@ -23,6 +23,7 @@ This file is the main URL config for a Django website including HyperKitty.
 
 from django.conf.urls import include, url
 
+
 urlpatterns = [
     url(r'', include('hyperkitty.urls')),
     url(r'', include('django_mailman3.urls')),

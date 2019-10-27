@@ -20,7 +20,7 @@
 import re
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 
 # extract the version number without importing the package
@@ -37,7 +37,8 @@ with open('hyperkitty/__init__.py') as fp:
 
 # Requirements
 REQUIRES = [
-    "django_mailman3>=1.2.0a2",
+    "Django>=1.11,<2.3",
+    "django_mailman3>=1.2.0",
     "django-gravatar2>=1.0.6",
     "djangorestframework>=3.0.0",
     "robot-detection>=0.3",
@@ -46,12 +47,10 @@ REQUIRES = [
     "mailmanclient>=3.1.1",
     "python-dateutil >= 2.0",
     "networkx>=1.9.1",
-    # django-haystack>=2.5.0 suffices for Django-1.11
     "django-haystack>=2.8.0",
     "django-extensions>=1.3.7",
-    "lockfile>=0.9.1",
+    "flufl.lock",
     "django-q>=1.0.0",
-    "Django>=1.11,<2.2",
 ]
 
 
@@ -77,6 +76,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=REQUIRES,
+    setup_requires=[
+        "isort",
+    ],
     tests_require=[
         "mock",
         "Whoosh>=2.5.7",

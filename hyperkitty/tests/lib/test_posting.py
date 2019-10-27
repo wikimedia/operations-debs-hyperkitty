@@ -21,9 +21,11 @@
 #
 
 import uuid
+
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test.client import RequestFactory
+
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 from mock import Mock, patch
 
