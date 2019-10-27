@@ -52,7 +52,8 @@ Depends: fonts-glewlwyd,
          python3-robot-detection,
          python3-tz,
          ${misc:Depends},
-         ${python3:Depends}
+         ${python3:Depends},
+         ${sphinxdoc:Depends}
 Recommends: mailman3-web
 Breaks: mailman3-web (<< 0+20180916-10~)
 Conflicts: python-django-hyperkitty
