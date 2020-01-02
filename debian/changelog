@@ -1,3 +1,11 @@
+hyperkitty (1.3.0-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * debian/patches/MR201.patch
+    - make hyperkitty compatible with networkx 2.4; Closes: #945392
+
+ -- Sandro Tosi <morph@debian.org>  Thu, 02 Jan 2020 16:17:27 -0500
+
 hyperkitty (1.3.0-1) unstable; urgency=medium
 
   [ Jonas Meurer ]
