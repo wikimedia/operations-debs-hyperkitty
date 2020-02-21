@@ -3,6 +3,33 @@ News / Changelog
 ================
 
 
+1.3.2
+=====
+
+(2020-01-12)
+
+- Remove support for Django 1.11. (Closes #273)
+- Skip ``Thread.DoesNotExist`` exception when raised within
+  ``rebuild_thread_cache_votes``. (Closes #245)
+- Send 400 status code for ``ValueError`` when archiving. (Closes #271)
+- Fix a bug where exception for elasticsearch backend would not be caught. (Closes #263)
+
+1.3.1
+=====
+
+(2019-12-08)
+
+- Add support to delete mailing list. (Closes #3)
+- Fix a bug where messages with attachments would skip adding the body when
+  exporting the email. (Closes #252)
+- Fix a bug where exporting mbox with messages that have attachments saved
+  to disk would raise exception and return a corrupt mbox. (Closes #258)
+- Fix a bug where downloaded attachments are returned as a memoryview object
+  instead of bytes and hence fail to download. (Closes #247)
+- Fix a bug where migrations would fail with exceptions on postgresl. (Closes
+  #266)
+- Add support for Django 3.0.
+
 1.3.0
 =====
 (2019-09-04)
@@ -23,7 +50,7 @@ News / Changelog
   convert different thread categories into tabs.
 - Replace unmaintained ``lockfile`` dependency with ``flufl.lock``.
 - Remove ``SingletonAsync`` implementation of ``AsyncTask`` and use the upstream
-  version for better maintenance.  
+  version for better maintenance.
 - Run update_index job hourly by default instead of minutely for performance
   reasons of whoosh.
 - Email body now preserves leading whitespaces on lines and wraps around line

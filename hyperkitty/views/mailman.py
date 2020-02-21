@@ -120,7 +120,7 @@ def archive(request):
     except ValueError as e:
         logger.warning("Could not archive the email with message-id '%s': %s",
                        msg.get("Message-Id", None), e)
-        return HttpResponse(json.dumps({"error": str(e)}),
+        return HttpResponse(json.dumps({"error": str(e)}), status=400,
                             content_type='application/javascript')
     url = _get_url(mlist_fqdn, msg['Message-Id'])
     logger.info("Archived message %s to %s", msg['Message-Id'], url)

@@ -24,6 +24,10 @@ import datetime
 import json
 import zlib
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError, transaction
 from django.http import (
     Http404, HttpResponse, HttpResponseBadRequest, StreamingHttpResponse)
 from django.shortcuts import get_object_or_404, redirect, render
@@ -40,6 +44,7 @@ from hyperkitty.lib.view_helpers import (
     check_mlist_private, daterange, get_category_widget,
     get_display_dates, get_months)
 from hyperkitty.models import Email, Favorite, MailingList
+from hyperkitty.signals import silenced_email_pre_delete
 
 
 @check_mlist_private
@@ -333,3 +338,35 @@ def export_mbox(request, mlist_fqdn, filename):
     response['Content-Disposition'] = (
         'attachment; filename="%s.mbox.gz"' % filename)
     return response
+
+
+@login_required
+@check_mlist_private
+@transaction.atomic
+def delete(request, mlist_fqdn):
+    mlist = get_object_or_404(MailingList, name=mlist_fqdn)
+    if not request.user.is_staff and not request.user.is_superuser:
+        return HttpResponse(
+            _('You must be a staff member to delete a MailingList'),
+            content_type="text/plain", status=403)
+    if request.method == 'POST':
+        # XXX(maxking): This is a hack to make sure that we don't continuously
+        # keep re-setting the parent of emails when trying to delete all the
+        # emails and threads.
+        # We silence the pre_delete hook for email which does this re-balancing
+        # and then continue to do the delete action.
+        with silenced_email_pre_delete():
+            try:
+                mlist.threads.all().delete()
+                mlist.delete()
+                messages.success(
+                    request,
+                    _('Successfully deleted {}'.format(mlist.name)))
+                return redirect('/')
+            except (IntegrityError, ObjectDoesNotExist) as e:
+                messages.error(request, str(e))
+
+            return redirect(
+                reverse('hk_list_overview', kwargs={"mlist_fqdn": mlist.name}))
+    else:
+        return render(request, "hyperkitty/list_delete.html", {"mlist": mlist})

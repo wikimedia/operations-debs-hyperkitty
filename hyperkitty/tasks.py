@@ -186,7 +186,13 @@ def rebuild_thread_cache_votes(thread_id):
 
 
 def _rebuild_thread_cache_votes(thread_id):
-    thread = Thread.objects.get(id=thread_id)
+    try:
+        thread = Thread.objects.get(id=thread_id)
+    except Thread.DoesNotExist:
+        log.warning('Thread with id {thread_id} does not exist'.format(
+            thread_id=thread_id))
+        return
+
     for cached_key in ["votes", "votes_total"]:
         thread.cached_values[cached_key].rebuild()
 

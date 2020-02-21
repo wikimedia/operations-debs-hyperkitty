@@ -57,10 +57,14 @@ class Email(models.Model):
     timezone = models.SmallIntegerField()
     in_reply_to = models.CharField(
         max_length=255, null=True, blank=True, db_index=True)
-    # Delete behavior is handled by on_pre_delete()
+    # XXX(maxking): Delete behavior is handled by on_pre_delete(). Since we
+    # manually make sure that we set and unset parents and handle the fact that
+    # they can't be None for more than one Email in a thread, we don't want
+    # database engine to enforce the relationship is valid. Hence, we set the
+    # on_delete=DO_NOTHING and db_constraint=False.
     parent = models.ForeignKey(
         "self", blank=True, null=True, on_delete=models.DO_NOTHING,
-        related_name="children")
+        related_name="children", db_constraint=False)
     thread = models.ForeignKey(
         "Thread", related_name="emails", on_delete=models.CASCADE)
     archived_date = models.DateTimeField(default=now, db_index=True)
@@ -175,16 +179,14 @@ class Email(models.Model):
         # Body
         content = self.ADDRESS_REPLACE_RE.sub(r"\1(a)\2", self.content)
 
-        # Enforce `multipart/mixed` even when there are no attachments
-        # Q: Why are all emails supposed to be multipart?
-        if self.attachments.count() == 0:
-            msg.set_content(content, subtype='plain')
-            msg.make_mixed()
+        # Enforce `multipart/mixed` even when there are no attachments.
+        msg.set_content(content, subtype='plain')
+        msg.make_mixed()
 
         # Attachments
         for attachment in self.attachments.order_by("counter"):
             mimetype = attachment.content_type.split('/', 1)
-            msg.add_attachment(attachment.content, maintype=mimetype[0],
+            msg.add_attachment(attachment.get_content(), maintype=mimetype[0],
                                subtype=mimetype[1], filename=attachment.name)
 
         return msg
@@ -310,7 +312,7 @@ class Attachment(models.Model):
     def get_content(self):
         folder = self._get_folder()
         if folder is None:
-            return self.content
+            return bytes(self.content)
         filepath = os.path.join(folder, str(self.counter))
         if not os.path.exists(filepath):
             logger.error("Could not find local attachment %s for email %s",

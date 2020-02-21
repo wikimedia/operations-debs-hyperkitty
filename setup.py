@@ -46,7 +46,7 @@ REQUIRES = [
     "django-compressor>=1.3",
     "mailmanclient>=3.1.1",
     "python-dateutil >= 2.0",
-    "networkx>=1.9.1",
+    "networkx>=2.0",
     "django-haystack>=2.8.0",
     "django-extensions>=1.3.7",
     "flufl.lock",

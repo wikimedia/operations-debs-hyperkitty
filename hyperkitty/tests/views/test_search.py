@@ -25,6 +25,7 @@ from email.message import EmailMessage
 from django.contrib.auth.models import User
 
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
+from haystack import DEFAULT_ALIAS
 from mock import Mock, patch
 
 from hyperkitty.lib.incoming import add_to_list
@@ -192,6 +193,8 @@ class SearchViewsTestCase(SearchEnabledTestCase):
                 msg_prefix="With query %r" % query, status_code=200)
 
     def test_parse_error(self):
+
+        # For whoosh backend
         from whoosh.qparser.common import QueryParserError
 
         class CrashingIterator(list):
@@ -205,3 +208,26 @@ class SearchViewsTestCase(SearchEnabledTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "alert-danger")
         self.assertContains(response, "dummy parsing failure")
+
+        # For elasticsearch backend
+        from elasticsearch import RequestError
+
+        class CrashingIterator(list):
+            def __len__(self):
+                raise RequestError(400, "dummy parsing failure", {})
+            query = Mock()
+
+        with self.settings(HAYSTACK_CONNECTIONS={
+            DEFAULT_ALIAS: {
+                "ENGINE": "haystack.backends.elasticsearch_backend.Elastic"
+                          "searchSearchEngine"
+            }
+        }):
+            with patch(
+                "hyperkitty.views.search.SearchForm.search"
+            ) as form_search:
+                form_search.return_value = CrashingIterator()
+                response = self.client.get(reverse("hk_search"), {"q": "FAIL"})
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, "alert-danger")
+            self.assertContains(response, "dummy parsing failure")

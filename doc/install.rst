@@ -44,7 +44,7 @@ upgrades easier.
     Detailed information on how to use different database engines can be found
     in the `Django documentation`_.
 
-.. _Django documentation: https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+.. _Django documentation: https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
 .. Setting up the databases
