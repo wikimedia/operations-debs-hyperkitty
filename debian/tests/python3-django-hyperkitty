@@ -1,0 +1,9 @@
+#!/bin/bash
+
+python3_versions="$(py3versions -r 2> /dev/null)"
+
+cd "${AUTOPKGTEST_TMP}"
+
+for python3 in $python3_versions; do
+    $python3 $(which django-admin) test --settings=hyperkitty.tests.settings_test hyperkitty || exit 1
+done

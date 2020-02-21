@@ -1,8 +1,7 @@
-Test-Command: for python3 in $(py3versions -r); do $python3 $(which django-admin) test --pythonpath=. --settings=hyperkitty.tests.settings_test hyperkitty; done
+Tests: python3-django-hyperkitty
 Depends: @,
          python3-all,
          python3-bs4,
          python3-mock,
          python3-whoosh
-Restrictions: build-needed,
-              allow-stderr
+Restrictions: allow-stderr
