@@ -67,6 +67,9 @@
                   {% trans '<span class="hidden-tn hidden-xs">Manage s</span><span class="hidden-sm hidden-md hidden-lg">S</span>ubscription' %}</a>
                 {% endif %}
                 <a href="{% url 'hk_archives_latest' mlist_fqdn=mlist.name %}" class="btn btn-default">{% trans "All Threads" %}</a>
+                {% if user.is_staff or user.is_suerperuser %}
+                <a href="{% url 'hk_list_delete' mlist_fqdn=mlist.name %}" class="btn btn-danger">{% trans "Delete" %}</a>
+                {% endif %}
             </div>
         </div> <!-- /container, navbar & search (tiny/xs screens), new thread button -->
     </div> <!-- /container, title/description + the elements above -->

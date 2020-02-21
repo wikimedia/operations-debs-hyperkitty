@@ -3,373 +3,388 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-27 15:17+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-11-26 21:05+0000\n"
+"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/gnu-mailman/"
+"hyperkitty/tr/>\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #: forms.py:64
 msgid "Attach a file"
-msgstr ""
+msgstr "Bir dosya ekle"
 
 #: forms.py:65
 msgid "Attach another file"
-msgstr ""
+msgstr "Başka bir dosya ekle"
 
 #: forms.py:66
 msgid "Remove this file"
-msgstr ""
+msgstr "Bu dosyası kaldır"
 
 #: templates/hyperkitty/404.html:28
 msgid "Error 404"
-msgstr ""
+msgstr "404 Hatası"
 
 #: templates/hyperkitty/404.html:30 templates/hyperkitty/500.html:31
 msgid "Oh No!"
-msgstr ""
+msgstr "Hayır, Olamaz!"
 
 #: templates/hyperkitty/404.html:32
 msgid "I can't find this page."
-msgstr ""
+msgstr "Bu sayfayı bulamıyorum."
 
 #: templates/hyperkitty/404.html:33 templates/hyperkitty/500.html:34
 msgid "Go back home"
-msgstr ""
+msgstr "Ana sayfaya dön"
 
 #: templates/hyperkitty/500.html:29
 msgid "Error 500"
-msgstr ""
+msgstr "500 Hatası"
 
 #: templates/hyperkitty/500.html:33
 msgid "Sorry, but the requested page is unavailable due to a server hiccup."
-msgstr ""
+msgstr "Maalesef, istenen sayfa bir sunucu kesintisi nedeniyle kullanılamıyor."
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:7
 #: templates/hyperkitty/reattach.html:25
 msgid "started"
-msgstr ""
+msgstr "başladı"
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:7
 #: templates/hyperkitty/reattach.html:25
 msgid "last active:"
-msgstr ""
+msgstr "son aktivite:"
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:8
 msgid "see this thread"
-msgstr ""
+msgstr "mesaj dizisine bak"
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:12
 msgid "(no suggestions)"
-msgstr ""
+msgstr "(öneri yok)"
 
 #: templates/hyperkitty/ajax/temp_message.html:12
 msgid "Sent just now, not yet distributed"
-msgstr ""
+msgstr "Şimdi gönderildi, henüz dağıtılmadı"
 
 #: templates/hyperkitty/api.html:5
 msgid "REST API"
-msgstr ""
+msgstr "REST API"
 
 #: templates/hyperkitty/api.html:7
 msgid ""
 "HyperKitty comes with a small REST API allowing you to programatically "
 "retrieve emails and information."
 msgstr ""
+"HyperKitty, programlı olarak e-postaları ve bilgileri almanızı sağlayan "
+"küçük bir REST API ile birlikte gelmektedir."
 
 #: templates/hyperkitty/api.html:10
 msgid "Formats"
-msgstr ""
+msgstr "Formatlar"
 
 #: templates/hyperkitty/api.html:12
 msgid ""
 "This REST API can return the information into several formats.  The default "
 "format is html to allow human readibility."
 msgstr ""
+"Bu REST API bilgileri birkaç formatta döndürebilir.  Varsayılan format insan "
+"okunabilirliğine izin vermek için html'dir."
 
 #: templates/hyperkitty/api.html:14
 msgid ""
 "To change the format, just add <em>?format=&lt;FORMAT&gt;</em> to the URL."
 msgstr ""
+"Formatı değiştirmek için, URL'ye <em>?format=&lt;FORMAT&gt;</em> ekleyin."
 
 #: templates/hyperkitty/api.html:16
 msgid "The list of available formats is:"
-msgstr ""
+msgstr "Mevcut formatların listesi:"
 
 #: templates/hyperkitty/api.html:20
 msgid "Plain text"
-msgstr ""
+msgstr "Düz metin"
 
 #: templates/hyperkitty/api.html:26
 msgid "List of mailing-lists"
-msgstr ""
+msgstr "Posta listelerinin listesi"
 
 #: templates/hyperkitty/api.html:27 templates/hyperkitty/api.html:33
 #: templates/hyperkitty/api.html:39 templates/hyperkitty/api.html:45
 #: templates/hyperkitty/api.html:51
 msgid "Endpoint:"
-msgstr ""
+msgstr "Bitiş noktası:"
 
 #: templates/hyperkitty/api.html:29
 msgid ""
 "Using this address you will be able to retrieve the information known about "
 "all the mailing lists."
 msgstr ""
+"Bu adresi kullanarak, tüm posta listeleri hakkında bilinen bilgileri "
+"alabileceksiniz."
 
 #: templates/hyperkitty/api.html:32
 msgid "Threads in a mailing list"
-msgstr ""
+msgstr "Bir posta listesindeki mesaj dizileri"
 
 #: templates/hyperkitty/api.html:35
 msgid ""
 "Using this address you will be able to retrieve information about all the "
 "threads on the specified mailing list."
 msgstr ""
+"Bu adresi kullanarak, belirtilen posta listesindeki tüm mesaj dizileri "
+"hakkında bilgi alabileceksiniz."
 
 #: templates/hyperkitty/api.html:38
 msgid "Emails in a thread"
-msgstr ""
+msgstr "Bir mesaj dizisindeki e-postalar"
 
 #: templates/hyperkitty/api.html:41
 msgid ""
 "Using this address you will be able to retrieve the list of emails in a "
 "mailing list thread."
 msgstr ""
+"Bu adresi kullanarak, bir posta listesi mesaj dizisindeki e-postaların "
+"listesini alabilirsiniz."
 
 #: templates/hyperkitty/api.html:44
 msgid "An email in a mailing list"
-msgstr ""
+msgstr "Bir posta listesindeki bir e-posta"
 
 #: templates/hyperkitty/api.html:47
 msgid ""
 "Using this address you will be able to retrieve the information known about "
 "a specific email on the specified mailing list."
 msgstr ""
+"Bu adresi kullanarak, belirtilen posta listesindeki belirli bir e-posta "
+"hakkında bilinen bilgileri alabileceksiniz."
 
 #: templates/hyperkitty/api.html:50
 msgid "Tags"
-msgstr ""
+msgstr "Etiketler"
 
 #: templates/hyperkitty/api.html:53
 msgid "Using this address you will be able to retrieve the list of tags."
-msgstr ""
+msgstr "Bu adresi kullanarak etiketlerin listesini alabileceksiniz."
 
 #: templates/hyperkitty/base.html:57 templates/hyperkitty/base.html:99
 msgid "Account"
-msgstr ""
+msgstr "Hesap"
 
 #: templates/hyperkitty/base.html:62 templates/hyperkitty/base.html:104
 msgid "Mailman settings"
-msgstr ""
+msgstr "Mailman ayarları"
 
 #: templates/hyperkitty/base.html:67 templates/hyperkitty/base.html:109
 #: templates/hyperkitty/user_profile/base.html:16
 #: templates/hyperkitty/user_profile/base.html:17
 msgid "Posting activity"
-msgstr ""
+msgstr "Gönderme etkinliği"
 
 #: templates/hyperkitty/base.html:72 templates/hyperkitty/base.html:114
 msgid "Logout"
-msgstr ""
+msgstr "Oturumu kapat"
 
 #: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:121
 msgid "Sign In"
-msgstr ""
+msgstr "Oturum Aç"
 
 #: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:125
 msgid "Sign Up"
-msgstr ""
+msgstr "Kaydol"
 
 #: templates/hyperkitty/base.html:135
 msgid "Manage this list"
-msgstr ""
+msgstr "Bu listeyi yönet"
 
 #: templates/hyperkitty/base.html:140
 msgid "Manage lists"
-msgstr ""
+msgstr "Listeleri yönet"
 
 #: templates/hyperkitty/base.html:193
 msgid "Powered by"
-msgstr ""
+msgstr "Tarafından desteklenmektedir"
 
 #: templates/hyperkitty/base.html:193
 msgid "version"
-msgstr ""
+msgstr "versiyon"
 
 #: templates/hyperkitty/errors/notimplemented.html:8
 msgid "Not implemented yet"
-msgstr ""
+msgstr "Henüz uygulanmadı"
 
 #: templates/hyperkitty/errors/notimplemented.html:13
 msgid "Not implemented"
-msgstr ""
+msgstr "Uygulanmadı"
 
 #: templates/hyperkitty/errors/notimplemented.html:15
 msgid "This feature has not been implemented yet, sorry."
-msgstr ""
+msgstr "Bu özellik henüz uygulanmamıştır, üzgünüm."
 
 #: templates/hyperkitty/errors/private.html:8
 msgid "Error: private list"
-msgstr ""
+msgstr "Hata: özel liste"
 
 #: templates/hyperkitty/errors/private.html:20
 msgid ""
 "This mailing list is private. You must be subscribed to view the archives."
 msgstr ""
+"Bu posta listesi özeldir. Arşivleri görüntülemek için abone olmalısınız."
 
 #: templates/hyperkitty/fragments/like_form.html:16
 msgid "You like it (cancel)"
-msgstr ""
+msgstr "Beğendiniz (iptal et)"
 
 #: templates/hyperkitty/fragments/like_form.html:24
 msgid "You dislike it (cancel)"
-msgstr ""
+msgstr "Beğenmediniz (iptal et)"
 
 #: templates/hyperkitty/fragments/like_form.html:27
 #: templates/hyperkitty/fragments/like_form.html:31
 msgid "You must be logged-in to vote."
-msgstr ""
+msgstr "Oy kullanmak için giriş yapmalısınız."
 
 #: templates/hyperkitty/fragments/month_list.html:5
 msgid "Go to"
-msgstr ""
+msgstr "Git"
 
 #: templates/hyperkitty/fragments/month_list.html:72
 msgid "List overview"
-msgstr ""
+msgstr "Listeye genel bakış"
 
 #: templates/hyperkitty/fragments/month_list.html:78
 #: templates/hyperkitty/overview.html:75
 msgid "All Threads"
-msgstr ""
+msgstr "Tüm Mesaj Dizileri"
 
 #: templates/hyperkitty/fragments/month_list.html:87 views/message.py:74
 #: views/mlist.py:96 views/thread.py:166
 msgid "Download"
-msgstr ""
+msgstr "İndir"
 
 #: templates/hyperkitty/fragments/month_list.html:90
 msgid "Past 30 days"
-msgstr ""
+msgstr "Son 30 gün"
 
 #: templates/hyperkitty/fragments/month_list.html:91
 msgid "This month"
-msgstr ""
+msgstr "Bu ay"
 
 #: templates/hyperkitty/fragments/month_list.html:94
 msgid "Entire archive"
-msgstr ""
+msgstr "Tüm arşiv"
 
 #: templates/hyperkitty/fragments/overview_threads.html:9
 msgid "More..."
-msgstr ""
+msgstr "Daha fazla..."
 
 #: templates/hyperkitty/fragments/overview_threads.html:17
 msgid "New messages in this thread"
-msgstr ""
+msgstr "Bu mesaj dizisindeki yeni mesajlar"
 
 #: templates/hyperkitty/fragments/overview_top_posters.html:19
 msgid "See the profile"
-msgstr ""
+msgstr "Profile bak"
 
 #: templates/hyperkitty/fragments/overview_top_posters.html:25
 msgid "posts"
-msgstr ""
+msgstr "gönderiler"
 
 #: templates/hyperkitty/fragments/overview_top_posters.html:30
 msgid "No posters this month (yet)."
-msgstr ""
+msgstr "Bu ay (henüz) gönderi atan yok."
 
 #: templates/hyperkitty/fragments/send_as.html:5
 msgid "This message will be sent as:"
-msgstr ""
+msgstr "Bu mesaj şu şekilde gönderilecek:"
 
 #: templates/hyperkitty/fragments/send_as.html:6
 msgid "Change sender"
-msgstr ""
+msgstr "Göndereni değiştir"
 
 #: templates/hyperkitty/fragments/send_as.html:16
 msgid "Link another address"
-msgstr ""
+msgstr "Başka bir adres bağla"
 
 #: templates/hyperkitty/index.html:9 templates/hyperkitty/index.html:63
 msgid "Available lists"
-msgstr ""
+msgstr "Mevcut listeler"
 
 #: templates/hyperkitty/index.html:22 templates/hyperkitty/index.html:27
 #: templates/hyperkitty/index.html:72
 msgid "Most popular"
-msgstr ""
+msgstr "En popüler"
 
 #: templates/hyperkitty/index.html:26
 msgid "Sort by number of recent participants"
-msgstr ""
+msgstr "Son katılımcıların sayısına göre sırala"
 
 #: templates/hyperkitty/index.html:32 templates/hyperkitty/index.html:37
 #: templates/hyperkitty/index.html:75
 msgid "Most active"
-msgstr ""
+msgstr "En aktif"
 
 #: templates/hyperkitty/index.html:36
 msgid "Sort by number of recent discussions"
-msgstr ""
+msgstr "Son tartışmaların sayısına göre sırala"
 
 #: templates/hyperkitty/index.html:42 templates/hyperkitty/index.html:47
 #: templates/hyperkitty/index.html:78
 msgid "By name"
-msgstr ""
+msgstr "İsme göre"
 
 #: templates/hyperkitty/index.html:46
 msgid "Sort alphabetically"
-msgstr ""
+msgstr "Alfabetik olarak sırala"
 
 #: templates/hyperkitty/index.html:52 templates/hyperkitty/index.html:57
 #: templates/hyperkitty/index.html:81
 msgid "Newest"
-msgstr ""
+msgstr "En yeni"
 
 #: templates/hyperkitty/index.html:56
 msgid "Sort by list creation date"
-msgstr ""
+msgstr "Liste oluşturma tarihine göre sırala"
 
 #: templates/hyperkitty/index.html:68
 msgid "Sort by"
-msgstr ""
+msgstr "Sıralama kriteri"
 
 #: templates/hyperkitty/index.html:91
 msgid "Hide inactive"
-msgstr ""
+msgstr "Etkin olmayanları gizle"
 
 #: templates/hyperkitty/index.html:92
 msgid "Hide private"
-msgstr ""
+msgstr "Özelleri gizle"
 
 #: templates/hyperkitty/index.html:99
 msgid "Find list"
-msgstr ""
+msgstr "Liste bul"
 
 #: templates/hyperkitty/index.html:123 templates/hyperkitty/index.html:193
 #: templates/hyperkitty/user_profile/last_views.html:34
 #: templates/hyperkitty/user_profile/last_views.html:73
 msgid "new"
-msgstr ""
+msgstr "yeni"
 
 #: templates/hyperkitty/index.html:134 templates/hyperkitty/index.html:204
 msgid "private"
-msgstr ""
+msgstr "özel"
 
 #: templates/hyperkitty/index.html:136 templates/hyperkitty/index.html:206
 msgid "inactive"
-msgstr ""
+msgstr "etkin değil"
 
 #: templates/hyperkitty/index.html:142 templates/hyperkitty/index.html:232
 #: templates/hyperkitty/overview.html:94 templates/hyperkitty/overview.html:102
@@ -380,7 +395,7 @@ msgstr ""
 #: templates/hyperkitty/overview.html:159 templates/hyperkitty/reattach.html:39
 #: templates/hyperkitty/thread.html:108
 msgid "Loading..."
-msgstr ""
+msgstr "Yükleniyor..."
 
 #: templates/hyperkitty/index.html:148 templates/hyperkitty/index.html:221
 #: templates/hyperkitty/overview.html:151
@@ -389,17 +404,17 @@ msgstr ""
 #: templates/hyperkitty/threads/right_col.html:98
 #: templates/hyperkitty/threads/summary_thread_large.html:49
 msgid "participants"
-msgstr ""
+msgstr "katılımcılar"
 
 #: templates/hyperkitty/index.html:153 templates/hyperkitty/index.html:226
 #: templates/hyperkitty/overview.html:152
 #: templates/hyperkitty/thread_list.html:45
 msgid "discussions"
-msgstr ""
+msgstr "tartışmalar"
 
 #: templates/hyperkitty/index.html:162 templates/hyperkitty/index.html:240
 msgid "No archived list yet."
-msgstr ""
+msgstr "Henüz arşivlenmiş bir liste yok."
 
 #: templates/hyperkitty/index.html:174
 #: templates/hyperkitty/user_profile/favorites.html:40
@@ -408,24 +423,24 @@ msgstr ""
 #: templates/hyperkitty/user_profile/subscriptions.html:41
 #: templates/hyperkitty/user_profile/votes.html:46
 msgid "List"
-msgstr ""
+msgstr "Liste"
 
 #: templates/hyperkitty/index.html:175
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #: templates/hyperkitty/index.html:176
 msgid "Activity in the past 30 days"
-msgstr ""
+msgstr "Son 30 gün içindeki etkinlik"
 
 #: templates/hyperkitty/message.html:23
 msgid "thread"
-msgstr ""
+msgstr "mesaj dizisi"
 
 #: templates/hyperkitty/message_delete.html:8
 #: templates/hyperkitty/message_delete.html:21
 msgid "Delete message(s)"
-msgstr ""
+msgstr "Mesaj(lar)ı sil"
 
 #: templates/hyperkitty/message_delete.html:26
 #, python-format
@@ -434,16 +449,19 @@ msgid ""
 "        %(count)s message(s) will be deleted. Do you want to continue?\n"
 "        "
 msgstr ""
+"\n"
+"        %(count)s mesaj silinecek. Devam etmek istiyor musunuz?\n"
+"        "
 
 #: templates/hyperkitty/message_delete.html:45
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: templates/hyperkitty/message_delete.html:46
 #: templates/hyperkitty/message_new.html:54
 #: templates/hyperkitty/messages/message.html:145
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 #: templates/hyperkitty/message_delete.html:46
 #: templates/hyperkitty/message_new.html:54
@@ -451,60 +469,60 @@ msgstr ""
 #: templates/hyperkitty/user_profile/votes.html:36
 #: templates/hyperkitty/user_profile/votes.html:74
 msgid "cancel"
-msgstr ""
+msgstr "iptal et"
 
 #: templates/hyperkitty/message_new.html:9
 #: templates/hyperkitty/message_new.html:22
 msgid "Create a new thread"
-msgstr ""
+msgstr "Yeni bir mesaj dizisi oluştur"
 
 #: templates/hyperkitty/message_new.html:23
 #: templates/hyperkitty/user_posts.html:23
 msgid "in"
-msgstr ""
+msgstr "içinde"
 
 #: templates/hyperkitty/message_new.html:53
 #: templates/hyperkitty/messages/message.html:144
 msgid "Send"
-msgstr ""
+msgstr "Gönder"
 
 #: templates/hyperkitty/messages/message.html:18
 #, python-format
 msgid "See the profile for %(name)s"
-msgstr ""
+msgstr "%(name)s profilini görüntüle"
 
 #: templates/hyperkitty/messages/message.html:28
 msgid "Unread"
-msgstr ""
+msgstr "Okunmamış"
 
 #: templates/hyperkitty/messages/message.html:45
 msgid "Sender's time:"
-msgstr ""
+msgstr "Gönderenin zamanı:"
 
 #: templates/hyperkitty/messages/message.html:51
 msgid "New subject:"
-msgstr ""
+msgstr "Yeni konu:"
 
 #: templates/hyperkitty/messages/message.html:62
 msgid "Attachments:"
-msgstr ""
+msgstr "Ekler:"
 
 #: templates/hyperkitty/messages/message.html:77
 msgid "Display in fixed font"
-msgstr ""
+msgstr "Sabit yazı tipinde göster"
 
 #: templates/hyperkitty/messages/message.html:80
 msgid "Permalink for this message"
-msgstr ""
+msgstr "Bu mesaj için kalıcı bağlantı"
 
 #: templates/hyperkitty/messages/message.html:90
 #: templates/hyperkitty/messages/message.html:96
 msgid "Reply"
-msgstr ""
+msgstr "Yanıtla"
 
 #: templates/hyperkitty/messages/message.html:93
 msgid "Sign in to reply online"
-msgstr ""
+msgstr "Çevrimiçi yanıtlamak için oturum açın"
 
 #: templates/hyperkitty/messages/message.html:104
 #, python-format
@@ -517,31 +535,37 @@ msgid_plural ""
 "                %(email.attachments.count)s attachments\n"
 "                "
 msgstr[0] ""
+"\n"
+"                %(email.attachments.count)s ek\n"
+"                "
 msgstr[1] ""
+"\n"
+"                %(email.attachments.count)s ek\n"
+"                "
 
 #: templates/hyperkitty/messages/message.html:130
 msgid "Quote"
-msgstr ""
+msgstr "Alıntıla"
 
 #: templates/hyperkitty/messages/message.html:131
 msgid "Create new thread"
-msgstr ""
+msgstr "Yeni mesaj dizisi oluştur"
 
 #: templates/hyperkitty/messages/message.html:134
 msgid "Use email software"
-msgstr ""
+msgstr "E-posta yazılımı kullan"
 
 #: templates/hyperkitty/messages/right_col.html:12
 msgid "Back to the thread"
-msgstr ""
+msgstr "Mesaj dizisine geri dön"
 
 #: templates/hyperkitty/messages/right_col.html:19
 msgid "Back to the list"
-msgstr ""
+msgstr "Listeye geri dön"
 
 #: templates/hyperkitty/messages/right_col.html:28
 msgid "Delete this message"
-msgstr ""
+msgstr "Bu mesajı sil"
 
 #: templates/hyperkitty/messages/summary_message.html:24
 #, python-format
@@ -550,293 +574,300 @@ msgid ""
 "                                by %(name)s\n"
 "                            "
 msgstr ""
+"\n"
+"                                %(name)s tarafından\n"
+"                            "
 
 #: templates/hyperkitty/overview.html:37
 msgid "Home"
-msgstr ""
+msgstr "Ana sayfa"
 
 #: templates/hyperkitty/overview.html:40 templates/hyperkitty/thread.html:75
 msgid "Stats"
-msgstr ""
+msgstr "İstatistikler"
 
 #: templates/hyperkitty/overview.html:43
 msgid "Discussions"
-msgstr ""
+msgstr "Tartışmalar"
 
 #: templates/hyperkitty/overview.html:46
 msgid "most recent"
-msgstr ""
+msgstr "en yeni"
 
 #: templates/hyperkitty/overview.html:49
 msgid "most popular"
-msgstr ""
+msgstr "en popüler"
 
 #: templates/hyperkitty/overview.html:52
 msgid "most active"
-msgstr ""
+msgstr "en aktif"
 
 #: templates/hyperkitty/overview.html:65
 #: templates/hyperkitty/thread_list.html:48
 msgid "You must be logged-in to create a thread."
-msgstr ""
+msgstr "Bir mesaj dizisi oluşturmak için oturum açmış olmalısınız."
 
 #: templates/hyperkitty/overview.html:67
 msgid ""
 "<span class=\"hidden-tn hidden-xs\">Start a </span><span class=\"hidden-sm "
 "hidden-md hidden-lg\">N</span>ew thread"
 msgstr ""
+"<span class=\"hidden-sm hidden-md hidden-lg\">Y</span>eni bir mesaj dizisi <"
+"span class=\"hidden-tn hidden-xs\">başlat</span>"
 
 #: templates/hyperkitty/overview.html:73
 msgid ""
 "<span class=\"hidden-tn hidden-xs\">Manage s</span><span class=\"hidden-sm "
 "hidden-md hidden-lg\">S</span>ubscription"
 msgstr ""
+"<span class=\"hidden-sm hidden-md hidden-lg\">A</span>boneliği <span class"
+"=\"hidden-tn hidden-xs\">yönet</span>"
 
 #: templates/hyperkitty/overview.html:80
 msgid "Search this list"
-msgstr ""
+msgstr "Bu listede ara"
 
 #: templates/hyperkitty/overview.html:90
 msgid "Discussions You've Flagged"
-msgstr ""
+msgstr "İşaretlediğiniz Tartışmalar"
 
 #: templates/hyperkitty/overview.html:98
 msgid "Discussions You've Posted to"
-msgstr ""
+msgstr "Gönderinizin Bulunduğu Tartışmalar"
 
 #: templates/hyperkitty/overview.html:112
 msgid "Recently active discussions"
-msgstr ""
+msgstr "Son zamanlarda aktif tartışmalar"
 
 #: templates/hyperkitty/overview.html:120
 msgid "Most popular discussions"
-msgstr ""
+msgstr "En popüler tartışmalar"
 
 #: templates/hyperkitty/overview.html:128
 msgid "Most active discussions"
-msgstr ""
+msgstr "En aktif tartışmalar"
 
 #: templates/hyperkitty/overview.html:139
 msgid "Activity Summary"
-msgstr ""
+msgstr "Etkinlik Özeti"
 
 #: templates/hyperkitty/overview.html:141
 msgid "Post volume over the past <strong>30</strong> days."
-msgstr ""
+msgstr "Son <strong>30</strong> gün içindeki gönderi hacmi."
 
 #: templates/hyperkitty/overview.html:146
 msgid "The following statistics are from"
-msgstr ""
+msgstr "Aşağıdaki istatistikler şuradandır"
 
 #: templates/hyperkitty/overview.html:147
 msgid "In"
-msgstr ""
+msgstr "İçinde"
 
 #: templates/hyperkitty/overview.html:148
 msgid "the past <strong>30</strong> days:"
-msgstr ""
+msgstr "son <strong>30</strong> gün:"
 
 #: templates/hyperkitty/overview.html:157
 msgid "Most active posters"
-msgstr ""
+msgstr "En aktif gönderi atanlar"
 
 #: templates/hyperkitty/overview.html:166
 msgid "Prominent posters"
-msgstr ""
+msgstr "Öne çıkan gönderi atanlar"
 
 #: templates/hyperkitty/overview.html:181
 msgid "kudos"
-msgstr ""
+msgstr "bravo"
 
 #: templates/hyperkitty/reattach.html:9
 msgid "Reattach a thread"
-msgstr ""
+msgstr "Bir mesaj dizisini tekrar ekle"
 
 #: templates/hyperkitty/reattach.html:20
 msgid "Re-attach a thread to another"
-msgstr ""
+msgstr "Bir mesaj dizisini bir başkasına tekrar ekle"
 
 #: templates/hyperkitty/reattach.html:22
 msgid "Thread to re-attach:"
-msgstr ""
+msgstr "Tekrar eklenecek mesaj dizisi:"
 
 #: templates/hyperkitty/reattach.html:29
 msgid "Re-attach it to:"
-msgstr ""
+msgstr "Şuraya tekrar ekle:"
 
 #: templates/hyperkitty/reattach.html:31
 msgid "Search for the parent thread"
-msgstr ""
+msgstr "Ana mesaj dizisini ara"
 
 #: templates/hyperkitty/reattach.html:32
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #: templates/hyperkitty/reattach.html:44
 msgid "this thread ID:"
-msgstr ""
+msgstr "bu mesaj dizisinin kimliği:"
 
 #: templates/hyperkitty/reattach.html:50
 msgid "Do it"
-msgstr ""
+msgstr "Yap"
 
 #: templates/hyperkitty/reattach.html:50
 msgid "(there's no undoing!), or"
-msgstr ""
+msgstr "(geri alma yok!) veya"
 
 #: templates/hyperkitty/reattach.html:52
 msgid "go back to the thread"
-msgstr ""
+msgstr "mesaj dizisine geri dön"
 
 #: templates/hyperkitty/search_results.html:9
 msgid "Search results for"
-msgstr ""
+msgstr "Arama sonuçları"
 
 #: templates/hyperkitty/search_results.html:31
 msgid "search results"
-msgstr ""
+msgstr "arama sonuçları"
 
 #: templates/hyperkitty/search_results.html:33
 msgid "Search results"
-msgstr ""
+msgstr "Arama sonuçları"
 
 #: templates/hyperkitty/search_results.html:35
 msgid "for query"
-msgstr ""
+msgstr "sorgu için"
 
 #: templates/hyperkitty/search_results.html:45
 #: templates/hyperkitty/threads/right_col.html:50
 #: templates/hyperkitty/user_posts.html:35
 msgid "messages"
-msgstr ""
+msgstr "mesajlar"
 
 #: templates/hyperkitty/search_results.html:58
 msgid "sort by score"
-msgstr ""
+msgstr "puana göre sırala"
 
 #: templates/hyperkitty/search_results.html:61
 msgid "sort by latest first"
-msgstr ""
+msgstr "ilk önce en yeni olacak şekilde sırala"
 
 #: templates/hyperkitty/search_results.html:64
 msgid "sort by earliest first"
-msgstr ""
+msgstr "ilk önce en eski olacak şekilde sırala"
 
 #: templates/hyperkitty/search_results.html:66
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
 
 #: templates/hyperkitty/search_results.html:86
 msgid "Sorry no email could be found for this query."
-msgstr ""
+msgstr "Maalesef bu sorgu için e-posta bulunamadı."
 
 #: templates/hyperkitty/search_results.html:89
 msgid "Sorry but your query looks empty."
-msgstr ""
+msgstr "Üzgünüz, sorgunuz boş görünüyor."
 
 #: templates/hyperkitty/search_results.html:90
 msgid "these are not the messages you are looking for"
-msgstr ""
+msgstr "bunlar aradığınız mesajlar değil"
 
 #: templates/hyperkitty/thread.html:30
 msgid "newer"
-msgstr ""
+msgstr "daha yeni"
 
 #: templates/hyperkitty/thread.html:44
 msgid "older"
-msgstr ""
+msgstr "daha eski"
 
 #: templates/hyperkitty/thread.html:69
 msgid "First Post"
-msgstr ""
+msgstr "İlk Gönderi"
 
 #: templates/hyperkitty/thread.html:72
 #: templates/hyperkitty/user_profile/favorites.html:45
 #: templates/hyperkitty/user_profile/last_views.html:50
 msgid "Replies"
-msgstr ""
+msgstr "Cevaplar"
 
 #: templates/hyperkitty/thread.html:94
 msgid "Show replies by thread"
-msgstr ""
+msgstr "Cevapları mesaj dizisine göre göster"
 
 #: templates/hyperkitty/thread.html:97
 msgid "Show replies by date"
-msgstr ""
+msgstr "Cevapları tarihe göre göster"
 
 #: templates/hyperkitty/thread_list.html:60
 msgid "Sorry no email threads could be found"
-msgstr ""
+msgstr "Maalesef hiçbir e-posta mesaj dizisi bulunamadı"
 
 #: templates/hyperkitty/threads/category.html:7
 msgid "Click to edit"
-msgstr ""
+msgstr "Düzenlemek için tıkla"
 
 #: templates/hyperkitty/threads/category.html:9
 msgid "You must be logged-in to edit."
-msgstr ""
+msgstr "Düzenlemek için giriş yapmış olmanız gerekmektedir."
 
 #: templates/hyperkitty/threads/category.html:15
 msgid "no category"
-msgstr ""
+msgstr "kategori yok"
 
 #: templates/hyperkitty/threads/right_col.html:13
 msgid "days inactive"
-msgstr ""
+msgstr "gün etkin değil"
 
 #: templates/hyperkitty/threads/right_col.html:19
 msgid "days old"
-msgstr ""
+msgstr "günlük"
 
 #: templates/hyperkitty/threads/right_col.html:41
 #: templates/hyperkitty/threads/summary_thread_large.html:53
 msgid "comments"
-msgstr ""
+msgstr "yorumlar"
 
 #: templates/hyperkitty/threads/right_col.html:49
 msgid "unread"
-msgstr ""
+msgstr "okunmamış"
 
 #: templates/hyperkitty/threads/right_col.html:60
 msgid "You must be logged-in to have favorites."
-msgstr ""
+msgstr "Sık kullanılanlara sahip olmak için giriş yapmış olmanız gerekmektedir."
 
 #: templates/hyperkitty/threads/right_col.html:61
 msgid "Add to favorites"
-msgstr ""
+msgstr "Sık kullanılanlara ekle"
 
 #: templates/hyperkitty/threads/right_col.html:63
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Sık kullanılanlardan kaldır"
 
 #: templates/hyperkitty/threads/right_col.html:72
 msgid "Reattach this thread"
-msgstr ""
+msgstr "Bu mesaj dizisini tekrar ekle"
 
 #: templates/hyperkitty/threads/right_col.html:76
 msgid "Delete this thread"
-msgstr ""
+msgstr "Bu mesaj dizisini sil"
 
 #: templates/hyperkitty/threads/right_col.html:114
 msgid "Unreads:"
-msgstr ""
+msgstr "Okunmamışlar:"
 
 #: templates/hyperkitty/threads/right_col.html:116
 msgid "Go to:"
-msgstr ""
+msgstr "Git:"
 
 #: templates/hyperkitty/threads/right_col.html:116
 msgid "next"
-msgstr ""
+msgstr "sonraki"
 
 #: templates/hyperkitty/threads/right_col.html:117
 msgid "prev"
-msgstr ""
+msgstr "önceki"
 
 #: templates/hyperkitty/threads/summary_thread_large.html:24
 #: templates/hyperkitty/threads/summary_thread_large.html:26
 msgid "Favorite"
-msgstr ""
+msgstr "Sık kullanılan"
 
 #: templates/hyperkitty/threads/summary_thread_large.html:32
 #, python-format
@@ -845,269 +876,272 @@ msgid ""
 "                                        by %(name)s\n"
 "                                    "
 msgstr ""
+"\n"
+"                                        %(name)s tarafından\n"
+"                                    "
 
 #: templates/hyperkitty/threads/summary_thread_large.html:42
 msgid "Most recent thread activity"
-msgstr ""
+msgstr "En yeni mesaj dizisi etkinliği"
 
 #: templates/hyperkitty/threads/tags.html:3
 msgid "tags"
-msgstr ""
+msgstr "etiketler"
 
 #: templates/hyperkitty/threads/tags.html:9
 msgid "Search for tag"
-msgstr ""
+msgstr "Etiket ara"
 
 #: templates/hyperkitty/threads/tags.html:15
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 #: templates/hyperkitty/user_posts.html:9
 #: templates/hyperkitty/user_posts.html:22
 #: templates/hyperkitty/user_posts.html:26
 msgid "Messages by"
-msgstr ""
+msgstr "Tarafından gönderilen mesajlar"
 
 #: templates/hyperkitty/user_posts.html:39
 #, python-format
 msgid "Back to %(fullname)s's profile"
-msgstr ""
+msgstr "%(fullname)s profiline geri dön"
 
 #: templates/hyperkitty/user_posts.html:49
 msgid "Sorry no email could be found by this user."
-msgstr ""
+msgstr "Maalesef bu kullanıcı tarafından gönderilen e-posta bulunamadı."
 
 #: templates/hyperkitty/user_profile/base.html:5
 #: templates/hyperkitty/user_profile/base.html:12
 msgid "User posting activity"
-msgstr ""
+msgstr "Kullanıcı gönderi etkinliği"
 
 #: templates/hyperkitty/user_profile/base.html:12
 #: templates/hyperkitty/user_public_profile.html:8
 #: templates/hyperkitty/user_public_profile.html:15
 msgid "for"
-msgstr ""
+msgstr "için"
 
 #: templates/hyperkitty/user_profile/base.html:20
 #: templates/hyperkitty/user_profile/base.html:21
 msgid "Favorites"
-msgstr ""
+msgstr "Sık kullanılanlar"
 
 #: templates/hyperkitty/user_profile/base.html:24
 #: templates/hyperkitty/user_profile/base.html:25
 msgid "Threads you have read"
-msgstr ""
+msgstr "Okuduğunuz mesaj dizileri"
 
 #: templates/hyperkitty/user_profile/base.html:28
 #: templates/hyperkitty/user_profile/base.html:29
 #: templates/hyperkitty/user_profile/profile.html:18
 #: templates/hyperkitty/user_profile/subscriptions.html:45
 msgid "Votes"
-msgstr ""
+msgstr "Oylar"
 
 #: templates/hyperkitty/user_profile/base.html:32
 #: templates/hyperkitty/user_profile/base.html:33
 msgid "Subscriptions"
-msgstr ""
+msgstr "Abonelikler"
 
 #: templates/hyperkitty/user_profile/favorites.html:24
 #: templates/hyperkitty/user_profile/last_views.html:27
 #: templates/hyperkitty/user_profile/votes.html:23
 msgid "Original author:"
-msgstr ""
+msgstr "Orijinal yazar:"
 
 #: templates/hyperkitty/user_profile/favorites.html:26
 #: templates/hyperkitty/user_profile/last_views.html:29
 #: templates/hyperkitty/user_profile/votes.html:25
 msgid "Started on:"
-msgstr ""
+msgstr "Başladı:"
 
 #: templates/hyperkitty/user_profile/favorites.html:28
 #: templates/hyperkitty/user_profile/last_views.html:31
 msgid "Last activity:"
-msgstr ""
+msgstr "Son etkinlik:"
 
 #: templates/hyperkitty/user_profile/favorites.html:30
 #: templates/hyperkitty/user_profile/last_views.html:33
 msgid "Replies:"
-msgstr ""
+msgstr "Cevaplar:"
 
 #: templates/hyperkitty/user_profile/favorites.html:41
 #: templates/hyperkitty/user_profile/last_views.html:46
 #: templates/hyperkitty/user_profile/profile.html:16
 #: templates/hyperkitty/user_profile/votes.html:47
 msgid "Subject"
-msgstr ""
+msgstr "Konu"
 
 #: templates/hyperkitty/user_profile/favorites.html:42
 #: templates/hyperkitty/user_profile/last_views.html:47
 #: templates/hyperkitty/user_profile/votes.html:48
 msgid "Original author"
-msgstr ""
+msgstr "Orijinal yazar"
 
 #: templates/hyperkitty/user_profile/favorites.html:43
 #: templates/hyperkitty/user_profile/last_views.html:48
 #: templates/hyperkitty/user_profile/votes.html:49
 msgid "Start date"
-msgstr ""
+msgstr "Başlangıç tarihi"
 
 #: templates/hyperkitty/user_profile/favorites.html:44
 #: templates/hyperkitty/user_profile/last_views.html:49
 msgid "Last activity"
-msgstr ""
+msgstr "Son etkinlik"
 
 #: templates/hyperkitty/user_profile/favorites.html:71
 msgid "No favorites yet."
-msgstr ""
+msgstr "Henüz sık kullanılan yok."
 
 #: templates/hyperkitty/user_profile/last_views.html:22
 #: templates/hyperkitty/user_profile/last_views.html:59
 msgid "New comments"
-msgstr ""
+msgstr "Yeni yorumlar"
 
 #: templates/hyperkitty/user_profile/last_views.html:82
 msgid "Nothing read yet."
-msgstr ""
+msgstr "Henüz bir şey okunmadı."
 
 #: templates/hyperkitty/user_profile/profile.html:9
 msgid "Last posts"
-msgstr ""
+msgstr "Son gönderiler"
 
 #: templates/hyperkitty/user_profile/profile.html:17
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: templates/hyperkitty/user_profile/profile.html:19
 msgid "Thread"
-msgstr ""
+msgstr "Mesaj dizisi"
 
 #: templates/hyperkitty/user_profile/profile.html:20
 msgid "Last thread activity"
-msgstr ""
+msgstr "Son mesaj dizisi etkinliği"
 
 #: templates/hyperkitty/user_profile/profile.html:49
 msgid "No posts yet."
-msgstr ""
+msgstr "Henüz gönderi yok."
 
 #: templates/hyperkitty/user_profile/subscriptions.html:24
 msgid "since first post"
-msgstr ""
+msgstr "ilk gönderiden bu yana"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:26
 #: templates/hyperkitty/user_profile/subscriptions.html:63
 msgid "post"
-msgstr ""
+msgstr "gönderi"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:31
 #: templates/hyperkitty/user_profile/subscriptions.html:69
 msgid "no post yet"
-msgstr ""
+msgstr "henüz gönderi yok"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:42
 msgid "Time since the first activity"
-msgstr ""
+msgstr "İlk etkinlikten bu yana geçen süre"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:43
 msgid "First post"
-msgstr ""
+msgstr "İlk gönderi"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:44
 msgid "Posts to this list"
-msgstr ""
+msgstr "Bu listeye gönderilen gönderiler"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:76
 msgid "no subscriptions"
-msgstr ""
+msgstr "abonelik yok"
 
 #: templates/hyperkitty/user_profile/votes.html:32
 #: templates/hyperkitty/user_profile/votes.html:70
 msgid "You like it"
-msgstr ""
+msgstr "Beğendiniz"
 
 #: templates/hyperkitty/user_profile/votes.html:34
 #: templates/hyperkitty/user_profile/votes.html:72
 msgid "You dislike it"
-msgstr ""
+msgstr "Beğenmediniz"
 
 #: templates/hyperkitty/user_profile/votes.html:50
 msgid "Vote"
-msgstr ""
+msgstr "Oy ver"
 
 #: templates/hyperkitty/user_profile/votes.html:83
 msgid "No vote yet."
-msgstr ""
+msgstr "Henüz oy yok."
 
 #: templates/hyperkitty/user_public_profile.html:8
 msgid "User Profile"
-msgstr ""
+msgstr "Kullanıcı Profili"
 
 #: templates/hyperkitty/user_public_profile.html:15
 msgid "User profile"
-msgstr ""
+msgstr "Kullanıcı profili"
 
 #: templates/hyperkitty/user_public_profile.html:24
 msgid "Name:"
-msgstr ""
+msgstr "Ad:"
 
 #: templates/hyperkitty/user_public_profile.html:29
 msgid "Creation:"
-msgstr ""
+msgstr "Oluşturma:"
 
 #: templates/hyperkitty/user_public_profile.html:34
 msgid "Votes for this user:"
-msgstr ""
+msgstr "Bu kullanıcı için oylar:"
 
 #: templates/hyperkitty/user_public_profile.html:42
 msgid "Email addresses:"
-msgstr ""
+msgstr "E-posta adresleri:"
 
 #: views/message.py:75
 msgid "This message in gzipped mbox format"
-msgstr ""
+msgstr "Bu mesaj gzip'lenmiş mbox formatında"
 
 #: views/message.py:278
 #, python-format
 msgid "Could not delete message %(msg_id_hash)s: %(error)s"
-msgstr ""
+msgstr "Mesaj silinemedi %(msg_id_hash)s: %(error)s"
 
 #: views/message.py:287
 #, python-format
 msgid "Successfully deleted %(count)s messages."
-msgstr ""
+msgstr "%(count)s mesaj başarıyla silindi."
 
 #: views/mlist.py:82
 msgid "for this month"
-msgstr ""
+msgstr "bu ay için"
 
 #: views/mlist.py:85
 msgid "for this day"
-msgstr ""
+msgstr "bu gün için"
 
 #: views/mlist.py:97
 msgid "This month in gzipped mbox format"
-msgstr ""
+msgstr "Bu ay gzip'lenmiş mbox formatında"
 
 #: views/mlist.py:192 views/mlist.py:216
 msgid "No discussions this month (yet)."
-msgstr ""
+msgstr "Bu ay (henüz) tartışma yok."
 
 #: views/mlist.py:204
 msgid "No vote has been cast this month (yet)."
-msgstr ""
+msgstr "Bu ay (henüz) oy verilmedi."
 
 #: views/mlist.py:233
 msgid "You have not flagged any discussions (yet)."
-msgstr ""
+msgstr "(Henüz) herhangi bir tartışmayı işaretlemediniz."
 
 #: views/mlist.py:256
 msgid "You have not posted to this list (yet)."
-msgstr ""
+msgstr "Bu listeye (henüz) gönderi atmadınız."
 
 #: views/search.py:105
 #, python-format
 msgid "Parsing error: %(error)s"
-msgstr ""
+msgstr "Ayrıştırma hatası: %(error)s"
 
 #: views/thread.py:167
 msgid "This thread in gzipped mbox format"
-msgstr ""
+msgstr "Bu mesaj dizisi gzip'lenmiş mbox formatında"

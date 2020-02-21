@@ -106,7 +106,7 @@ class ArchiveTestCase(TestCase):
                     "message": self.message,
                 }
             )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
         result = json.loads(response.content.decode(response.charset))
         self.assertEqual(result, {
             "error": "test error",

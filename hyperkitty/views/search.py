@@ -98,6 +98,16 @@ def search(request):
         if backend == "xapian_backend.XapianEngine":
             from xapian import QueryParserError
             search_exception = QueryParserError
+        if (
+            backend == "haystack.backends.elasticsearch_backend.Elastic"
+                       "searchSearchEngine" or
+            backend == "haystack.backends.elasticsearch2_backend.Elastic"
+                       "search2SearchEngine" or
+            backend == "haystack.backends.elasticsearch5_backend.Elastic"
+                       "search5SearchEngine"
+        ):
+            from elasticsearch import RequestError
+            search_exception = RequestError
         if not isinstance(e, search_exception):
             raise
         emails = paginate([])

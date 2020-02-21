@@ -19,6 +19,8 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
+from contextlib import contextmanager
+
 from django.conf import settings
 from django.db.models.signals import (
     post_delete, post_init, post_save, pre_delete, pre_save)
@@ -129,3 +131,24 @@ def on_mailinglist_created(sender, **kwargs):
 @receiver(mailinglist_modified)
 def on_mailinglist_modified(sender, **kwargs):
     import_list_from_mailman(kwargs["list_id"])
+
+
+# Utility functions.
+
+@contextmanager
+def silenced_email_pre_delete():
+    """Disable the handling of pre_delete signal for Email.
+
+    This is required because when trying to delete the entire thread, it
+    doesn't make sense to keep rebalancing the parent of the thread.  This is
+    what the `on_pre_delete` signal handler does.
+
+    We use this only when we are absolutely sure that we are going to delete
+    the thread because we know it can land us a weird state where there are no
+    parents or references to non-existent rows.
+    """
+    pre_delete.disconnect(Email_on_pre_delete, sender=Email)
+    post_delete.disconnect(Email_on_post_delete, sender=Email)
+    yield
+    pre_delete.connect(Email_on_pre_delete, sender=Email)
+    post_delete.connect(Email_on_post_delete, sender=Email)

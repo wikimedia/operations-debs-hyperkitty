@@ -1,17 +1,11 @@
 .coveragerc
-.editorconfig
-.gitignore
-.gitlab-ci.yml
 AUTHORS.txt
 COPYING.txt
 MANIFEST.in
 README.rst
-copybump.py
 hyperkitty.spec
 setup.py
-template.py
 tox.ini
-update-po.sh
 HyperKitty.egg-info/PKG-INFO
 HyperKitty.egg-info/SOURCES.txt
 HyperKitty.egg-info/dependency_links.txt
@@ -25,7 +19,6 @@ doc/development.rst
 doc/index.rst
 doc/install.rst
 doc/news.rst
-example_project/.gitignore
 example_project/README.rst
 example_project/__init__.py
 example_project/apache.conf
@@ -76,7 +69,6 @@ hyperkitty/lib/mockup.py
 hyperkitty/lib/posting.py
 hyperkitty/lib/utils.py
 hyperkitty/lib/view_helpers.py
-hyperkitty/locale/LINGUAS
 hyperkitty/locale/af/LC_MESSAGES/django.po
 hyperkitty/locale/am/LC_MESSAGES/django.po
 hyperkitty/locale/an/LC_MESSAGES/django.po
@@ -156,7 +148,6 @@ hyperkitty/locale/my/LC_MESSAGES/django.po
 hyperkitty/locale/nb_NO/LC_MESSAGES/django.po
 hyperkitty/locale/ne/LC_MESSAGES/django.po
 hyperkitty/locale/nl/LC_MESSAGES/django.po
-hyperkitty/locale/nn/LC_MESSAGES/django.po
 hyperkitty/locale/nn_NO/LC_MESSAGES/django.po
 hyperkitty/locale/oc/LC_MESSAGES/django.po
 hyperkitty/locale/os/LC_MESSAGES/django.po
@@ -221,6 +212,7 @@ hyperkitty/migrations/0016_auto_20180309_0056.py
 hyperkitty/migrations/0017_file_attachments.py
 hyperkitty/migrations/0018_threadcategory_color.py
 hyperkitty/migrations/0019_auto_20190127_null_description.py
+hyperkitty/migrations/0020_auto_20190907_1927.py
 hyperkitty/migrations/__init__.py
 hyperkitty/models/__init__.py
 hyperkitty/models/category.py
@@ -423,6 +415,7 @@ hyperkitty/templates/hyperkitty/base.html
 hyperkitty/templates/hyperkitty/bottom.html
 hyperkitty/templates/hyperkitty/headers.html
 hyperkitty/templates/hyperkitty/index.html
+hyperkitty/templates/hyperkitty/list_delete.html
 hyperkitty/templates/hyperkitty/message.html
 hyperkitty/templates/hyperkitty/message_delete.html
 hyperkitty/templates/hyperkitty/message_new.html
@@ -513,6 +506,7 @@ hyperkitty/tests/views/test_accounts.py
 hyperkitty/tests/views/test_archives.py
 hyperkitty/tests/views/test_compat.py
 hyperkitty/tests/views/test_index.py
+hyperkitty/tests/views/test_mailinglist.py
 hyperkitty/tests/views/test_mailman.py
 hyperkitty/tests/views/test_message.py
 hyperkitty/tests/views/test_search.py

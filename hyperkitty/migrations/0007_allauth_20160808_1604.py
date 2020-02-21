@@ -29,11 +29,19 @@ def migrate_social_users(apps, schema_editor):
     # We can't use the UserSocialAuth model because the social_auth app has
     # been removed, and thus the model isn't available.
     cursor = connection.cursor()
-    try:
-        cursor.execute("SELECT 1 from social_auth_usersocialauth")
-    except (utils.OperationalError, utils.ProgrammingError):
-        # No social_auth table, stop here.
-        return
+    if connection.vendor == "postgresql":
+        # a select on a non-existing table in pg, marks the tx abort only.
+        cursor.execute("select 1 from information_schema.tables where table_name = 'social_auth_usersocialauth' and  to_regclass('social_auth_usersocialauth') is not null")
+        if not cursor.fetchall():
+          # No social_auth table, stop here.
+          return
+    else:
+        try:
+            cursor.execute("SELECT 1 from social_auth_usersocialauth")
+        except (utils.OperationalError, utils.ProgrammingError):
+            # No social_auth table, stop here.
+            return
+
     for provider_old, provider_new in PROVIDERS_MAP.items():
         cursor.execute("""
             SELECT uid, user_id, last_login, date_joined

@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-27 15:16+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2020-01-07 05:21+0000\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>\n"
+"Language-Team: Croatian <https://hosted.weblate.org/projects/gnu-mailman/"
+"hyperkitty/hr/>\n"
+"Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.10\n"
 
 #: forms.py:64
 msgid "Attach a file"
@@ -166,7 +167,7 @@ msgstr ""
 
 #: templates/hyperkitty/base.html:57 templates/hyperkitty/base.html:99
 msgid "Account"
-msgstr ""
+msgstr "Račun"
 
 #: templates/hyperkitty/base.html:62 templates/hyperkitty/base.html:104
 msgid "Mailman settings"
@@ -184,7 +185,7 @@ msgstr ""
 
 #: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:121
 msgid "Sign In"
-msgstr ""
+msgstr "Prijavi se"
 
 #: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:125
 msgid "Sign Up"
@@ -300,7 +301,7 @@ msgstr ""
 
 #: templates/hyperkitty/fragments/send_as.html:16
 msgid "Link another address"
-msgstr ""
+msgstr "Poveži drugu adresu"
 
 #: templates/hyperkitty/index.html:9 templates/hyperkitty/index.html:63
 msgid "Available lists"
@@ -444,7 +445,7 @@ msgstr ""
 #: templates/hyperkitty/message_new.html:54
 #: templates/hyperkitty/messages/message.html:145
 msgid "or"
-msgstr ""
+msgstr "ili"
 
 #: templates/hyperkitty/message_delete.html:46
 #: templates/hyperkitty/message_new.html:54
@@ -452,7 +453,7 @@ msgstr ""
 #: templates/hyperkitty/user_profile/votes.html:36
 #: templates/hyperkitty/user_profile/votes.html:74
 msgid "cancel"
-msgstr ""
+msgstr "odustani"
 
 #: templates/hyperkitty/message_new.html:9
 #: templates/hyperkitty/message_new.html:22
@@ -861,7 +862,7 @@ msgstr ""
 
 #: templates/hyperkitty/threads/tags.html:15
 msgid "Remove"
-msgstr ""
+msgstr "Ukloni"
 
 #: templates/hyperkitty/user_posts.html:9
 #: templates/hyperkitty/user_posts.html:22
@@ -887,7 +888,7 @@ msgstr ""
 #: templates/hyperkitty/user_public_profile.html:8
 #: templates/hyperkitty/user_public_profile.html:15
 msgid "for"
-msgstr ""
+msgstr "za"
 
 #: templates/hyperkitty/user_profile/base.html:20
 #: templates/hyperkitty/user_profile/base.html:21
@@ -1040,11 +1041,11 @@ msgstr ""
 
 #: templates/hyperkitty/user_public_profile.html:8
 msgid "User Profile"
-msgstr ""
+msgstr "Korisnički profil"
 
 #: templates/hyperkitty/user_public_profile.html:15
 msgid "User profile"
-msgstr ""
+msgstr "Korisnički profil"
 
 #: templates/hyperkitty/user_public_profile.html:24
 msgid "Name:"

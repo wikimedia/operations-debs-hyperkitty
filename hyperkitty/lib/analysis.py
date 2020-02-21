@@ -34,14 +34,14 @@ def compute_thread_order_and_depth(thread):
     thread_pos = {"d": 0, "o": 0}  # depth, order
 
     def walk_successors(msgid):
-        obj = graph.node[msgid]["obj"]
+        obj = graph.nodes[msgid]["obj"]
         obj.thread_depth = thread_pos["d"]
         obj.thread_order = thread_pos["o"]
         obj.save(update_fields=["thread_depth", "thread_order"])
         thread_pos["d"] += 1
         thread_pos["o"] += 1
         for succ in sorted(graph.successors(msgid),
-                           key=lambda m: graph.node[m]["num"]):
+                           key=lambda m: graph.nodes[m]["num"]):
             walk_successors(succ)
         thread_pos["d"] -= 1
     for index, email in enumerate(thread.emails.order_by("date")):

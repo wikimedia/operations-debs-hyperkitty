@@ -3,56 +3,57 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-27 15:16+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-09-28 11:56+0000\n"
+"Last-Translator: Shohei Kusakata <shohei@kusakata.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/gnu-mailman/"
+"hyperkitty/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.9-dev\n"
 
 #: forms.py:64
 msgid "Attach a file"
-msgstr ""
+msgstr "ファイルを添付"
 
 #: forms.py:65
 msgid "Attach another file"
-msgstr ""
+msgstr "他のファイルを添付"
 
 #: forms.py:66
 msgid "Remove this file"
-msgstr ""
+msgstr "このファイルを削除"
 
 #: templates/hyperkitty/404.html:28
 msgid "Error 404"
-msgstr ""
+msgstr "エラー 404"
 
 #: templates/hyperkitty/404.html:30 templates/hyperkitty/500.html:31
 msgid "Oh No!"
-msgstr ""
+msgstr "あらら！"
 
 #: templates/hyperkitty/404.html:32
 msgid "I can't find this page."
-msgstr ""
+msgstr "ページを見つけることができません。"
 
 #: templates/hyperkitty/404.html:33 templates/hyperkitty/500.html:34
 msgid "Go back home"
-msgstr ""
+msgstr "ホームに戻る"
 
 #: templates/hyperkitty/500.html:29
 msgid "Error 500"
-msgstr ""
+msgstr "エラー 500"
 
 #: templates/hyperkitty/500.html:33
 msgid "Sorry, but the requested page is unavailable due to a server hiccup."
-msgstr ""
+msgstr "サーバーに問題が生じているため要求されたページを開くことができません。"
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:7
 #: templates/hyperkitty/reattach.html:25
@@ -66,7 +67,7 @@ msgstr ""
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:8
 msgid "see this thread"
-msgstr ""
+msgstr "このスレッドを閲覧"
 
 #: templates/hyperkitty/ajax/reattach_suggest.html:12
 msgid "(no suggestions)"
@@ -78,7 +79,7 @@ msgstr ""
 
 #: templates/hyperkitty/api.html:5
 msgid "REST API"
-msgstr ""
+msgstr "REST API"
 
 #: templates/hyperkitty/api.html:7
 msgid ""
@@ -88,7 +89,7 @@ msgstr ""
 
 #: templates/hyperkitty/api.html:10
 msgid "Formats"
-msgstr ""
+msgstr "フォーマット"
 
 #: templates/hyperkitty/api.html:12
 msgid ""
@@ -107,7 +108,7 @@ msgstr ""
 
 #: templates/hyperkitty/api.html:20
 msgid "Plain text"
-msgstr ""
+msgstr "プレーンテキスト"
 
 #: templates/hyperkitty/api.html:26
 msgid "List of mailing-lists"
@@ -127,7 +128,7 @@ msgstr ""
 
 #: templates/hyperkitty/api.html:32
 msgid "Threads in a mailing list"
-msgstr ""
+msgstr "メーリングリストのスレッド"
 
 #: templates/hyperkitty/api.html:35
 msgid ""
@@ -157,7 +158,7 @@ msgstr ""
 
 #: templates/hyperkitty/api.html:50
 msgid "Tags"
-msgstr ""
+msgstr "タグ"
 
 #: templates/hyperkitty/api.html:53
 msgid "Using this address you will be able to retrieve the list of tags."
@@ -165,11 +166,11 @@ msgstr ""
 
 #: templates/hyperkitty/base.html:57 templates/hyperkitty/base.html:99
 msgid "Account"
-msgstr ""
+msgstr "アカウント"
 
 #: templates/hyperkitty/base.html:62 templates/hyperkitty/base.html:104
 msgid "Mailman settings"
-msgstr ""
+msgstr "Mailman 設定"
 
 #: templates/hyperkitty/base.html:67 templates/hyperkitty/base.html:109
 #: templates/hyperkitty/user_profile/base.html:16
@@ -179,52 +180,52 @@ msgstr ""
 
 #: templates/hyperkitty/base.html:72 templates/hyperkitty/base.html:114
 msgid "Logout"
-msgstr ""
+msgstr "ログアウト"
 
 #: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:121
 msgid "Sign In"
-msgstr ""
+msgstr "サインイン"
 
 #: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:125
 msgid "Sign Up"
-msgstr ""
+msgstr "登録"
 
 #: templates/hyperkitty/base.html:135
 msgid "Manage this list"
-msgstr ""
+msgstr "このリストを管理"
 
 #: templates/hyperkitty/base.html:140
 msgid "Manage lists"
-msgstr ""
+msgstr "リストを管理"
 
 #: templates/hyperkitty/base.html:193
 msgid "Powered by"
-msgstr ""
+msgstr "Powered by"
 
 #: templates/hyperkitty/base.html:193
 msgid "version"
-msgstr ""
+msgstr "バージョン"
 
 #: templates/hyperkitty/errors/notimplemented.html:8
 msgid "Not implemented yet"
-msgstr ""
+msgstr "まだ未実装"
 
 #: templates/hyperkitty/errors/notimplemented.html:13
 msgid "Not implemented"
-msgstr ""
+msgstr "未実装"
 
 #: templates/hyperkitty/errors/notimplemented.html:15
 msgid "This feature has not been implemented yet, sorry."
-msgstr ""
+msgstr "この機能はまだ実装されていません。"
 
 #: templates/hyperkitty/errors/private.html:8
 msgid "Error: private list"
-msgstr ""
+msgstr "エラー: 非公開リスト"
 
 #: templates/hyperkitty/errors/private.html:20
 msgid ""
 "This mailing list is private. You must be subscribed to view the archives."
-msgstr ""
+msgstr "このメーリングリストは非公開です。アーカイブを閲覧するには登録が必要です。"
 
 #: templates/hyperkitty/fragments/like_form.html:16
 msgid "You like it (cancel)"
@@ -237,7 +238,7 @@ msgstr ""
 #: templates/hyperkitty/fragments/like_form.html:27
 #: templates/hyperkitty/fragments/like_form.html:31
 msgid "You must be logged-in to vote."
-msgstr ""
+msgstr "投票するにはログインが必要です。"
 
 #: templates/hyperkitty/fragments/month_list.html:5
 msgid "Go to"
@@ -250,16 +251,16 @@ msgstr ""
 #: templates/hyperkitty/fragments/month_list.html:78
 #: templates/hyperkitty/overview.html:75
 msgid "All Threads"
-msgstr ""
+msgstr "全てのスレッド"
 
 #: templates/hyperkitty/fragments/month_list.html:87 views/message.py:74
 #: views/mlist.py:96 views/thread.py:166
 msgid "Download"
-msgstr ""
+msgstr "ダウンロード"
 
 #: templates/hyperkitty/fragments/month_list.html:90
 msgid "Past 30 days"
-msgstr ""
+msgstr "過去30日間"
 
 #: templates/hyperkitty/fragments/month_list.html:91
 msgid "This month"
@@ -279,11 +280,11 @@ msgstr ""
 
 #: templates/hyperkitty/fragments/overview_top_posters.html:19
 msgid "See the profile"
-msgstr ""
+msgstr "プロフィールを表示"
 
 #: templates/hyperkitty/fragments/overview_top_posters.html:25
 msgid "posts"
-msgstr ""
+msgstr "投稿"
 
 #: templates/hyperkitty/fragments/overview_top_posters.html:30
 msgid "No posters this month (yet)."
@@ -308,68 +309,68 @@ msgstr ""
 #: templates/hyperkitty/index.html:22 templates/hyperkitty/index.html:27
 #: templates/hyperkitty/index.html:72
 msgid "Most popular"
-msgstr ""
+msgstr "最も人気"
 
 #: templates/hyperkitty/index.html:26
 msgid "Sort by number of recent participants"
-msgstr ""
+msgstr "最近の参加者の数でソート"
 
 #: templates/hyperkitty/index.html:32 templates/hyperkitty/index.html:37
 #: templates/hyperkitty/index.html:75
 msgid "Most active"
-msgstr ""
+msgstr "最も活発"
 
 #: templates/hyperkitty/index.html:36
 msgid "Sort by number of recent discussions"
-msgstr ""
+msgstr "最近の議論の数でソート"
 
 #: templates/hyperkitty/index.html:42 templates/hyperkitty/index.html:47
 #: templates/hyperkitty/index.html:78
 msgid "By name"
-msgstr ""
+msgstr "名前順"
 
 #: templates/hyperkitty/index.html:46
 msgid "Sort alphabetically"
-msgstr ""
+msgstr "アルファベットでソート"
 
 #: templates/hyperkitty/index.html:52 templates/hyperkitty/index.html:57
 #: templates/hyperkitty/index.html:81
 msgid "Newest"
-msgstr ""
+msgstr "最新"
 
 #: templates/hyperkitty/index.html:56
 msgid "Sort by list creation date"
-msgstr ""
+msgstr "リストの作成日でソート"
 
 #: templates/hyperkitty/index.html:68
 msgid "Sort by"
-msgstr ""
+msgstr "ソート順"
 
 #: templates/hyperkitty/index.html:91
 msgid "Hide inactive"
-msgstr ""
+msgstr "活発でないリストを非表示"
 
 #: templates/hyperkitty/index.html:92
 msgid "Hide private"
-msgstr ""
+msgstr "非公開のリストを非表示"
 
 #: templates/hyperkitty/index.html:99
 msgid "Find list"
-msgstr ""
+msgstr "リストを検索"
 
 #: templates/hyperkitty/index.html:123 templates/hyperkitty/index.html:193
 #: templates/hyperkitty/user_profile/last_views.html:34
 #: templates/hyperkitty/user_profile/last_views.html:73
 msgid "new"
-msgstr ""
+msgstr "新規"
 
 #: templates/hyperkitty/index.html:134 templates/hyperkitty/index.html:204
 msgid "private"
-msgstr ""
+msgstr "非公開"
 
 #: templates/hyperkitty/index.html:136 templates/hyperkitty/index.html:206
 msgid "inactive"
-msgstr ""
+msgstr "非活動的"
 
 #: templates/hyperkitty/index.html:142 templates/hyperkitty/index.html:232
 #: templates/hyperkitty/overview.html:94 templates/hyperkitty/overview.html:102
@@ -380,7 +381,7 @@ msgstr ""
 #: templates/hyperkitty/overview.html:159 templates/hyperkitty/reattach.html:39
 #: templates/hyperkitty/thread.html:108
 msgid "Loading..."
-msgstr ""
+msgstr "読み込み中..."
 
 #: templates/hyperkitty/index.html:148 templates/hyperkitty/index.html:221
 #: templates/hyperkitty/overview.html:151
@@ -389,13 +390,13 @@ msgstr ""
 #: templates/hyperkitty/threads/right_col.html:98
 #: templates/hyperkitty/threads/summary_thread_large.html:49
 msgid "participants"
-msgstr ""
+msgstr "参加者"
 
 #: templates/hyperkitty/index.html:153 templates/hyperkitty/index.html:226
 #: templates/hyperkitty/overview.html:152
 #: templates/hyperkitty/thread_list.html:45
 msgid "discussions"
-msgstr ""
+msgstr "議論"
 
 #: templates/hyperkitty/index.html:162 templates/hyperkitty/index.html:240
 msgid "No archived list yet."
@@ -408,24 +409,24 @@ msgstr ""
 #: templates/hyperkitty/user_profile/subscriptions.html:41
 #: templates/hyperkitty/user_profile/votes.html:46
 msgid "List"
-msgstr ""
+msgstr "リスト"
 
 #: templates/hyperkitty/index.html:175
 msgid "Description"
-msgstr ""
+msgstr "説明"
 
 #: templates/hyperkitty/index.html:176
 msgid "Activity in the past 30 days"
-msgstr ""
+msgstr "過去30日間の活動"
 
 #: templates/hyperkitty/message.html:23
 msgid "thread"
-msgstr ""
+msgstr "スレッド"
 
 #: templates/hyperkitty/message_delete.html:8
 #: templates/hyperkitty/message_delete.html:21
 msgid "Delete message(s)"
-msgstr ""
+msgstr "メッセージを削除"
 
 #: templates/hyperkitty/message_delete.html:26
 #, python-format
@@ -434,16 +435,19 @@ msgid ""
 "        %(count)s message(s) will be deleted. Do you want to continue?\n"
 "        "
 msgstr ""
+"\n"
+"        %(count)s 通のメッセージが削除されます。続行しますか？\n"
+"        "
 
 #: templates/hyperkitty/message_delete.html:45
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: templates/hyperkitty/message_delete.html:46
 #: templates/hyperkitty/message_new.html:54
 #: templates/hyperkitty/messages/message.html:145
 msgid "or"
-msgstr ""
+msgstr "または"
 
 #: templates/hyperkitty/message_delete.html:46
 #: templates/hyperkitty/message_new.html:54
@@ -451,12 +455,12 @@ msgstr ""
 #: templates/hyperkitty/user_profile/votes.html:36
 #: templates/hyperkitty/user_profile/votes.html:74
 msgid "cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: templates/hyperkitty/message_new.html:9
 #: templates/hyperkitty/message_new.html:22
 msgid "Create a new thread"
-msgstr ""
+msgstr "新しいスレッドを作成"
 
 #: templates/hyperkitty/message_new.html:23
 #: templates/hyperkitty/user_posts.html:23
@@ -466,45 +470,45 @@ msgstr ""
 #: templates/hyperkitty/message_new.html:53
 #: templates/hyperkitty/messages/message.html:144
 msgid "Send"
-msgstr ""
+msgstr "送信"
 
 #: templates/hyperkitty/messages/message.html:18
 #, python-format
 msgid "See the profile for %(name)s"
-msgstr ""
+msgstr "%(name)s のプロフィールを表示"
 
 #: templates/hyperkitty/messages/message.html:28
 msgid "Unread"
-msgstr ""
+msgstr "未読"
 
 #: templates/hyperkitty/messages/message.html:45
 msgid "Sender's time:"
-msgstr ""
+msgstr "送信者の時刻:"
 
 #: templates/hyperkitty/messages/message.html:51
 msgid "New subject:"
-msgstr ""
+msgstr "新しい題名:"
 
 #: templates/hyperkitty/messages/message.html:62
 msgid "Attachments:"
-msgstr ""
+msgstr "添付ファイル:"
 
 #: templates/hyperkitty/messages/message.html:77
 msgid "Display in fixed font"
-msgstr ""
+msgstr "等幅フォントで表示"
 
 #: templates/hyperkitty/messages/message.html:80
 msgid "Permalink for this message"
-msgstr ""
+msgstr "このメッセージのパーマネントリンク"
 
 #: templates/hyperkitty/messages/message.html:90
 #: templates/hyperkitty/messages/message.html:96
 msgid "Reply"
-msgstr ""
+msgstr "返信"
 
 #: templates/hyperkitty/messages/message.html:93
 msgid "Sign in to reply online"
-msgstr ""
+msgstr "オンラインで返信するにはサインインしてください"
 
 #: templates/hyperkitty/messages/message.html:104
 #, python-format
@@ -517,31 +521,33 @@ msgid_plural ""
 "                %(email.attachments.count)s attachments\n"
 "                "
 msgstr[0] ""
-msgstr[1] ""
+"\n"
+"                %(email.attachments.count)s 個の添付ファイル\n"
+"                "
 
 #: templates/hyperkitty/messages/message.html:130
 msgid "Quote"
-msgstr ""
+msgstr "引用"
 
 #: templates/hyperkitty/messages/message.html:131
 msgid "Create new thread"
-msgstr ""
+msgstr "新しいスレッドを作成"
 
 #: templates/hyperkitty/messages/message.html:134
 msgid "Use email software"
-msgstr ""
+msgstr "メールソフトウェアを使う"
 
 #: templates/hyperkitty/messages/right_col.html:12
 msgid "Back to the thread"
-msgstr ""
+msgstr "スレッドに戻る"
 
 #: templates/hyperkitty/messages/right_col.html:19
 msgid "Back to the list"
-msgstr ""
+msgstr "リストに戻る"
 
 #: templates/hyperkitty/messages/right_col.html:28
 msgid "Delete this message"
-msgstr ""
+msgstr "このメッセージを削除"
 
 #: templates/hyperkitty/messages/summary_message.html:24
 #, python-format
@@ -550,35 +556,38 @@ msgid ""
 "                                by %(name)s\n"
 "                            "
 msgstr ""
+"\n"
+"                                by %(name)s\n"
+"                            "
 
 #: templates/hyperkitty/overview.html:37
 msgid "Home"
-msgstr ""
+msgstr "ホーム"
 
 #: templates/hyperkitty/overview.html:40 templates/hyperkitty/thread.html:75
 msgid "Stats"
-msgstr ""
+msgstr "統計"
 
 #: templates/hyperkitty/overview.html:43
 msgid "Discussions"
-msgstr ""
+msgstr "議論"
 
 #: templates/hyperkitty/overview.html:46
 msgid "most recent"
-msgstr ""
+msgstr "最新"
 
 #: templates/hyperkitty/overview.html:49
 msgid "most popular"
-msgstr ""
+msgstr "最も人気"
 
 #: templates/hyperkitty/overview.html:52
 msgid "most active"
-msgstr ""
+msgstr "最も活発"
 
 #: templates/hyperkitty/overview.html:65
 #: templates/hyperkitty/thread_list.html:48
 msgid "You must be logged-in to create a thread."
-msgstr ""
+msgstr "スレッドを作成するにはログインが必要です。"
 
 #: templates/hyperkitty/overview.html:67
 msgid ""
@@ -594,7 +603,7 @@ msgstr ""
 
 #: templates/hyperkitty/overview.html:80
 msgid "Search this list"
-msgstr ""
+msgstr "このリストを検索"
 
 #: templates/hyperkitty/overview.html:90
 msgid "Discussions You've Flagged"
@@ -618,11 +627,11 @@ msgstr ""
 
 #: templates/hyperkitty/overview.html:139
 msgid "Activity Summary"
-msgstr ""
+msgstr "活動量"
 
 #: templates/hyperkitty/overview.html:141
 msgid "Post volume over the past <strong>30</strong> days."
-msgstr ""
+msgstr "過去<strong>30</strong>日間の投稿量。"
 
 #: templates/hyperkitty/overview.html:146
 msgid "The following statistics are from"
@@ -638,7 +647,7 @@ msgstr ""
 
 #: templates/hyperkitty/overview.html:157
 msgid "Most active posters"
-msgstr ""
+msgstr "最も活発な投稿者"
 
 #: templates/hyperkitty/overview.html:166
 msgid "Prominent posters"
@@ -646,7 +655,7 @@ msgstr ""
 
 #: templates/hyperkitty/overview.html:181
 msgid "kudos"
-msgstr ""
+msgstr "クードス"
 
 #: templates/hyperkitty/reattach.html:9
 msgid "Reattach a thread"
@@ -670,15 +679,15 @@ msgstr ""
 
 #: templates/hyperkitty/reattach.html:32
 msgid "Search"
-msgstr ""
+msgstr "検索"
 
 #: templates/hyperkitty/reattach.html:44
 msgid "this thread ID:"
-msgstr ""
+msgstr "このスレッドの ID:"
 
 #: templates/hyperkitty/reattach.html:50
 msgid "Do it"
-msgstr ""
+msgstr "実行"
 
 #: templates/hyperkitty/reattach.html:50
 msgid "(there's no undoing!), or"
@@ -694,11 +703,11 @@ msgstr ""
 
 #: templates/hyperkitty/search_results.html:31
 msgid "search results"
-msgstr ""
+msgstr "検索結果"
 
 #: templates/hyperkitty/search_results.html:33
 msgid "Search results"
-msgstr ""
+msgstr "検索結果"
 
 #: templates/hyperkitty/search_results.html:35
 msgid "for query"
@@ -712,15 +721,15 @@ msgstr ""
 
 #: templates/hyperkitty/search_results.html:58
 msgid "sort by score"
-msgstr ""
+msgstr "スコアでソート"
 
 #: templates/hyperkitty/search_results.html:61
 msgid "sort by latest first"
-msgstr ""
+msgstr "新しい順"
 
 #: templates/hyperkitty/search_results.html:64
 msgid "sort by earliest first"
-msgstr ""
+msgstr "古い順"
 
 #: templates/hyperkitty/search_results.html:66
 msgid "Update"
@@ -770,11 +779,11 @@ msgstr ""
 
 #: templates/hyperkitty/threads/category.html:7
 msgid "Click to edit"
-msgstr ""
+msgstr "クリックして編集"
 
 #: templates/hyperkitty/threads/category.html:9
 msgid "You must be logged-in to edit."
-msgstr ""
+msgstr "編集するにはログインが必要です。"
 
 #: templates/hyperkitty/threads/category.html:15
 msgid "no category"
@@ -795,7 +804,7 @@ msgstr ""
 
 #: templates/hyperkitty/threads/right_col.html:49
 msgid "unread"
-msgstr ""
+msgstr "未読"
 
 #: templates/hyperkitty/threads/right_col.html:60
 msgid "You must be logged-in to have favorites."
@@ -803,11 +812,11 @@ msgstr ""
 
 #: templates/hyperkitty/threads/right_col.html:61
 msgid "Add to favorites"
-msgstr ""
+msgstr "お気に入りに追加"
 
 #: templates/hyperkitty/threads/right_col.html:63
 msgid "Remove from favorites"
-msgstr ""
+msgstr "お気に入りから削除"
 
 #: templates/hyperkitty/threads/right_col.html:72
 msgid "Reattach this thread"
@@ -827,16 +836,16 @@ msgstr ""
 
 #: templates/hyperkitty/threads/right_col.html:116
 msgid "next"
-msgstr ""
+msgstr "次へ"
 
 #: templates/hyperkitty/threads/right_col.html:117
 msgid "prev"
-msgstr ""
+msgstr "前へ"
 
 #: templates/hyperkitty/threads/summary_thread_large.html:24
 #: templates/hyperkitty/threads/summary_thread_large.html:26
 msgid "Favorite"
-msgstr ""
+msgstr "お気に入り"
 
 #: templates/hyperkitty/threads/summary_thread_large.html:32
 #, python-format
@@ -845,6 +854,9 @@ msgid ""
 "                                        by %(name)s\n"
 "                                    "
 msgstr ""
+"\n"
+"                                        by %(name)s\n"
+"                                    "
 
 #: templates/hyperkitty/threads/summary_thread_large.html:42
 msgid "Most recent thread activity"
@@ -852,7 +864,7 @@ msgstr ""
 
 #: templates/hyperkitty/threads/tags.html:3
 msgid "tags"
-msgstr ""
+msgstr "タグ"
 
 #: templates/hyperkitty/threads/tags.html:9
 msgid "Search for tag"
@@ -860,7 +872,7 @@ msgstr ""
 
 #: templates/hyperkitty/threads/tags.html:15
 msgid "Remove"
-msgstr ""
+msgstr "削除"
 
 #: templates/hyperkitty/user_posts.html:9
 #: templates/hyperkitty/user_posts.html:22
@@ -871,7 +883,7 @@ msgstr ""
 #: templates/hyperkitty/user_posts.html:39
 #, python-format
 msgid "Back to %(fullname)s's profile"
-msgstr ""
+msgstr "%(fullname)s のプロフィールに戻る"
 
 #: templates/hyperkitty/user_posts.html:49
 msgid "Sorry no email could be found by this user."
@@ -891,24 +903,24 @@ msgstr ""
 #: templates/hyperkitty/user_profile/base.html:20
 #: templates/hyperkitty/user_profile/base.html:21
 msgid "Favorites"
-msgstr ""
+msgstr "お気に入り"
 
 #: templates/hyperkitty/user_profile/base.html:24
 #: templates/hyperkitty/user_profile/base.html:25
 msgid "Threads you have read"
-msgstr ""
+msgstr "読んだスレッド"
 
 #: templates/hyperkitty/user_profile/base.html:28
 #: templates/hyperkitty/user_profile/base.html:29
 #: templates/hyperkitty/user_profile/profile.html:18
 #: templates/hyperkitty/user_profile/subscriptions.html:45
 msgid "Votes"
-msgstr ""
+msgstr "投票"
 
 #: templates/hyperkitty/user_profile/base.html:32
 #: templates/hyperkitty/user_profile/base.html:33
 msgid "Subscriptions"
-msgstr ""
+msgstr "購読"
 
 #: templates/hyperkitty/user_profile/favorites.html:24
 #: templates/hyperkitty/user_profile/last_views.html:27
@@ -979,7 +991,7 @@ msgstr ""
 
 #: templates/hyperkitty/user_profile/profile.html:19
 msgid "Thread"
-msgstr ""
+msgstr "スレッド"
 
 #: templates/hyperkitty/user_profile/profile.html:20
 msgid "Last thread activity"
@@ -996,7 +1008,7 @@ msgstr ""
 #: templates/hyperkitty/user_profile/subscriptions.html:26
 #: templates/hyperkitty/user_profile/subscriptions.html:63
 msgid "post"
-msgstr ""
+msgstr "投稿"
 
 #: templates/hyperkitty/user_profile/subscriptions.html:31
 #: templates/hyperkitty/user_profile/subscriptions.html:69
@@ -1039,27 +1051,27 @@ msgstr ""
 
 #: templates/hyperkitty/user_public_profile.html:8
 msgid "User Profile"
-msgstr ""
+msgstr "ユーザープロフィール"
 
 #: templates/hyperkitty/user_public_profile.html:15
 msgid "User profile"
-msgstr ""
+msgstr "ユーザープロフィール"
 
 #: templates/hyperkitty/user_public_profile.html:24
 msgid "Name:"
-msgstr ""
+msgstr "名前:"
 
 #: templates/hyperkitty/user_public_profile.html:29
 msgid "Creation:"
-msgstr ""
+msgstr "作成日:"
 
 #: templates/hyperkitty/user_public_profile.html:34
 msgid "Votes for this user:"
-msgstr ""
+msgstr "このユーザーへの投票:"
 
 #: templates/hyperkitty/user_public_profile.html:42
 msgid "Email addresses:"
-msgstr ""
+msgstr "メールアドレス:"
 
 #: views/message.py:75
 msgid "This message in gzipped mbox format"

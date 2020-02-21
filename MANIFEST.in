@@ -1,7 +1,7 @@
 include AUTHORS.txt COPYING.txt requirements.txt hyperkitty.spec
 include tox.ini *rc
 # http://bruno.im/2010/may/05/packaging-django-reusable-app/
-recursive-include hyperkitty *.py *.html *.js *.txt
+recursive-include hyperkitty *.py *.html *.js *.txt *.po
 graft hyperkitty/static
 graft hyperkitty/fixtures
 graft hyperkitty/tests/testdata

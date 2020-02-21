@@ -20,6 +20,8 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
+import os
+import tempfile
 from email.message import EmailMessage
 from mimetypes import guess_all_extensions
 
@@ -86,6 +88,7 @@ class EmailTestCase(TestCase):
         msg_in = EmailMessage()
         msg_in["From"] = "dummy@example.com"
         msg_in["Message-ID"] = "<msg>"
+        msg_in.set_content("Hello World.")
         msg_in.add_attachment("Dummy message", subtype='plain')
         msg_in.add_attachment("<html><body>Dummy message</body></html>",
                               subtype='html')
@@ -96,20 +99,44 @@ class EmailTestCase(TestCase):
         self.assertEqual(msg["Message-ID"], "<msg>")
         self.assertTrue(msg.is_multipart())
         payload = msg.get_payload()
-        self.assertEqual(len(payload), 2)
+        self.assertEqual(len(payload), 3)
         self.assertEqual(
-            payload[0].get_content(), "Dummy message\n")
+            payload[0].get_content(), "Hello World.\n\n\n\n\n")
+        self.assertEqual(
+            payload[1].get_content(), "Dummy message\n")
         # The filename extension detection from content type is a bit random
         # (depends on the PYTHON_HASHSEED), make sure we get the right one
         # here for testing.
         expected_ext = guess_all_extensions("text/html", strict=False)[0]
-        self.assertEqual(payload[1].get_content_type(), "text/html")
+        self.assertEqual(payload[2].get_content_type(), "text/html")
         self.assertEqual(
-            payload[1]["Content-Disposition"],
+            payload[2]["Content-Disposition"],
             'attachment; filename="attachment%s"' % expected_ext)
         self.assertEqual(
-            payload[1].get_content(),
+            payload[2].get_content(),
             "<html><body>Dummy message</body></html>\n")
+
+    def test_as_message_attachments_saved_to_folder(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with self.settings(HYPERKITTY_ATTACHMENT_FOLDER=tmpdir):
+                self.test_as_message_attachments()
+                # Test that attachments are indeed saved on the fs.  The
+                # download path is deterministic and is based on the
+                # email.message_id_hash which is going to be consistent because
+                # we set the Message-ID in the test case above.  Name of the
+                # attachment files are also deterministic since we know the
+                # order in which they are added.
+                download_path = os.path.join(
+                    tmpdir, 'example.com/list/DH/ZU/5Y/1')
+                files = sorted(os.listdir(download_path))
+                self.assertEqual(len(files), 2)
+                self.assertEqual(files, ['2', '3'])
+                with open(os.path.join(download_path, '2')) as fd:
+                    self.assertEqual(fd.read(), "Dummy message\n")
+                with open(os.path.join(download_path, '3')) as fd:
+                    self.assertEqual(
+                        fd.read(),
+                        "<html><body>Dummy message</body></html>\n")
 
     def test_as_message_timezone(self):
         msg_in = EmailMessage()
