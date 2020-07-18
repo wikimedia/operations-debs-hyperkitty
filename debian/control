@@ -36,7 +36,7 @@ Vcs-Git: https://salsa.debian.org/mailman-team/hyperkitty.git/
 
 Package: python3-django-hyperkitty
 Architecture: all
-Depends: fonts-glewlwyd,
+Depends: fonts-glyphicons-halflings,
          libjs-bootstrap,
          python3-dateutil,
          python3-django (>= 1:1.11),
