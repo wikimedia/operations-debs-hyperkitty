@@ -28,13 +28,13 @@
             <i class="fa fa-envelope" title="{% trans 'Unread' %}"></i>
             {% endif %}
             {% ifchanged %}
-            <span class="date hidden-tn">
+            <span class="date d-none d-sm-inline">
                 {{email.date|date:"j M"}}
                 {% if unfolded %}
                     {{email.date|date:"Y"}}
                 {% endif %}
             </span>
-            <span class="date hidden-xs hidden-sm hidden-md hidden-lg">
+            <span class="date d-sm-none">
                 {{email.date|date:"j M"}}
                 {% if unfolded %}
                 '{{email.date|date:"y"}}
@@ -53,8 +53,8 @@
         {% endif %}
     </div> <!-- /email-header: gravatar, author-info, date, peramlink, changed_subject -->
 
-    <div class="email-body {% if email.display_fixed %}fixed{% endif %}">
-      {{ email.content|snip_quoted|snip_pgp|wordwrap:90|urlizetrunc:76|escapeemaillinks }}
+    <div class="email-body {% if email.display_fixed %}fixed{% endif %}"
+      >{{ email.content|snip_quoted|snip_pgp|wordwrap:90|urlizetrunc:76|escapeemaillinks }}
     </div>
 
     {% if unfolded and email.attachments.count %}
@@ -127,9 +127,9 @@
                   action="{% url 'hk_message_reply' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}">
                 {% csrf_token %}
                 <ul class="list-inline reply-tools">
-                    <li><a class="btn btn-sm btn-default quote" href="#">{% trans "Quote" %}</a></li>
+                    <li><a class="btn btn-sm btn-secondary quote" href="#">{% trans "Quote" %}</a></li>
                     <li class="checkbox"><label>{{ reply_form.newthread }} {% trans "Create new thread" %}</label></li>
-                    <li><a class="btn btn-sm btn-default reply-mailto"
+                    <li><a class="btn btn-sm btn-secondary reply-mailto"
                        href="mailto:{{ email.mailinglist.name }}?Subject={{ email.subject|reply_subject|urlencode }}&amp;In-Reply-To=&lt;{{ email.message_id|urlencode }}&gt;"
                        >{% trans 'Use email software' %}</a></li>
                 </ul>

@@ -78,12 +78,17 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.stackexchange',
+
+    # Dev only dependencies. Do not include in any production site.
+    'debug_toolbar',
 )
 
 
 MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # NOTE: Do not include DebugToolbarMiddleware in any production site.
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -138,6 +143,8 @@ DATABASES = {
         'HOST': '',
         # PORT: set to empty string for default.
         'PORT': '',
+        # OPTIONS: for mysql engine only, do not use with other engines.
+        # 'OPTIONS': {'charset': 'utf8mb4'}  # Enable utf8 4-byte encodings.
     }
     # Example for PostgreSQL (recommanded for production):
     #'default': {
@@ -324,7 +331,7 @@ COMPRESS_PRECOMPILERS = (
 # COMPRESS_OFFLINE = True
 
 # Needed for debug mode
-# INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = ('127.0.0.1',)
 
 
 #
@@ -454,6 +461,9 @@ HYPERKITTY_DISABLE_SINGLETON_TASKS = False
 # with caution.
 # Default set to 10mins.
 HYPERKITTY_TASK_LOCK_TIMEOUT = 10 * 60
+
+# Inactive List Setting
+SHOW_INACTIVE_LISTS_DEFAULT = False
 
 
 try:

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-27 15:17+0200\n"
-"PO-Revision-Date: 2019-11-26 21:05+0000\n"
+"PO-Revision-Date: 2020-04-16 11:08+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/gnu-mailman/"
 "hyperkitty/tr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 4.0.1-dev\n"
 
 #: forms.py:64
 msgid "Attach a file"
@@ -91,25 +91,24 @@ msgstr ""
 
 #: templates/hyperkitty/api.html:10
 msgid "Formats"
-msgstr "Formatlar"
+msgstr "Biçimler"
 
 #: templates/hyperkitty/api.html:12
 msgid ""
 "This REST API can return the information into several formats.  The default "
 "format is html to allow human readibility."
 msgstr ""
-"Bu REST API bilgileri birkaç formatta döndürebilir.  Varsayılan format insan "
-"okunabilirliğine izin vermek için html'dir."
+"Bu REST API, bilgileri birkaç biçimde döndürebilir.  Öntanımlı biçim, "
+"insanların okuyabilmesine izin vermek için html'dir."
 
 #: templates/hyperkitty/api.html:14
 msgid ""
 "To change the format, just add <em>?format=&lt;FORMAT&gt;</em> to the URL."
-msgstr ""
-"Formatı değiştirmek için, URL'ye <em>?format=&lt;FORMAT&gt;</em> ekleyin."
+msgstr "Biçimi değiştirmek için, URL'ye <em>?format=&lt;BİÇİM&gt;</em> ekleyin."
 
 #: templates/hyperkitty/api.html:16
 msgid "The list of available formats is:"
-msgstr "Mevcut formatların listesi:"
+msgstr "Kullanılabilir biçimlerin listesi:"
 
 #: templates/hyperkitty/api.html:20
 msgid "Plain text"
@@ -217,7 +216,7 @@ msgstr "Tarafından desteklenmektedir"
 
 #: templates/hyperkitty/base.html:193
 msgid "version"
-msgstr "versiyon"
+msgstr "sürüm"
 
 #: templates/hyperkitty/errors/notimplemented.html:8
 msgid "Not implemented yet"
@@ -318,7 +317,7 @@ msgstr "Başka bir adres bağla"
 
 #: templates/hyperkitty/index.html:9 templates/hyperkitty/index.html:63
 msgid "Available lists"
-msgstr "Mevcut listeler"
+msgstr "Kullanılabilir listeler"
 
 #: templates/hyperkitty/index.html:22 templates/hyperkitty/index.html:27
 #: templates/hyperkitty/index.html:72
@@ -1097,7 +1096,7 @@ msgstr "E-posta adresleri:"
 
 #: views/message.py:75
 msgid "This message in gzipped mbox format"
-msgstr "Bu mesaj gzip'lenmiş mbox formatında"
+msgstr "Bu mesaj gzip'lenmiş mbox biçiminde"
 
 #: views/message.py:278
 #, python-format
@@ -1119,7 +1118,7 @@ msgstr "bu gün için"
 
 #: views/mlist.py:97
 msgid "This month in gzipped mbox format"
-msgstr "Bu ay gzip'lenmiş mbox formatında"
+msgstr "Bu ay gzip'lenmiş mbox biçiminde"
 
 #: views/mlist.py:192 views/mlist.py:216
 msgid "No discussions this month (yet)."
@@ -1144,4 +1143,4 @@ msgstr "Ayrıştırma hatası: %(error)s"
 
 #: views/thread.py:167
 msgid "This thread in gzipped mbox format"
-msgstr "Bu mesaj dizisi gzip'lenmiş mbox formatında"
+msgstr "Bu mesaj dizisi gzip'lenmiş mbox biçiminde"

@@ -2,25 +2,26 @@
 {% load hk_generic %}
 
 {% if mlist %}
-<div class="hidden-tn hidden-xs col-sm-2">
-<div class="row">
-    {% if pagename != 'overview' %}
-    <p><a href="{% url 'hk_list_overview' mlist_fqdn=mlist.name %}"
-       class="btn btn-default btn-sm">
-       <span class="fa fa-backward"></span>
-       {% trans "List overview" %}</a></p>
-    {% endif %}
-    {% if pagename == 'thread' %}
-    <p><a href="{% url 'hk_archives_latest' mlist_fqdn=mlist.name %}"
-       class="btn btn-default btn-sm">
-       <span class="fa fa-backward"></span>
-       {% trans "All Threads" %}</a></p>
-    {% endif %}
+<div class="d-none d-md-inline col-12 col-md-2">
+    <div class="row d-flex justify-content-center flex-column align-items-center">
+        {% if pagename != 'overview' %}
+        <a href="{% url 'hk_list_overview' mlist_fqdn=mlist.name %}"
+           class="btn btn-outline-primary p-2 m-2">
+            <span class="fa fa-backward"></span>
+            {% trans "List overview" %}</a>
 
+        {% endif %}
+        {% if pagename == 'thread' %}
+        <a href="{% url 'hk_archives_latest' mlist_fqdn=mlist.name %}"
+           class="btn btn-outline-primary p-2 m-2">
+            <span class="fa fa-backward"></span>
+       {% trans "All Threads" %}</a>
+    {% endif %}
+    </br>
     <!-- Download as mbox -->
     {% if pagename == 'overview' %}
     <div class="btn-group">
-        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+        <button type="button" class="btn btn-outline-primary dropdown-toggle p-2 m-2" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-download"></i>
             {% trans "Download" %} <span class="caret"></span>
@@ -34,10 +35,9 @@
         </ul>
     </div>
     {% elif export %}
-    <p><a href="{{ export.url }}" title="{{ export.title }}"
-        class="btn btn-default btn-sm">
+    <a href="{{ export.url }}" title="{{ export.title }}"
+          class="btn btn-outline-primary p-2 m-2">
         <i class="fa fa-download"></i> {{ export.message }}</a>
-    </p>
     {% endif %}
 </div>
 </div>

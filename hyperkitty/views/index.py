@@ -21,6 +21,7 @@
 #
 
 import json
+import re
 
 from django.conf import settings
 from django.db.models import Q
@@ -29,6 +30,7 @@ from django.shortcuts import redirect, render
 
 from django_mailman3.lib.mailman import get_subscriptions
 from django_mailman3.lib.paginator import paginate
+from django_mailman3.models import MailDomain
 
 from hyperkitty.models import ArchivePolicy, MailingList
 
@@ -39,11 +41,24 @@ def index(request):
 
     # Domain filtering
     if getattr(settings, 'FILTER_VHOST', False):
+        our_lists = MailingList.objects.none()
         domain = request.get_host().split(":")[0]
-        if domain.startswith("www."):
-            domain = domain[4:]
-        domain = "@%s" % domain
-        mlists = mlists.filter(name__iendswith=domain)
+        mail_hosts = []
+        for mlist in mlists:
+            mail_host = re.sub('^.*@', '', mlist.name)
+            try:
+                if (MailDomain.objects.get(
+                        mail_domain=mail_host).site.domain == domain):
+                    if mail_host not in mail_hosts:
+                        mail_hosts.append(mail_host)
+            except MailDomain.DoesNotExist:
+                pass
+        if len(mail_hosts) == 0:
+            mail_hosts = [domain]
+        for domain in mail_hosts:
+            domain = '@%s' % domain
+            our_lists = our_lists | mlists.filter(name__iendswith=domain)
+        mlists = our_lists
 
     # Name filtering
     name_filter = request.GET.get('name')
@@ -88,6 +103,9 @@ def index(request):
         return HttpResponse("Wrong search parameter",
                             content_type="text/plain", status=500)
 
+    # Inactive List Setting
+    show_inactive = getattr(settings, 'SHOW_INACTIVE_LISTS_DEFAULT', False)
+
     mlists = paginate(mlists, request.GET.get('page'),
                       request.GET.get('count'))
 
@@ -95,7 +113,8 @@ def index(request):
         'view_name': 'all_lists',
         'all_lists': mlists,
         'sort_mode': sort_mode,
-        }
+        'show_inactive': show_inactive
+    }
     return render(request, "hyperkitty/index.html", context)
 
 

@@ -29,7 +29,7 @@
 
     {% if 'postorius' in INSTALLED_APPS %}
     <p class="postorius">
-      <a class="btn btn-default btn-sm" href="{% url 'list_summary' mlist.list_id %}">
+      <a class="btn btn-outline-primary btn-sm" href="{% url 'list_summary' mlist.list_id %}">
         <i class="fa fa-fw fa-inbox"></i>
         Manage subscription</a>
     </p>
@@ -65,8 +65,8 @@
     </form>
 
     {% if user.is_staff or user.is_superuser %}
-    <div class="panel panel-danger">
-        <div class="panel-body">
+    <div class="card border-danger">
+        <div class="card-body">
             <div><i class="fa fa-fw fa-plug"></i>
                <a href="{% url 'hk_thread_reattach' mlist_fqdn=mlist.name threadid=thread.thread_id %}"
                   >{% trans "Reattach this thread" %}</a>

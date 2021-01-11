@@ -34,8 +34,7 @@
 
     @extend .bordered-vertical;
 
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding: 1em;
 
     .thread-title {
         font-weight: bold;
@@ -50,6 +49,9 @@
 
     .thread-info {
         padding-top: 0.25em;
+        display: flex;
+        flex-direction: column;
+        flex-flow: row wrap;
 
         .likeform {
             display: inline;
@@ -89,6 +91,10 @@
                 margin: 0;
             }
         }
+
+        .thread-date {
+            flex-flow: row wrap;
+        }
     }
 }
 
@@ -97,12 +103,13 @@
 }
 
 // for viewports larger than XS, add more spacing
-@media (min-width: $screen-xs-min) {
-    #thread-list  {
-        .thread-list-info {
-            padding-top: 10px;
-        }
-    }
+@include media-breakpoint-up(xs) {
+		// @media (min-width: $screen-xs-min) {
+		#thread-list  {
+				.thread-list-info {
+						padding-top: 10px;
+				}
+		}
 }
 
 
@@ -191,14 +198,14 @@
 
 
 // for small screen sizes
-@media (max-width: 991px) {
-
-// for monthly thread list, to align
-// collapsed right column underneath
-// left in smaller screen width
-.thread-email {
-    .thread-date {
-        margin-top: 1.5em;
-    }
-  }
+// @media (max-width: 991px) {
+@include media-breakpoint-down(sm) {
+		// for monthly thread list, to align
+		// collapsed right column underneath
+		// left in smaller screen width
+		.thread-email {
+				.thread-date {
+						margin-top: 1.5em;
+				}
+		}
 }

@@ -103,10 +103,6 @@ h1 {
     .alert {
         display: inline-block;
     }
-    .alert.info    { @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text); }
-    .alert.success { @include alert-variant($alert-success-bg, $alert-success-border, $alert-success-text); }
-    .alert.warning { @include alert-variant($alert-warning-bg, $alert-warning-border, $alert-warning-text); }
-    .alert.error, .alert.danger { @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text); }
 }
 
 // Favorites
@@ -121,7 +117,8 @@ h1 {
 .gravatar {
     vertical-align: top;
     img {
-        @include square(60px);
+				// TODO: Convert this to a circle instead.
+				// @include square(60px);
     }
 }
 .gravatar-details {
@@ -157,7 +154,6 @@ ul.list-stats {
 }
 
 .fa-user:before {
-    color: #BFBFBF;
     font-size: 1.14em;
     line-height: 1em;
 }
@@ -324,7 +320,8 @@ div#months-list {
     position: relative;
     margin: auto;
     padding-top: 3px;
-    background-color: $pre-bg;
+    // keep it transparent to be visible on hover
+    background-color: transparent;
     // default behavior is to hide axes
     .axis path, .chart-data .axis line {
         display: none;

@@ -6,7 +6,7 @@
 {% block user_profile_content %}
 
     {% if subscriptions %}
-    <table class="table table-bordered table-condensed subscriptions hidden-sm hidden-md hidden-lg">
+    <table class="table table-bordered table-sm subscriptions d-md-none">
         <tbody>
         {% for sub in subscriptions %}
             {% ifchanged sub.list_name %}
@@ -35,7 +35,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <table class="table table-striped table-bordered table-condensed subscriptions hidden-tn hidden-xs">
+    <table class="table table-striped table-bordered subscriptions table-sm d-none d-md-table">
         <thead>
             <tr>
                 <th>{% trans "List" %}</th>

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Hyperkitty\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-02 20:18-0700\n"
-"PO-Revision-Date: 2019-06-19 13:01+0000\n"
-"Last-Translator: ssantos <ssantos@web.de>\n"
+"PO-Revision-Date: 2020-01-19 13:09+0000\n"
+"Last-Translator: arnep <pottharst@gmx.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/gnu-mailman/"
 "hyperkitty/de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.7\n"
+"X-Generator: Weblate 3.10.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: forms.py:64
@@ -188,7 +188,7 @@ msgstr "Konto"
 
 #: templates/hyperkitty/base.html:62 templates/hyperkitty/base.html:104
 msgid "Mailman settings"
-msgstr "Mailman Einstellungen"
+msgstr "Mailman-Einstellungen"
 
 #: templates/hyperkitty/base.html:67 templates/hyperkitty/base.html:109
 #: templates/hyperkitty/user_profile/base.html:16
@@ -308,7 +308,7 @@ msgstr "Absender ändern"
 
 #: templates/hyperkitty/fragments/send_as.html:16
 msgid "Link another address"
-msgstr "Andere Adresse verknüpfen"
+msgstr "Eine andere Adresse verknüpfen"
 
 #: templates/hyperkitty/index.html:9 templates/hyperkitty/index.html:63
 msgid "Available lists"
@@ -869,7 +869,7 @@ msgstr "Nach Stichwort suchen"
 
 #: templates/hyperkitty/threads/tags.html:15
 msgid "Remove"
-msgstr "Löschen"
+msgstr "Entfernen"
 
 #: templates/hyperkitty/user_posts.html:9
 #: templates/hyperkitty/user_posts.html:22

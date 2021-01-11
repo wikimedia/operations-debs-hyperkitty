@@ -1,0 +1,13 @@
+From user@example.com  Sun Feb 21 00:26:06 2010
+Date: Sun, 21 Feb 2010 00:05:00 +0100
+From: "User" <user@example.com>
+To: mailman-users@python.org
+Message-ID: <20100220230500.GT11549@localhost>
+MIME-Version: 1.0
+Content-Type: text/plain; charset*=“utf-8''%E2%80%9Cutf-8
+Subject: Re: [Mailman-Users] Delivery to SMTP server very slow
+
+Hi!
+
+...[very slow list]...
+

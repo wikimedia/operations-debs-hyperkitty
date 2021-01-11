@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-04-27 15:16+0200\n"
-"PO-Revision-Date: 2019-09-28 11:56+0000\n"
+"PO-Revision-Date: 2020-03-11 00:33+0000\n"
 "Last-Translator: Shohei Kusakata <shohei@kusakata.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/gnu-mailman/"
 "hyperkitty/ja/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: forms.py:64
 msgid "Attach a file"
@@ -95,16 +95,16 @@ msgstr "フォーマット"
 msgid ""
 "This REST API can return the information into several formats.  The default "
 "format is html to allow human readibility."
-msgstr ""
+msgstr "この REST API では複数のフォーマットで情報を取得できます。デフォルトのフォーマットは人間が読みやすい html です。"
 
 #: templates/hyperkitty/api.html:14
 msgid ""
 "To change the format, just add <em>?format=&lt;FORMAT&gt;</em> to the URL."
-msgstr ""
+msgstr "フォーマットを変更するには、URL に <em>?format=&lt;FORMAT&gt;</em> と追加してください。"
 
 #: templates/hyperkitty/api.html:16
 msgid "The list of available formats is:"
-msgstr ""
+msgstr "利用可能なフォーマットの一覧:"
 
 #: templates/hyperkitty/api.html:20
 msgid "Plain text"
@@ -134,7 +134,7 @@ msgstr "メーリングリストのスレッド"
 msgid ""
 "Using this address you will be able to retrieve information about all the "
 "threads on the specified mailing list."
-msgstr ""
+msgstr "このアドレスを使うことで指定したメーリングリストの全てのスレッドの情報を取得することができます。"
 
 #: templates/hyperkitty/api.html:38
 msgid "Emails in a thread"
@@ -594,12 +594,16 @@ msgid ""
 "<span class=\"hidden-tn hidden-xs\">Start a </span><span class=\"hidden-sm "
 "hidden-md hidden-lg\">N</span>ew thread"
 msgstr ""
+"<span class=\"hidden-tn hidden-xs\">開始: </span><span class=\"hidden-sm "
+"hidden-md hidden-lg\">新</span>しいスレッド"
 
 #: templates/hyperkitty/overview.html:73
 msgid ""
 "<span class=\"hidden-tn hidden-xs\">Manage s</span><span class=\"hidden-sm "
 "hidden-md hidden-lg\">S</span>ubscription"
 msgstr ""
+"<span class=\"hidden-tn hidden-xs\">管理: </span><span class=\"hidden-sm "
+"hidden-md hidden-lg\">購</span>読"
 
 #: templates/hyperkitty/overview.html:80
 msgid "Search this list"
@@ -757,13 +761,13 @@ msgstr ""
 
 #: templates/hyperkitty/thread.html:69
 msgid "First Post"
-msgstr ""
+msgstr "最初の投稿"
 
 #: templates/hyperkitty/thread.html:72
 #: templates/hyperkitty/user_profile/favorites.html:45
 #: templates/hyperkitty/user_profile/last_views.html:50
 msgid "Replies"
-msgstr ""
+msgstr "返信"
 
 #: templates/hyperkitty/thread.html:94
 msgid "Show replies by thread"

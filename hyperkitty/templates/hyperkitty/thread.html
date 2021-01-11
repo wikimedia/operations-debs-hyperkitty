@@ -16,43 +16,46 @@
 
 {% include 'hyperkitty/fragments/thread_left_nav.html' with pagename='thread' %}
 
-    <div class="col-tn-12 col-sm-10">
+    <div class="col-12 col-md-10">
 
         <!-- thread header: navigation (older/newer), thread title -->
-        <div class="thread-header row">
+        <div class="thread-header">
+          <div class="row">
             {% with prev_thread=thread.prev_thread next_thread=thread.next_thread %}
-            <div class="col-tn-2">
+            <div class="col-sm-2">
                 {% if next_thread %}
-                <a id="next-thread" class="btn btn-default btn-xs {% if not next_thread %}disabled{% endif %}"
+                <a id="next-thread" class="btn btn-secondary btn-sm {% if not next_thread %}disabled{% endif %}"
                         {% if next_thread %}title="{{ next_thread.subject|strip_subject:mlist|escape }}"{% endif %}
                         href="{% url 'hk_thread' threadid=next_thread.thread_id mlist_fqdn=mlist.name %}">
                     <span class="fa fa-chevron-left"></span>
-                    <span class="hidden-tn hidden-xs">{% trans "newer" %}</span>
+                    <span class="d-none d-md-inline">{% trans "newer" %}</span>
                 </a>
                {% endif %}
             </div>
-            <div class="col-tn-8">
+            <div class="col-sm-8">
                 <h3>{{ subject }}</h3>
             </div>
-            <div class="col-tn-2 right">
-                <a id="prev-thread" class="btn btn-default btn-xs {% if not prev_thread %}disabled{% endif %}"
+            <div class="col-sm-2 right">
+                <a id="prev-thread" class="btn btn-secondary btn-sm {% if not prev_thread %}disabled{% endif %}"
                     {% if prev_thread %}
                     title="{{ prev_thread.subject|strip_subject:mlist|escape }}"
                     href="{% url 'hk_thread' threadid=prev_thread.thread_id mlist_fqdn=mlist.name %}"
                     {% endif %}>
                     <span class="fa fa-chevron-right"></span>
-                    <span class="hidden-tn hidden-xs">{% trans "older" %}</span>
+                    <span class="d-none d-md-inline">{% trans "older" %}</span>
                 </a>
             </div>
-            <div class="thread-titles">
-                <div class="hidden-tn hidden-xs col-sm-6">
+          </div>
+          <div class="thread-titles">
+            <div class="row">
+                <div class="d-none d-md-block col-md-6">
                 {% if next_thread %}
                     <a href="{% url 'hk_thread' threadid=next_thread.thread_id mlist_fqdn=mlist.name %}"
                        title="{{ next_thread.subject|strip_subject:mlist|escape }}"
                        >{{ next_thread.subject|strip_subject:mlist|truncatesmart:"35" }}</a>
                 {% endif %}
                 </div>
-                <div class="right hidden-tn hidden-xs col-sm-6">
+                <div class="right d-none d-md-block col-md-6">
                 {% if prev_thread %}
                     <a href="{% url 'hk_thread' threadid=prev_thread.thread_id mlist_fqdn=mlist.name %}"
                        title="{{ prev_thread.subject|strip_subject:mlist|escape }}"
@@ -61,26 +64,27 @@
                 </div>
             </div>
             {% endwith %}
+            </div>
         </div> <!-- /thread-header -->
 
         <!-- nav tabs, for smaller screens -->
-        <ul class="nav nav-tabs hidden-sm hidden-md hidden-lg">
-            <li class="active">
-                <a href="#home">{% trans "First Post" %}</a>
+        <ul class="nav nav-tabs d-md-none">
+            <li class="nav-item">
+                <a href="#home" class="nav-link active">{% trans "First Post" %}</a>
             </li>
-            <li>
-                <a href="#replies">{% trans "Replies" %}</a>
+            <li class="nav-item">
+                <a href="#replies" class="nav-link">{% trans "Replies" %}</a>
             </li>
-            <li>
-                <a href="#stats">{% trans "Stats" %}</a>
+            <li class="nav-item">
+                <a href="#stats" class="nav-link">{% trans "Stats" %}</a>
             </li>
-            <li class="dropdown">
+            <li class="dropdown nav-item">
                 {% include 'hyperkitty/fragments/month_list.html' with show_dropdown=True %}
             </li>
         </ul> <!-- /navtab -->
 
         <div class="row">
-            <div class="col-sm-9">
+            <div class="col-sm-12 col-md-9">
                 <!-- main section, the email thread -->
                 <div id="thread-content">
 
@@ -112,7 +116,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-12 col-md-3">
                 <div class="anchor-link">
                     <a id="stats"></a>
                 </div>

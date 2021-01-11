@@ -369,8 +369,8 @@ class MonthsListTestCase(TestCase):
 
     def _assertNotCollapsed(self, panel):
         self.assertTrue(
-            "in" in panel["class"],
-            "Panel %s has no 'in' class" % panel["id"])
+            "show" in panel["class"],
+            "Panel %s has no 'show' class" % panel["id"])
 
     def _assertActivePanel(self, html, panel_num):
         """ Checks that the <panel_num> year is active.

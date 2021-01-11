@@ -37,14 +37,14 @@ with open('hyperkitty/__init__.py') as fp:
 
 # Requirements
 REQUIRES = [
-    "Django>=1.11,<2.3",
-    "django_mailman3>=1.2.0",
+    "Django>=2.0,<3.1",
+    "django_mailman3>=1.3.3",
     "django-gravatar2>=1.0.6",
     "djangorestframework>=3.0.0",
     "robot-detection>=0.3",
     "pytz>=2012",
     "django-compressor>=1.3",
-    "mailmanclient>=3.1.1",
+    "mailmanclient>=3.3.1",
     "python-dateutil >= 2.0",
     "networkx>=2.0",
     "django-haystack>=2.8.0",
@@ -83,5 +83,6 @@ setup(
         "mock",
         "Whoosh>=2.5.7",
         "beautifulsoup4>=4.3.2",
+        "django-debug-toolbar",
         ],
     )

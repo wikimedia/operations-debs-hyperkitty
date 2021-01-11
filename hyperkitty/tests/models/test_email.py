@@ -22,11 +22,12 @@
 
 import os
 import tempfile
+from datetime import datetime
 from email.message import EmailMessage
 from mimetypes import guess_all_extensions
 
 from hyperkitty.lib.incoming import add_to_list
-from hyperkitty.models import Email, Thread
+from hyperkitty.models import Email, MailingList, Sender, Thread
 from hyperkitty.tests.utils import TestCase
 
 
@@ -148,6 +149,36 @@ class EmailTestCase(TestCase):
         email = Email.objects.get(message_id="msg")
         msg = email.as_message()
         self.assertEqual(msg["Date"], msg_in["Date"])
+
+    def test_as_message_folded_subject(self):
+        sender = Sender(address="dummy@example.com")
+        mlist = MailingList(name="list@example.com")
+        email = Email(archived_date=datetime(2012, 11, 2, 12, 7, 54),
+                      timezone=0,
+                      message_id="msgid",
+                      sender=sender,
+                      date=datetime(2012, 11, 2, 12, 7, 54),
+                      mailinglist=mlist,
+                      subject="This is a folded\n subject",
+                      in_reply_to="<msg1.example.com>\n <msg2.example.com>",
+                      content="Dummy message")
+        msg = email.as_message()
+        self.assertEqual(msg["Subject"], "This is a folded subject")
+
+    def test_as_message_specials_in_name(self):
+        sender = Sender(address="dummy@example.com")
+        mlist = MailingList(name="list@example.com")
+        email = Email(archived_date=datetime(2012, 11, 2, 12, 7, 54),
+                      timezone=0,
+                      message_id="msgid",
+                      sender=sender,
+                      sender_name="Team: J.Q. Doe",
+                      date=datetime(2012, 11, 2, 12, 7, 54),
+                      mailinglist=mlist,
+                      subject="Message subject",
+                      content="Dummy message")
+        msg = email.as_message()
+        self.assertEqual(msg['from'], '"Team: J.Q. Doe" <dummy@example.com>')
 
 
 class EmailSetParentTestCase(TestCase):
