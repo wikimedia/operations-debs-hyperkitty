@@ -2,6 +2,7 @@ Tests: python3-django-hyperkitty
 Depends: @,
          python3-all,
          python3-bs4,
+         python3-django-debug-toolbar,
          python3-mock,
          python3-whoosh
 Restrictions: allow-stderr
