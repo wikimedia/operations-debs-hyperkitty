@@ -1,6 +1,10 @@
 From: Jonas Meurer <jonas@freesources.org>
 Date: Fri, 22 Feb 2019 21:21:55 +0100
-Subject: _README_remove_embedded_images
+Description: README.rst: remove embedded images
+ The documentation files shipped with Debian packages should not embed
+ remote images, especially not from sources that are known to track
+ users (like shields.io).
+Forwarded: not-needed
 
 ---
  README.rst | 15 ---------------
