@@ -7,8 +7,9 @@ hyperkitty (1.3.3-1) unstable; urgency=medium
   * d/tests/control: Update test dependencies
   * d/rules: Replace all glyphicons-halflings-regular font files with symlinks
     to the files from package fonts-glyphicons-halflings
+  * d/copyright: fix order of globbing patterns
 
- -- Jonas Meurer <jonas@freesources.org>  Tue, 12 Jan 2021 00:08:47 +0100
+ -- Jonas Meurer <jonas@freesources.org>  Tue, 12 Jan 2021 00:16:33 +0100
 
 hyperkitty (1.3.2-1.1) unstable; urgency=medium
 
