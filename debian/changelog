@@ -2,10 +2,11 @@ hyperkitty (1.3.3-1) unstable; urgency=medium
 
   * New upstream release
   * d/control:
-    - Update build-dependencies
+    - Update (build-)dependencies
+    - Bump standards-version to 4.5.1
   * d/tests/control: Update test dependencies
 
- -- Jonas Meurer <jonas@freesources.org>  Tue, 12 Jan 2021 00:03:03 +0100
+ -- Jonas Meurer <jonas@freesources.org>  Tue, 12 Jan 2021 00:05:52 +0100
 
 hyperkitty (1.3.2-1.1) unstable; urgency=medium
 

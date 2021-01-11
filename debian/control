@@ -29,7 +29,7 @@ Build-Depends: debhelper-compat (= 12),
                python3-whoosh,
                python3-sphinx,
                sassc
-Standards-Version: 4.5.0
+Standards-Version: 4.5.1
 Rules-Requires-Root: no
 Homepage: https://gitlab.com/mailman/hyperkitty
 Vcs-Browser: https://salsa.debian.org/mailman-team/hyperkitty
