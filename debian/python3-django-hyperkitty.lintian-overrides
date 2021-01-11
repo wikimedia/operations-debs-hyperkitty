@@ -4,3 +4,23 @@ python3-django-hyperkitty: duplicate-font-file
 # We have to keep the shipped jquery version as the one in Debians
 # package libjs-jquery is not compatible and breaks hyperkitty.
 python3-django-hyperkitty: embedded-javascript-library
+# Ignore encoding/doc warnings for test files
+python3-django-hyperkitty: national-encoding usr/lib/python3/dist-packages/hyperkitty/tests/testdata/non-ascii-date-header.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/another-wrong-encoding.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/attachment-1.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/attachment-2.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/attachment-3.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/attachment-4.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/bad_content_type.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/bad_date_tz.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/bad_folding.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/cant_write_error_message.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/non-ascii-date-header.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/non-ascii-headers.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/payload-utf8-wrong.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/resent-date.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/strange-in-reply-to-header.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/unconvertable_message.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/unixfrom-date.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/unknown-charset.txt
+python3-django-hyperkitty: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/hyperkitty/tests/testdata/wrong-in-reply-to-header.txt
