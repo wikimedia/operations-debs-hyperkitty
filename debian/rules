@@ -38,8 +38,10 @@ override_dh_python3:
 #	find debian/python3-django-hyperkitty -name 'FontAwesome.otf' -type f -exec \
 		ln -sf /usr/share/glewlwyd/webapp/fonts/FontAwesome.otf {} \;
 	# Don't embed glewlwyd glyphicons as they're also shipped into debian.
-	find debian/python3-django-hyperkitty -name 'glyphicons-halflings-regular.ttf' -type f -exec \
-		ln -sf /usr/share/fonts-glyphicons/glyphicons-halflings-regular.ttf {} \;
+	for type in eot ttf woff woff2; do \
+		find debian/python3-django-hyperkitty -name "glyphicons-halflings-regular.$$type" -type f -exec \
+			ln -sf /usr/share/fonts-glyphicons/glyphicons-halflings-regular.$$type {} \; ; \
+	done
 	# Don't embed bootstrap JS scripts
 	find debian/python3-django-hyperkitty -name 'bootstrap.js' -type f -exec \
 		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
