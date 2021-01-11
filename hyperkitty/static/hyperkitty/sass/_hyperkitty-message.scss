@@ -275,39 +275,40 @@ $oddEmailColor: rgb(238, 238, 238);
 /* On smaller screens, do not indent replies as it gets harder to read emails
  *  at level 5.
  */
-@media (max-width: 768px) {
-    .reply-level-1, .reply-level-2, .reply-level-3, .reply-level-4, .reply-level-5 {
-        margin-left: 0em;
-    }
+@include media-breakpoint-down(sm) {
+	// @media (max-width: 768px) {
+	.reply-level-1, .reply-level-2, .reply-level-3, .reply-level-4, .reply-level-5 {
+		margin-left: 0em;
+	}
 }
 
 
 /* The email thread */
 .view-thread .replies {
-    margin-top: -15px;
+	margin-top: -15px;
 }
 .replies .email {
-    border-top: 1px solid $rowBorderColor;
-    padding: 0.5em;
-    margin: 20px 0 20px 0;
-    .unread {
-        border-top: 1px solid rgb(100, 100, 100);
-        background-color: rgb(214, 214, 214);
-        i.unread {
-            float: right;
-            margin-right: 2em;
-        }
-    }
-    .subject {
-        text-align: center;
-        // clear: both;
-        font-style: italic;
-    }
-    .email-body {
-        // padding: 5px;
-        padding-left: 25px;
-        background-color: rgb(255, 255, 255);
-    }
+		border-top: 1px solid $rowBorderColor;
+		padding: 0.5em;
+		margin: 20px 0 20px 0;
+		.unread {
+				border-top: 1px solid rgb(100, 100, 100);
+				background-color: rgb(214, 214, 214);
+				i.unread {
+						float: right;
+						margin-right: 2em;
+				}
+		}
+		.subject {
+				text-align: center;
+				// clear: both;
+				font-style: italic;
+		}
+		.email-body {
+				// padding: 5px;
+				padding-left: 25px;
+				background-color: rgb(255, 255, 255);
+		}
 }
 // .even .email {
 //     background-color: $evenEmailColor;
@@ -316,232 +317,232 @@ $oddEmailColor: rgb(238, 238, 238);
 //     background-color: $oddEmailColor;
 // }
 .temporary .email {
-    background-color: rgb(215, 215, 229);
-    display: none;
+		background-color: rgb(215, 215, 229);
+		display: none;
 }
 
 
 // === Thread general information column
 
 .days-num {
-    font-size: 200%;
+		font-size: 200%;
 }
 .days-text {
-    font-size: 70%;
+		font-size: 70%;
 }
 
 
 #thread-overview-info, #message-overview-info {
-    a {
-        color: #999;
-    }
-    .fa {
-        color: #BFBFBF;
-    }
-    .postorius .fa {
-        color: black;
-    }
+		a {
+				color: #999;
+		}
+		.fa {
+				color: #BFBFBF;
+		}
+		.postorius .fa {
+				color: black;
+		}
 }
 
 #thread-overview-info {
-    #thread-date-info {
-        padding-bottom: 8px;
-    }
+		#thread-date-info {
+				padding-bottom: 8px;
+		}
 
-    .list-name {
-        word-wrap: break-word;
-        a {
-            color: black;
-        }
-    }
-    form.favorite {
-        margin-bottom: 0;
-    }
-    .favorite a {
-        i {
-            margin-right: 0.3em;
-        }
-    }
-    a.saved,
-    a.notsaved {
-        /* Will be shown via Javascript */
-        display: none;
-    }
+		.list-name {
+				word-wrap: break-word;
+				a {
+						color: black;
+				}
+		}
+		form.favorite {
+				margin-bottom: 0;
+		}
+		.favorite a {
+				i {
+						margin-right: 0.3em;
+				}
+		}
+		a.saved,
+		a.notsaved {
+				/* Will be shown via Javascript */
+				display: none;
+		}
 }
 
 //=== Tags
 
 #tag-title {
-    color: rgb(77, 77, 77);
-    text-transform: uppercase;
+		color: rgb(77, 77, 77);
+		text-transform: uppercase;
 }
 
 #tags {
-    color: rgb(167, 169, 172);
-    margin-top: 2em;
+		color: rgb(167, 169, 172);
+		margin-top: 2em;
 }
 #tags ul {
-    padding: 10px 0;
-    margin: 0;
+		padding: 10px 0;
+		margin: 0;
 }
 #tags ul li {
-    padding-left: 0;
+		padding-left: 0;
 }
 #tags ul li span {
-    margin-left: 5px;
+		margin-left: 5px;
 }
 #tags .rmtag {
-    margin: 0;
-    display: inline;
+		margin: 0;
+		display: inline;
 }
 #tags .rmtag a {
-    visibility: hidden;
-    font-size: 125%;
+		visibility: hidden;
+		font-size: 125%;
 }
 #tags:hover .rmtag a {
-    visibility: visible;
+		visibility: visible;
 }
 #tags:hover .rmtag a:hover {
-    text-decoration: none;
+		text-decoration: none;
 }
 
 #add-tag {
-    margin-top: 0.3em;
+		margin-top: 0.3em;
 }
 
 //=== Participants ==/
 
 #participants {
-    margin-top: 2em;
-    color: $subheadingColor;
-    span#participants_title {
-        @extend .small-caps;
-    }
-    li {
-        margin: 1em 0;
-    }
-    .participant-gravatar {
-        padding-left: 0;
-    }
+		margin-top: 2em;
+		color: $subheadingColor;
+		span#participants_title {
+				@extend .small-caps;
+		}
+		li {
+				margin: 1em 0;
+		}
+		.participant-gravatar {
+				padding-left: 0;
+		}
 }
 
 
 /* Inline quotes */
 .quoted-switch a {
-    background-color: #fafafa;
-    padding: 0 4px 2px 4px;
-    border-left: 2px solid rgb(55, 113, 200);
-    font-weight: bold;
-    font-size: 115%;
-    &:hover {
-        text-decoration: none;
-    }
+		background-color: #fafafa;
+		padding: 0 4px 2px 4px;
+		border-left: 2px solid rgb(55, 113, 200);
+		font-weight: bold;
+		font-size: 115%;
+		&:hover {
+				text-decoration: none;
+		}
 }
 .quoted-text {
-    border-left: 2px solid  rgb(55, 113, 200);
-    padding: 0.5em;
-    background: #e8ecf2;
-    border-radius: 10px;
+		border-left: 2px solid  rgb(55, 113, 200);
+		padding: 0.5em;
+		background: #e8ecf2;
+		border-radius: 10px;
 }
 
 .quoted-text-1 {
-    border-left: 2px solid  #1d3e0f;
-    padding: 0.5em;
-    background: #e4f1df;
-    border-radius: 10px;
+		border-left: 2px solid  #1d3e0f;
+		padding: 0.5em;
+		background: #e4f1df;
+		border-radius: 10px;
 }
 
 .quoted-text-2 {
-    border-left: 2px solid  #5c0a0a;
-    padding: 0.5em;
-    background: #f7d4d4;
-    border-radius: 10px;
+		border-left: 2px solid  #5c0a0a;
+		padding: 0.5em;
+		background: #f7d4d4;
+		border-radius: 10px;
 }
 
 .quoted-text-3 {
-    border-left: 2px solid  rgb(55, 113, 200);
-    padding: 0.5em;
-    background: #e8ecf2;
-    border-radius: 10px;
+		border-left: 2px solid  rgb(55, 113, 200);
+		padding: 0.5em;
+		background: #e8ecf2;
+		border-radius: 10px;
 }
 
 //=== Navigation for unread messages ==/
-#unreadnavbar {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    text-align: right;
-    padding-right: 2em;
-    display: none;
-}
-#unreadnavbar>div {
-    width: auto;
-    padding: 0.2em 1em;
-    border: 1px solid #888;
-    border-bottom: none;
-    background-color: #eee;
-}
+		#unreadnavbar {
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				text-align: right;
+				padding-right: 2em;
+				display: none;
+		}
+		#unreadnavbar>div {
+				width: auto;
+				padding: 0.2em 1em;
+				border: 1px solid #888;
+				border-bottom: none;
+				background-color: #eee;
+		}
 
 
-//=== Re-attach threads ==/
-.reattach-thread {
-    h1 {
-        text-align: center;
-        font-size: 24px;
-        line-height: 26px;
-        margin-bottom: 2em;
-    }
-    form {
-        margin-bottom: 0;
-        img.ajaxloader {
-            margin-left: 1em;
-        }
-    }
-    form.search {
-        margin-top: 2em;
-        p {
-            line-height: 22px;
-        }
-        input {
-            margin-left: 3em;
-        }
-        input,
-        button {
-            font-size: 12px;
-            padding: 2px 8px;
-        }
-    }
-    li.manual {
-        label {
-            display: inline;
-        }
-        input {
-            margin-bottom: 0;
-        }
-        input[type='text'] {
-            width: 22em;
-        }
-    }
-    p.buttons {
-        margin-top: 2em;
-    }
-}
+		//=== Re-attach threads ==/
+		.reattach-thread {
+				h1 {
+						text-align: center;
+						font-size: 24px;
+						line-height: 26px;
+						margin-bottom: 2em;
+				}
+				form {
+						margin-bottom: 0;
+						img.ajaxloader {
+								margin-left: 1em;
+						}
+				}
+				form.search {
+						margin-top: 2em;
+						p {
+								line-height: 22px;
+						}
+						input {
+								margin-left: 3em;
+						}
+						input,
+						button {
+								font-size: 12px;
+								padding: 2px 8px;
+						}
+				}
+				li.manual {
+						label {
+								display: inline;
+						}
+						input {
+								margin-bottom: 0;
+						}
+						input[type='text'] {
+								width: 22em;
+						}
+				}
+				p.buttons {
+						margin-top: 2em;
+				}
+		}
 
-//=== message_new.html: start a new thread ==/
-.new-thread-form {
-    //margin-left: 2em;
+		//=== message_new.html: start a new thread ==/
+		.new-thread-form {
+				//margin-left: 2em;
 
-    #id_subject,
-    textarea {
-        width: 100%;
-    }
+				#id_subject,
+				textarea {
+						width: 100%;
+				}
 
-    p.buttons {
-        margin-top: 2em;
-    }
-}
+				p.buttons {
+						margin-top: 2em;
+				}
+		}
 
-/*
+		/*
 // tiny screen (<=320px):
 // nav-tabs: less padding, smaller dropdowns, right-align last dropdown
 @media (max-width: $screen-tn) {
@@ -562,47 +563,50 @@ $oddEmailColor: rgb(238, 238, 238);
         }
     }
 }
-*/
+	 */
 
-// xs screen (<=540px): more padding/spacing in nav-tabs
-@media (max-width: 539px) {
-    .view-thread .nav-tabs {
-        .dropdown-menu {
-            min-width: 120px;
-        }
-        #navbarMonthsListDrop ~ .dropdown-menu {
-            text-align: left;
-        }
-    }
-}
-// small screens (<768px) have smaller gravatar images
-@media (max-width: $screen-xs-max) {
-    #participants {
-        .participant-name {
-            margin-left: -20px;
-        }
-    }
-}
-// mid screens (<992px): adjust spacing between gravatar images
-@media (min-width: $screen-md-min) {
-    #participants {
-        img.gravatar {
-            @include square(32px);
-        }
-    }
-}
+		// xs screen (<=540px): more padding/spacing in nav-tabs
+		@include media-breakpoint-down(539px) {
+		// @media (max-width: 539px) {
+				.view-thread .nav-tabs {
+						.dropdown-menu {
+								min-width: 120px;
+						}
+						#navbarMonthsListDrop ~ .dropdown-menu {
+								text-align: left;
+						}
+				}
+		}
+		// small screens (<768px) have smaller gravatar images
+		@include media-breakpoint-down(xs) {
+		// @media (max-width: $screen-xs-max) {
+				#participants {
+						.participant-name {
+								margin-left: -20px;
+						}
+				}
+		}
+		// mid screens (<992px): adjust spacing between gravatar images
+		// @include media-breakpoint-up(md) {
+		// @media (min-width: $screen-md-min) {
+		// 		#participants {
+		// 				img.gravatar {
+		// 						@include square(32px);
+		// 				}
+		// 		}
+		// }
 
 
-//=== Message view ==/
+		//=== Message view ==/
 
-.message-header {
-    margin: 1em 0 2em 0;
-    .message-back {
-        a {
-            padding: 0.2em 0;
-            .icon {
-                font-size: 1.5em;
-            }
-        }
-    }
-}
+		.message-header {
+				margin: 1em 0 2em 0;
+				.message-back {
+						a {
+								padding: 0.2em 0;
+								.icon {
+										font-size: 1.5em;
+								}
+						}
+				}
+		}

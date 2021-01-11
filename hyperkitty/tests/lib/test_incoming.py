@@ -192,6 +192,22 @@ class TestAddToList(TestCase):
             self.fail(e)
         self.assertEqual(Attachment.objects.count(), 1)
 
+    def test_non_ascii_text_attachment_declared_as_ascii(self):
+        # Some defective mail has a text attachment declared as ascii but
+        # containing non-ascii. We should just replace the non-ascii character.
+        with open(get_test_file("attachment-4.txt")) as email_file:
+            msg = message_from_file(email_file, EmailMessage, policy=default)
+        try:
+            add_to_list("example-list", msg)
+        except Exception as e:
+            self.fail(e)
+        self.assertEqual(Attachment.objects.count(), 1)
+        self.assertEqual(Attachment.objects.all()[0].content,
+                         b'All votes are reported in the form "*Y-N-A*" '
+                         b'(*in favor-Y???opposed-N???abstentions-A*; e.g. '
+                         b'"5-1-2" means "5 in favor, 1 opposed, and 2 '
+                         b'abstentions").\n')
+
     def test_attachment_local_storage(self):
         # The HYPERKITTY_ATTACHMENT_FOLDER config allows usage of a local
         # folder for attachments.

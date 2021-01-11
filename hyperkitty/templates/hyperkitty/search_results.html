@@ -15,7 +15,7 @@
 
 {% include 'hyperkitty/fragments/month_list.html' %}
 
-    <div id="thread-list" class="search-results col-sm-10">
+    <div id="thread-list" class="search-results col-12 col-md-10">
 
         <div class="thread-list-header row">
             {% if mlist %}
@@ -63,7 +63,6 @@
                         {% if sort_mode == "date-asc" %}selected{% endif %}
                         >{% trans "sort by earliest first" %}</option>
                 </select>
-                <!--<button type="submit" class="btn btn-default btn-sm col-tn-3">{% trans "Update" %}</button>-->
             </form>
 
 

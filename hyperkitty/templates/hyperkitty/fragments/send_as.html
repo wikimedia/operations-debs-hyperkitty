@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if form.sender.choices|length > 1 %}
+{% if form.fields.sender.choices|length > 1 %}
 <p class="text-muted send-as">
     {% trans "This message will be sent as:" %}
     <a href="" class="send-as-default" title="{% trans 'Change sender' %}">

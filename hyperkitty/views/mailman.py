@@ -61,12 +61,16 @@ def key_and_ip_auth(func):
                 "misconfigured".format(request.META["REMOTE_ADDR"]))
             return HttpResponse(
                 """<html><title>Forbidden</title><body>
-                <h1>Access is forbidden</h1></body></html>""",
+                <h1>Access is forbidden</h1><p>Please check the IP addresses
+                 assigned to MAILMAN_ARCHIVER_FROM in the settings file.
+                </p></body></html>""",
                 content_type="text/html", status=403)
         if request.GET.get("key") != settings.MAILMAN_ARCHIVER_KEY:
             return HttpResponse(
                 """<html><title>Auth required</title><body>
-                <h1>Authorization Required</h1></body></html>""",
+                <h1>Authorization Required</h1><p>Please check whether
+                 the MAILMAN_ARCHIVER_KEY is provided by you and it is correct.
+                </p></body></html>""",
                 content_type="text/html", status=401)
         return func(request, *args, **kwargs)
     return _decorator

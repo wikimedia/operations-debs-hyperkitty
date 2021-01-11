@@ -7,25 +7,25 @@
 //
 // Set the container width, and override it for fixed navbars in media queries.
 
-.container {
-  @include container-fixed;
+// .container {
+//   @include container-fixed;
 
-  @media (min-width: $screen-xs-min) {
-    width: $container-xs;
-  }
-  @media (min-width: $screen-sm-min) {
-    width: $container-sm;
-  }
-  @media (min-width: $screen-md-min) {
-    width: $container-md;
-  }
-  @media (min-width: $screen-lg-min) {
-    width: $container-lg;
-  }
-  @media (min-width: $screen-xl-min) {
-    width: $container-xl;
-  }
-}
+//   @media (min-width: $screen-xs-min) {
+//     width: $container-xs;
+//   }
+//   @media (min-width: $screen-sm-min) {
+//     width: $container-sm;
+//   }
+//   @media (min-width: $screen-md-min) {
+//     width: $container-md;
+//   }
+//   @media (min-width: $screen-lg-min) {
+//     width: $container-lg;
+//   }
+//   @media (min-width: $screen-xl-min) {
+//     width: $container-xl;
+//   }
+// }
 
 
 // Fluid container
@@ -33,25 +33,25 @@
 // Utilizes the mixin meant for fixed width containers, but without any defined
 // width for fluid, full width layouts.
 
-.container-fluid {
-  @include container-fixed;
-}
+// .container-fluid {
+//   @include container-fixed;
+// }
 
 
 // Row
 //
 // Rows contain and clear the floats of your columns.
 
-.row {
-  @include make-row;
-}
+// .row {
+//   @include make-row;
+// }
 
 
 // Columns
 //
 // Common styles for small and large grid columns
 
-@include make-grid-columns;
+// @include make-grid-columns;
 
 
 // Tiny grid
@@ -59,7 +59,7 @@
 // Columns, offsets, pushes, and pulls for tiny devices like
 // smartphones.
 
-@include make-grid(tn);
+// @include make-grid(tn);
 
 
 // Extra small grid
@@ -67,9 +67,9 @@
 // Columns, offsets, pushes, and pulls for extra small devices like
 // smartphones.
 
-@media (min-width: $screen-xs-min) {
-  @include make-grid(xs);
-}
+// @media (min-width: $screen-xs-min) {
+//   @include make-grid(xs);
+// }
 
 
 // Small grid
@@ -77,33 +77,55 @@
 // Columns, offsets, pushes, and pulls for the small device range, from phones
 // to tablets.
 
-@media (min-width: $screen-sm-min) {
-  @include make-grid(sm);
-}
+// @media (min-width: $screen-sm-min) {
+//   @include make-grid(sm);
+// }
 
 
 // Medium grid
 //
 // Columns, offsets, pushes, and pulls for the desktop device range.
 
-@media (min-width: $screen-md-min) {
-  @include make-grid(md);
-}
+// @Mediacomm
+// (min-width: $screen-md-min) {
+//   @include make-grid(md);
+// }
 
 
 // Large grid
 //
 // Columns, offsets, pushes, and pulls for the large desktop device range.
 
-@media (min-width: $screen-lg-min) {
-  @include make-grid(lg);
-}
+// @media (min-width: $screen-lg-min) {
+//   @include make-grid(lg);
+// }
 
 
 // Extra large grid
 //
 // Columns, offsets, pushes, and pulls for the large desktop device range.
 
-@media (min-width: $screen-xl-min) {
-  @include make-grid(xl);
-}
+// @media (min-width: $screen-xl-min) {
+//   @include make-grid(xl);
+// }
+
+$grid-breakpoints: (
+  // Extra small screen / phone
+  xs: 0,
+  // Small screen / phone
+	sm: 320px,
+  // Medium screen / tablet
+  md: 576px,
+  // Large screen / desktop
+  lg: 992px,
+  // Extra large screen / wide desktop
+  xl: 1200px
+);
+
+$container-max-widths: (
+  xs: 460px,
+	sm: 750px,
+  md: 970px,
+  lg: 1170px,
+  xl: 1610px
+);

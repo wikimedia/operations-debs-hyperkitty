@@ -7,7 +7,7 @@ from email import message_from_file
 from email.message import EmailMessage
 from io import StringIO
 from traceback import format_exc
-from unittest import SkipTest
+from unittest import SkipTest, expectedFailure
 
 from django.conf import settings
 from django.core.management import call_command
@@ -241,6 +241,102 @@ class CommandTestCase(TestCase):
         self.assertEqual(Email.objects.all()[0].date,
                          datetime(1999, 11, 9, 21, 54, 11, tzinfo=utc))
 
+    def test_bad_date_tz_and_no_resent_date(self):
+        # If the Dete: header is bad and no Resent-Date: header, fall back
+        # to the unixfrom date.
+        with open(get_test_file("bad_date_tz.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # The message should be archived.
+        self.assertEqual(Email.objects.count(), 1)
+        # The archived_date should be Dec  1 00:56:19 1999 1999
+        self.assertEqual(Email.objects.all()[0].date,
+                         datetime(1999, 12, 1, 0, 56, 19, tzinfo=utc))
+
+    def test_folding_with_cr(self):
+        # See https://gitlab.com/mailman/hyperkitty/-/issues/280 for the
+        # issue.
+        with open(get_test_file("bad_folding.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # The message should be archived.
+        self.assertEqual(Email.objects.count(), 1)
+        # The subject should be ???
+        self.assertEqual(Email.objects.all()[0].subject,
+                         '[<redacted>]  Sicherheit 2005: Stichworte und '
+                         'Vorschlag PC-Mitglieder; Ergänzung!')
+
+    def test_cant_write_error(self):
+        # This message throws an exception which is caught by the catchall
+        # except clause. Ensure we can then write the error message.
+        with open(get_test_file("cant_write_error_message.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        # Add a scond message because we need to archive something.
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Message-ID"] = "<msg2>"
+        msg["Date"] = "01 Feb 2015 12:00:00"
+        msg.set_payload("msg2")
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # Message 1 must have been rejected, but no crash
+        self.assertIn("failed to import, skipping",
+                      output.getvalue())
+        # Message 2 must have been accepted
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
+    def test_unconvertable_message(self):
+        # This message can't be converted to an email.message.EmailMessage.
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        # We have to do it this way to see the exception.
+        with open(get_test_file("unconvertable_message.txt"), "rb") as em_file:
+            with open(os.path.join(self.tmpdir, "test.mbox"), "wb") as mb_file:
+                mb_file.write(em_file.read())
+        # Add a scond message because we need to archive something.
+        msg = EmailMessage()
+        msg["From"] = "dummy@example.com"
+        msg["Message-ID"] = "<msg2>"
+        msg["Date"] = "01 Feb 2015 12:00:00"
+        msg.set_payload("msg2")
+        mbox.add(msg)
+        mbox.close()
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        # Message 1 must have been rejected, but no crash
+        self.assertIn("Failed to convert", output.getvalue())
+        # Message 2 must have been accepted
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
     def test_unknown_encoding(self):
         # Spam messages have been seen with bogus charset= encodings which
         # throw LookupError.
@@ -269,6 +365,8 @@ class CommandTestCase(TestCase):
         self.assertEqual(MailingList.objects.count(), 1)
         self.assertEqual(Email.objects.count(), 1)
 
+    @expectedFailure
+    # This fails because the fix for #294 'fixes' this too.
     def test_another_wrong_encoding(self):
         # This is gb2312 with a bad character. It seems to fail before
         # getting to the back end.
@@ -297,6 +395,24 @@ class CommandTestCase(TestCase):
         self.assertEqual(MailingList.objects.count(), 1)
         self.assertEqual(Email.objects.count(), 1)
 
+    def test_another_wrong_encoding_part_two(self):
+        # This is gb2312 with a bad character. Since above failure was fixed,
+        # test current behavior.
+        with open(get_test_file("another-wrong-encoding.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
+    @expectedFailure
+    # This fails because the fix at django-mailman3!88 'fixes' this too.
     def test_bad_content_type(self):
         # Content-Type: binary/octet-stream throws KeyError.
         with open(get_test_file("bad_content_type.txt")) as email_file:
@@ -321,6 +437,22 @@ class CommandTestCase(TestCase):
         self.assertIn("Failed adding message <msg@id>:",
                       output.getvalue())
         # Message 2 must have been accepted
+        self.assertEqual(MailingList.objects.count(), 1)
+        self.assertEqual(Email.objects.count(), 1)
+
+    def test_bad_content_type_part_two(self):
+        # Content-Type: binary/octet-stream.  Since above failure was fixed,
+        # test current behavior.
+        with open(get_test_file("bad_content_type.txt")) as email_file:
+            msg = message_from_file(email_file)
+        mbox = mailbox.mbox(os.path.join(self.tmpdir, "test.mbox"))
+        mbox.add(msg)
+        # do the import
+        output = StringIO()
+        kw = self.common_cmd_args.copy()
+        kw["stdout"] = kw["stderr"] = output
+        call_command('hyperkitty_import',
+                     os.path.join(self.tmpdir, "test.mbox"), **kw)
         self.assertEqual(MailingList.objects.count(), 1)
         self.assertEqual(Email.objects.count(), 1)
 

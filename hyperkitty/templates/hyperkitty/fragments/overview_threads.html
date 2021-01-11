@@ -5,8 +5,8 @@
 
 <div class="list-group">
     {% for thread in threads %}
-        <a class="list-group-item" href="{% url 'hk_thread' threadid=thread.thread_id mlist_fqdn=mlist.name %}">
-            <h5 class="list-group-item-heading">
+        <a class="list-group-item list-group-item-action" href="{% url 'hk_thread' threadid=thread.thread_id mlist_fqdn=mlist.name %}">
+            <h5 class="list-group-item-heading mb-1">
                 <span class="thread-id">#{{ forloop.counter }}</span>
                 {% if thread|is_unread_by:request.user %}
                     <i class="fa fa-envelope" title="{% trans 'New messages in this thread' %}"></i>

@@ -1,0 +1,28 @@
+From user@example.com Tue Apr 19 15:09:34 2016
+Content-Type: multipart/mixed; boundary="===============0962490520731773502=="
+MIME-Version: 1.0
+From: A User <user@example.com>
+To: mailman-users@mailman3.org
+Subject: [MM3-users]Installation issues
+Date: Tue, 19 Apr 2016 15:37:12 +0100
+Message-ID: <20160419143715.155B4448003@example.com>
+
+--===============0962490520731773502==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi folks
+
+I have been trying to get Mailman 3 installed on an Ubuntu 14.04 server.
+
+
+--===============0962490520731773502==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="bogus.txt"
+
+QWxsIHZvdGVzIGFyZSByZXBvcnRlZCBpbiB0aGUgZm9ybSAiKlktTi1BKiIgKCppbiBmYXZvci1Z
+4oCab3Bwb3NlZC1O4oCaYWJzdGVudGlvbnMtQSo7IGUuZy4gIjUtMS0yIiBtZWFucyAiNSBpbiBm
+YXZvciwgMSBvcHBvc2VkLCBhbmQgMiBhYnN0ZW50aW9ucyIpLgo=
+
+--===============0962490520731773502==--

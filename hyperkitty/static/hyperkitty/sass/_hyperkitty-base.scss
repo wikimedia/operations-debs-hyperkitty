@@ -2,9 +2,14 @@
 $navbarHeight: 75px;
 $navbarHoverColor: #e7e7e7;
 
+html {
+    // for compatibility with Bootstrap 3, we set the default size to be 14 (b4 makes it 16).
+    font-size: 14px;
+}
+
 body {
     position: relative;
-    padding-top: $navbarHeight;
+    // padding-top: $navbarHeight;
     background-color: white;
 }
 
@@ -19,7 +24,7 @@ nav {
 
 footer {
     background-color: $navbarColor;
-    border-top: 1px solid $navbar-default-border;
+    border-top: 1px solid $navbarHoverColor;
     margin-top: 2em;
     padding: 1em;
     text-align: center;
@@ -59,11 +64,11 @@ nav {
 // hack: forces search box to appear on one line in navbar in larger screens
 // hack: we need extra .input-group to force search box to appear on one line in smaller screens
 // note: any pixel-based width will allow hack to work
-@media (min-width: 768px) {
-    nav .input-group {
-        width: 200px;
-    }
-}
+// @media (min-width: 768px) {
+//     nav .input-group {
+//         width: 200px;
+//     }
+// }
 
 
 .circle img {

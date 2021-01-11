@@ -1,0 +1,9 @@
+From owner-mailman-users@python.org  Wed Dec  1 00:56:19 1999
+Return-Path: <owner-mailman-users@python.org>
+Delivered-To: mailman-users@dinsdale.python.org
+From: user@example.com
+Message-Id: <msg1>
+Date: Tue, 30 Nov 1999 23:56:33 -3000 (CST)
+To: mailman-users@python.org
+
+msg1

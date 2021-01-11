@@ -24,9 +24,12 @@
 import json
 from email.message import EmailMessage
 
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.test import override_settings
 
+from django_mailman3.models import MailDomain
 from django_mailman3.tests.utils import FakeMMList, FakeMMMember
 from mock import Mock
 
@@ -200,9 +203,33 @@ class FindTestCase(TestCase):
         self.assertRedirects(response, reverse("hk_list_overview", kwargs={
             "mlist_fqdn": "list-two@example.com"}))
 
+    def test_show_inactive_list_default(self):
+        response = self.client.get(reverse("hk_root"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            '<label><input type="checkbox" value="inactive" />Hide inactive'
+            '</label>' in
+            str(response.content))
+
+    @override_settings(SHOW_INACTIVE_LISTS_DEFAULT=True)
+    def test_show_inactive_list_true(self):
+        response = self.client.get(reverse("hk_root"))
+        self.assertTrue(settings.SHOW_INACTIVE_LISTS_DEFAULT)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            '<label><input type="checkbox" value="inactive" checked="checked"'
+            '/>Hide inactive</label>' in
+            str(response.content))
+
 
 @override_settings(FILTER_VHOST=True, ALLOWED_HOSTS=["*"])
 class DomainFilteringTestCase(TestCase):
+
+    def setUp(self):
+        self._site = Site.objects.create(domain='www.example.com',
+                                         name='www')
+        self.mail_domain2 = MailDomain.objects.create(
+            site=self._site, mail_domain="example.com")
 
     def _do_test(self, listdomain, vhost, expected):
         MailingList.objects.get_or_create(

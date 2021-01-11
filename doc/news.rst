@@ -3,6 +3,26 @@ News / Changelog
 ================
 
 
+1.3.3
+=====
+
+(2020-06-01)
+
+- Allow ``SHOW_INACTIVE_LISTS_DEFAULT`` setting to be configurable. (Closes #276)
+- Fix a bug where the user couldn't chose the address to send reply or new post
+  as. (Closes #288)
+- Improve the Django admin command reference from hyperkitty_import.
+  (Closes #281)
+- Fix ``FILTER_VHOST`` to work with web hosts other than the email host.
+  (Closes #254)
+- Fixed a bug where ``export`` can fail if certain headers are wrapped.
+  (Closes #292)
+- Fixed ``hyperkitty_import`` to allow odd line endings in a folded message
+  subject.  (Closes #280)
+- Fixed a bug that could throw an ``IndexError`` when exporting messages.
+  (Closes #293)
+- Use ``errors='replace'`` when encoding attachments.  (Closes #294)
+
 1.3.2
 =====
 
@@ -29,6 +49,8 @@ News / Changelog
 - Fix a bug where migrations would fail with exceptions on postgresl. (Closes
   #266)
 - Add support for Django 3.0.
+- Add support for Python 3.8 with Django 2.2.
+
 
 1.3.0
 =====

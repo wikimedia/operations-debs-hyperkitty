@@ -21,8 +21,8 @@
     </p>
 
     {% if user.is_staff or user.is_superuser %}
-    <div class="panel panel-danger">
-        <div class="panel-body">
+    <div class="card border-danger">
+        <div class="card-body">
             <div><i class="fa fa-fw fa-trash"></i>
                <a href="{% url 'hk_message_delete' mlist_fqdn=mlist.name message_id_hash=message.message_id_hash %}"
                   >{% trans "Delete this message" %}</a>

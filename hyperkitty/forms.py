@@ -39,7 +39,7 @@ class TextInputWithButton(forms.TextInput):
                 self, name, value, attrs, renderer=renderer)
         button = mark_safe(
             '<span class="input-group-btn"><button type="submit" '
-            'class="btn btn-default">%s</button></span>'
+            'class="btn btn-outline-primary">%s</button></span>'
             % button_text)
         return "".join([
             '<span class="input-append"><div class="input-group">',

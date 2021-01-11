@@ -24,6 +24,7 @@ import logging
 import os
 import re
 from email.message import EmailMessage
+from email.utils import formataddr
 
 from django.conf import settings
 from django.db import IntegrityError, models
@@ -153,12 +154,14 @@ class Email(models.Model):
         msg = EmailMessage()
 
         # Headers
+        def unfold(hdr):
+            return re.sub('[\r\n]', '', hdr)
         unixfrom = "From %s %s" % (
             self.sender.address, self.archived_date.strftime("%c"))
         assert isinstance(self.sender.address, str)
         header_from = self.sender.address
         if self.sender_name and self.sender_name != self.sender.address:
-            header_from = "%s <%s>" % (self.sender_name, header_from)
+            header_from = formataddr((self.sender_name, header_from))
         header_to = self.mailinglist.name
         msg.set_unixfrom(unixfrom)
         headers = (
@@ -167,14 +170,14 @@ class Email(models.Model):
             ("Subject", self.subject),
             )
         for header_name, header_value in headers:
-            msg[header_name] = header_value
+            msg[header_name] = unfold(header_value)
         tz = get_fixed_timezone(self.timezone)
         header_date = self.date.astimezone(tz).replace(microsecond=0)
         # Date format: http://tools.ietf.org/html/rfc5322#section-3.3
         msg["Date"] = header_date.strftime("%a, %d %b %Y %H:%M:%S %z")
         msg["Message-ID"] = "<%s>" % self.message_id
         if self.in_reply_to:
-            msg["In-Reply-To"] = self.in_reply_to
+            msg["In-Reply-To"] = unfold(self.in_reply_to)
 
         # Body
         content = self.ADDRESS_REPLACE_RE.sub(r"\1(a)\2", self.content)
@@ -325,7 +328,7 @@ class Attachment(models.Model):
     def set_content(self, content):
         if isinstance(content, str):
             if self.encoding is not None:
-                content = content.encode(self.encoding)
+                content = content.encode(self.encoding, errors='replace')
             else:
                 content = content.encode('utf-8')
         self.size = len(content)

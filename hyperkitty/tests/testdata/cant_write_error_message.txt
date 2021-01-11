@@ -1,0 +1,8 @@
+From user@example.com Fri Mar 30 07:10:04 2001
+From: . <user@example.com>
+Date: Fri, 30 Mar 2001 12:11:56 GMT
+Message-ID: <20010330.12115626@mis.configured.host>
+To: mailman-users@python.org
+
+
+

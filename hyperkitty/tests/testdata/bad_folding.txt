@@ -1,0 +1,9 @@
+From owner-mailman-users@python.org  Wed Dec  1 00:56:19 1999
+From: user@example.com
+Message-Id: <msg1>
+Date: Tue, 30 Nov 1999 23:56:33 -3000 (CST)
+To: mailman-users@python.org
+Subject: =?iso-8859-1?q?=5B=3Credacted=3E=5D__Sicherheit_2005=3A_Stichworte_?=
+ =?iso-8859-1?q?und_Vorschlag_PC-Mitglieder=3B=0D_Erg=E4nzung!?=
+
+msg1

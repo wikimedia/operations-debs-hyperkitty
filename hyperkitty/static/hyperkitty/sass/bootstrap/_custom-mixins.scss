@@ -3,6 +3,7 @@
 // Generate semantic grid columns with these mixins.
 
 // Generate the tiny columns
+
 @mixin make-tn-column($columns, $gutter: $grid-gutter-width) {
   position: relative;
   float: left;
@@ -11,12 +12,15 @@
   padding-left:  ($gutter / 2);
   padding-right: ($gutter / 2);
 }
+
 @mixin make-tn-column-offset($columns) {
   margin-left: percentage(($columns / $grid-columns));
 }
+
 @mixin make-tn-column-push($columns) {
   left: percentage(($columns / $grid-columns));
 }
+
 @mixin make-tn-column-pull($columns) {
   right: percentage(($columns / $grid-columns));
 }
@@ -33,16 +37,19 @@
     width: percentage(($columns / $grid-columns));
   }
 }
+
 @mixin make-xl-column-offset($columns) {
   @media (min-width: $screen-xl-min) {
     margin-left: percentage(($columns / $grid-columns));
   }
 }
+
 @mixin make-xl-column-push($columns) {
   @media (min-width: $screen-xl-min) {
     left: percentage(($columns / $grid-columns));
   }
 }
+
 @mixin make-xl-column-pull($columns) {
   @media (min-width: $screen-xl-min) {
     right: percentage(($columns / $grid-columns));

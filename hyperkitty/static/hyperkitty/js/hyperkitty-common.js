@@ -252,7 +252,7 @@ function setup_tooltips() {
 }
 
 function setup_flash_messages() {
-    $('.flashmsgs .alert.success').delay(3000).fadeOut('slow');
+    $('.flashmsgs .alert.alert-success').delay(3000).fadeOut('slow');
 }
 
 function setup_back_to_top_link(offset, duration) {

@@ -7,7 +7,7 @@
 {% block user_profile_content %}
 
     {% if favorites %}
-        <table class="table table-bordered table-condensed hidden-sm hidden-md hidden-lg">
+        <table class="table table-bordered table-condensed d-md-none">
             <tbody>
             {% for fav in favorites %}
                 {% ifchanged fav.thread.mailinglist.name %}
@@ -34,7 +34,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <table class="table table-striped table-bordered table-condensed hidden-tn hidden-xs">
+        <table class="table table-striped table-bordered table-sm d-none d-md-table">
             <thead>
                 <tr>
                     <th>{% trans "List" %}</th>
@@ -50,8 +50,8 @@
                 <tr>
                     {% with starting_email=fav.thread.starting_email %}
                     <td>
-                        <span class="hidden-md hidden-lg">{{ fav.thread.mailinglist.name|until:"@" }}</span>
-                        <span class="hidden-sm">{{ fav.thread.mailinglist.name }}</span>
+                        <span class="d-md-none">{{ fav.thread.mailinglist.name|until:"@" }}</span>
+                        <span class="d-sm-none d-md-inline">{{ fav.thread.mailinglist.name }}</span>
                     </td>
                     <td><a href="{% url 'hk_thread' mlist_fqdn=fav.thread.mailinglist.name threadid=fav.thread.thread_id %}"
                             >{{ starting_email.subject }}</a></td>
