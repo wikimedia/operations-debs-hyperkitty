@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2013-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2013-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -23,10 +23,12 @@
 from datetime import date, datetime, timedelta
 from email.message import EmailMessage
 from random import shuffle
+from unittest.mock import Mock
 
 from django.contrib.auth.models import User
 from django.utils.timezone import utc
 
+from allauth.account.models import EmailAddress
 from django_mailman3.tests.utils import FakeMMList
 
 from hyperkitty.lib.incoming import add_to_list
@@ -76,6 +78,42 @@ class MailingListTestCase(TestCase):
         self.ml.update_from_mailman()
         self.assertTrue(self.ml.created_at.tzinfo is not None)
         self.assertEqual(self.ml.created_at, new_date.replace(tzinfo=utc))
+
+    def _create_user(self, email):
+        user = User.objects.create_user(
+            email=email, username=email, password='pass')
+        EmailAddress.objects.create(user=user, email=email, verified=True)
+
+    def _add_mock_member(self, add_to, email):
+        member = Mock()
+        member.address = Mock(email=email)
+        add_to.append(member)
+
+    def test_update_from_mailman_owners(self):
+        # Test that we fetch owners and moderators when we update from Core.
+        self.mailman_ml.owners = []
+        for owner in ('owner1@example.com', 'owner2@example.com'):
+            self._create_user(owner)
+            self._add_mock_member(self.mailman_ml.owners, owner)
+
+        self.mailman_ml.moderators = []
+        for mod in ('mod1@example.com', 'mod2@example.com'):
+            self._create_user(mod)
+            self._add_mock_member(self.mailman_ml.moderators, mod)
+        self._add_mock_member(self.mailman_ml.owners, 'nouser@example.com')
+        self._add_mock_member(self.mailman_ml.moderators, 'nouser@example.com')
+
+        # now, let's update from Mailman and see if they got the new owners.
+        self.ml.update_from_mailman()
+        self.assertEqual(self.ml.moderators.all().count(), 2)
+        self.assertEqual(self.ml.owners.all().count(), 2)
+
+        owners = list(sorted(user.email for user in self.ml.owners.all()))
+        moderators = list(sorted(
+            user.email for user in self.ml.moderators.all()))
+        self.assertEqual(owners, ['owner1@example.com', 'owner2@example.com'])
+        self.assertEqual(moderators,
+                         ['mod1@example.com', 'mod2@example.com'])
 
     def test_get_threads_between(self):
         # the get_threads_between method should return all threads that have

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2018-2021 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ with open('hyperkitty/__init__.py') as fp:
 
 # Requirements
 REQUIRES = [
-    "Django>=2.0,<3.1",
+    "Django>=2.2,<3.2",
     "django_mailman3>=1.3.3",
     "django-gravatar2>=1.0.6",
     "djangorestframework>=3.0.0",
@@ -49,7 +49,7 @@ REQUIRES = [
     "networkx>=2.0",
     "django-haystack>=2.8.0",
     "django-extensions>=1.3.7",
-    "flufl.lock",
+    "flufl.lock>=4.0",
     "django-q>=1.0.0",
 ]
 
@@ -72,8 +72,9 @@ setup(
         "Programming Language :: JavaScript",
         ],
     keywords='email',
-    # packages=find_packages(exclude=["*.test", "test", "*.test.*"]),
-    packages=find_packages(),
+    packages=find_packages(
+        exclude=["example_project"]
+    ),
     include_package_data=True,
     install_requires=REQUIRES,
     setup_requires=[
@@ -85,4 +86,9 @@ setup(
         "beautifulsoup4>=4.3.2",
         "django-debug-toolbar",
         ],
-    )
+    extras_require={
+        'dev': [
+            "Whoosh>=2.5.7",
+            "django-debug-toolbar"
+        ]
+    })

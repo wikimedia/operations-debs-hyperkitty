@@ -46,6 +46,10 @@ location::
 If the previous archives aren't available locally, you need to download them
 from your current Mailman 2.1 installation. The file is not web-accessible.
 
+Before importing an archive mbox, it is a good idea to check its integrity
+with the hyperkitty/contrib/check_hk_import script and with Mailman 2.1's
+bin/cleanarch script.
+
 After importing your existing archives, you must add them to the fulltext
 search engine with the following command::
 

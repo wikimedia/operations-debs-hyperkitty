@@ -2,7 +2,7 @@
 HyperKitty - Archiver for GNU Mailman v3
 ========================================
 
-.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/build.svg
+.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/pipeline.svg?ignore_skipped=true&key_text=build&key_width=42
     :target: https://gitlab.com/mailman/hyperkitty/commits/master
 
 .. image:: https://gitlab.com/mailman/hyperkitty/badges/master/coverage.svg?job=coverage

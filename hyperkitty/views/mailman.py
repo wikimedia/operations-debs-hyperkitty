@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -53,7 +53,13 @@ def key_and_ip_auth(func):
                 msg = "Missing setting: %s" % attr
                 logger.error(msg)
                 raise ImproperlyConfigured(msg)
-        if (request.META.get("REMOTE_ADDR") not in
+        # '*' matches any host
+        if '*' in settings.MAILMAN_ARCHIVER_FROM:
+            logger.debug(
+                "Found '*' into MAILMAN_ARCHIVER_FROM. IP check disabled "
+                "for archiving API endpoint. Accepting client IP "
+                "{}.".format(request.META["REMOTE_ADDR"]))
+        elif (request.META.get("REMOTE_ADDR") not in
                 settings.MAILMAN_ARCHIVER_FROM):
             logger.error(
                 "Access to the archiving API endpoint was forbidden from "

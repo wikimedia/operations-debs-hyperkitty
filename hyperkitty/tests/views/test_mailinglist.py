@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2019-2021 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,11 +17,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
+import re
 from email.message import EmailMessage
 from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from django.test import override_settings
+
+from bs4 import BeautifulSoup
 
 from hyperkitty.lib.incoming import add_to_list
 from hyperkitty.models import Email, Thread
@@ -103,3 +107,25 @@ class DeleteMailingListTestCase(TestCase):
             self.assertEqual(
                 resp.url,
                 reverse('hk_list_overview', args=("list@example.com",)))
+
+    def test_overview_new_thread_button(self):
+        msg = EmailMessage()
+        msg["From"] = "Dummy Sender <dummy@example.com>"
+        msg["Subject"] = "First Subject"
+        msg["Date"] = "Mon, 02 Feb 2015 13:00:00 +0300"
+        msg["Message-ID"] = "<msg>"
+        msg.set_payload("Dummy message")
+        add_to_list("list@example.com", msg)
+        url = reverse('hk_list_overview', args=('list@example.com', ))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, "html.parser")
+        self.assertEqual(len(soup.find_all("span",
+                                           string=re.compile("Start a n"))), 1)
+        # Check that the button does not exist when the setting is disabled.
+        with override_settings(HYPERKITTY_ALLOW_WEB_POSTING=False):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            soup = BeautifulSoup(response.content, "html.parser")
+            self.assertEqual(len(soup.find_all(
+                "span", string=re.compile("Start a n"))), 0)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -25,6 +25,7 @@ import datetime
 import json
 import re
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
 from django.http import Http404, HttpResponse
@@ -187,6 +188,8 @@ def thread_index(request, mlist_fqdn, threadid, month=None, year=None):
         'category_form': category_form,
         'category': category,
         'export': export,
+        'posting_enabled': getattr(
+            settings, 'HYPERKITTY_ALLOW_WEB_POSTING', True),
     }
 
     if is_bot:
@@ -217,6 +220,8 @@ def replies(request, mlist_fqdn, threadid):
         'threadid': thread,
         'reply_form': get_posting_form(ReplyForm, request, mlist),
         'last_view': last_view,
+        'posting_enabled': getattr(
+            settings, 'HYPERKITTY_ALLOW_WEB_POSTING', True),
     }
     context["replies"] = _get_thread_replies(request, thread, offset=offset,
                                              limit=chunk_size)

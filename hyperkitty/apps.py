@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2015-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2015-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -18,7 +18,6 @@
 #
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
-
 from django.apps import AppConfig
 
 
@@ -28,5 +27,5 @@ class HyperKittyConfig(AppConfig):
 
     def ready(self):
         # flake8: noqa
-        import hyperkitty.signals
         import hyperkitty.checks
+        import hyperkitty.signals

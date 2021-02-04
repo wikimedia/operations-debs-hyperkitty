@@ -1,24 +1,20 @@
 You will also need to install the `Sass`_ CSS processor using your package
 manager or the project's installation documentation. You can either use the
-default Ruby implementation or the C/C++ version, called `libsass`_ (the binary
-is ``sassc``). The configuration file in ``example_project/settings.py``
-defaults to the ``sassc`` version, but you just have to edit the
-``COMPRESS_PRECOMPILERS`` mapping to switch to the Ruby implementation, whoose
-binary is called ``sass``.
+dart-sass version (`dartsass`_) or the C/C++ version, called `libsass`_
+(the binary is ``sassc``). The configuration file in
+``example_project/settings.py`` defaults to the ``sassc`` version, but you
+just have to edit the ``COMPRESS_PRECOMPILERS`` mapping to switch to the
+dart-sass implementation, whose binary is called ``sass`` and which doesn't
+recognize the short form of the ``-t/--style`` option.
 
-Those tools are usually packaged by your distribution. On Fedora the Ruby
-package is named ``rubygem-sass``, so you can install it with::
+We no longer recommend ruby-sass as there have been compatibility issues
+with recent versions.
 
-    sudo yum install rubygem-sass
+Recent Debian and Ubuntu have a ``sassc`` package, which you can install with::
 
-On Debian and Ubuntu, the Ruby package is available in the ``ruby-sass``
-package, which you can install with::
-
-    sudo apt-get install ruby-sass
-
-There is no package of libsass or sassc on either distribution today, but it is
-being worked on.
+    sudo apt-get install sassc
 
 .. _Sass: http://sass-lang.com
 .. _libsass: http://sass-lang.com/libsass
+.. _dartsass: https://sass-lang.com/dart-sass
 

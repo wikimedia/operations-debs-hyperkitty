@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -21,6 +21,7 @@
 #
 
 import uuid
+from smtplib import SMTPDataError
 
 from django.contrib.auth.models import User
 from django.core import mail
@@ -32,6 +33,17 @@ from mock import Mock, patch
 from hyperkitty.lib import posting
 from hyperkitty.models import MailingList
 from hyperkitty.tests.utils import TestCase
+
+
+class Django_mail:
+    """A Mock for hyperkitty.lib.posting.EmailMessage to raise an appropriate
+    exception from send()."""
+
+    def __init__(self, *arg, **kw):
+        pass
+
+    def send(self):
+        raise SMTPDataError(500, 'Error Message')
 
 
 class PostingTestCase(TestCase):
@@ -70,6 +82,19 @@ class PostingTestCase(TestCase):
         self.assertEqual(mail.outbox[0].body, "dummy content")
         self.assertEqual(mail.outbox[0].message().get("references"), "<msg>")
         self.assertEqual(mail.outbox[0].message().get("in-reply-to"), "<msg>")
+
+    def test_smtp_error_raises_postingfailed(self):
+        self.user.first_name = "Django"
+        self.user.last_name = "User"
+        self.user.save()
+        with patch("hyperkitty.lib.posting.mailman.subscribe"):
+            with patch('hyperkitty.lib.posting.EmailMessage', Django_mail):
+                with self.assertRaises(posting.PostingFailed) as cm:
+                    posting.post_to_list(
+                        self.request, self.mlist, "Dummy subject", "body")
+                    self.assertEqual(str(cm.exception),
+                                     'Message not sent: SMTP error 500 '
+                                     'Error Message')
 
     def test_reply_different_sender(self):
         self.user.first_name = "Django"

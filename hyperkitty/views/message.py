@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -25,6 +25,7 @@ import json
 import logging
 import urllib
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation
@@ -83,6 +84,8 @@ def index(request, mlist_fqdn, message_id_hash):
         'month': message.date,
         'reply_form': get_posting_form(ReplyForm, request, mlist),
         'export': export,
+        'posting_enabled': getattr(
+            settings, 'HYPERKITTY_ALLOW_WEB_POSTING', True),
     }
     return render(request, "hyperkitty/message.html", context)
 
@@ -146,6 +149,9 @@ def vote(request, mlist_fqdn, message_id_hash):
 @check_mlist_private
 def reply(request, mlist_fqdn, message_id_hash):
     """Sends a reply to the list."""
+    if not getattr(settings, 'HYPERKITTY_ALLOW_WEB_POSTING', True):
+        return HttpResponse('Posting via Hyperkitty is disabled',
+                            content_type="text/plain", status=403)
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
     form = get_posting_form(ReplyForm, request, mlist, request.POST)
     if not form.is_valid():
@@ -191,11 +197,11 @@ def reply(request, mlist_fqdn, message_id_hash):
         t = loader.get_template('hyperkitty/ajax/temp_message.html')
         html = t.render({'email': email_reply}, request)
     # TODO: make the message below translatable.
-    result = {"result": "Your reply has been sent and is being processed.",
+    result = {"result": _("Your reply has been sent and is being processed."),
               "message_html": html}
     if subscribed_now:
         result['result'] += (
-            "\n  You have been subscribed to {} list.".format(mlist_fqdn))
+            _("\n  You have been subscribed to {} list.").format(mlist_fqdn))
     return HttpResponse(json.dumps(result),
                         content_type="application/javascript")
 
@@ -204,6 +210,9 @@ def reply(request, mlist_fqdn, message_id_hash):
 @check_mlist_private
 def new_message(request, mlist_fqdn):
     """ Sends a new thread-starting message to the list. """
+    if not getattr(settings, 'HYPERKITTY_ALLOW_WEB_POSTING', True):
+        return HttpResponse('Posting via Hyperkitty is disabled',
+                            content_type="text/plain", status=403)
     mlist = get_object_or_404(MailingList, name=mlist_fqdn)
     if request.method == 'POST':
         form = get_posting_form(PostForm, request, mlist, request.POST)

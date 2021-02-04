@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -24,6 +24,7 @@ import datetime
 import json
 import zlib
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -182,6 +183,8 @@ def overview(request, mlist_fqdn=None):
         'threads_by_category': threads_by_category,
         'months_list': get_months(mlist),
         'export': export,
+        'posting_enabled': getattr(
+            settings, 'HYPERKITTY_ALLOW_WEB_POSTING', True),
     }
     return render(request, "hyperkitty/overview.html", context)
 

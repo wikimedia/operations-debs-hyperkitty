@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load compress %}
 {% load static %}
-{% load gravatar %}
+{% load hk_generic %}
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -86,12 +86,12 @@
                 <form name="search" method="get" action="{% url 'hk_search' %}" class="navbar-form navbar-right my-2 my-lg-2 order-1" role="search">
                     {% if mlist %}<input type="hidden" name="mlist" value="{{ mlist.name }}" />{% endif %}
                         <div class="input-group">
-                            <input name="q" type="text" class="form-control mr-sm-2"
+                            <input name="q" type="text" class="form-control"
                                    placeholder="{% if mlist %}{% trans 'Search this list' %}{% else %}{% trans 'Search all lists' %}{% endif %}"
                                    {% if query %}value="{{ query }}"{% endif %}
                                    />
-                            <span class="input-group-btn">
-                                <button class="btn btn-secondary my-2 my-sm-0 " type="submit"><span class="fa fa-search"></span></button>
+                            <span class="input-group-append">
+                                <button class="btn btn-secondary" type="submit"><span class="fa fa-search"></span></button>
                             </span>
                         </div>
                 </form>

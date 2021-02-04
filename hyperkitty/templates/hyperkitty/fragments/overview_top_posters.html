@@ -1,17 +1,16 @@
 {% load i18n %}
 {% load hk_generic %}
-{% load gravatar %}
 
 {% for poster in mlist.top_posters %}
 <div class="maker row">
-    <div class="inline-block maker-id col-1">
+    <div class=" maker-id col-1">
         #{{forloop.counter}}
     </div>
-    <div class="inline-block gravatar col-3 col-sm-4 col-md-3">
+    <div class="gravatar col-sm-auto">
         {% gravatar poster.address 120 %}
         <br />
     </div>
-    <div class="gravatar-details inline-block col-7 col-sm-6 col-md-7">
+    <div class="gravatar-details col">
         <ul class="list-unstyled">
             <li><span class="maker-name">
                 {% if poster.mailman_id %}

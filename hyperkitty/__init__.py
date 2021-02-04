@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2012-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -19,5 +19,5 @@
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
 
-VERSION = "1.3.3"
+VERSION = "1.3.4"
 default_app_config = 'hyperkitty.apps.HyperKittyConfig'

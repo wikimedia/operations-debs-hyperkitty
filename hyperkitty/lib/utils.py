@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -102,8 +102,10 @@ def parseaddr(address):
     """
     if address is None:
         return "", ""
-    address = address.replace(" at ", "@")
     from_name, from_email = email.utils.parseaddr(address)
+    if '@' not in from_email:
+        address = address.replace(" at ", "@")
+        from_name, from_email = email.utils.parseaddr(address)
     if not from_name:
         from_name = from_email
     return from_name, from_email
@@ -157,12 +159,20 @@ def stripped_subject(mlist, subject):
 
 # File-based locking
 def run_with_lock(fn, *args, **kwargs):
+    if kwargs.get('remove'):
+        # remove = True is slow. We need to extend the lock life
+        lock_life = getattr(settings,
+                            "HYPERKITTY_JOBS_UPDATE_INDEX_LOCK_LIFE", 900)
+    else:
+        # Use the default (15 sec)
+        lock_life = None
     lock = Lock(getattr(
         settings, "HYPERKITTY_JOBS_UPDATE_INDEX_LOCKFILE",
-        os.path.join(gettempdir(), "hyperkitty-jobs-update-index.lock")))
+        os.path.join(gettempdir(), "hyperkitty-jobs-update-index.lock")),
+        lifetime=lock_life)
     if lock.is_locked:
         log.warning(
-            "Update index lock is accquited by: {}".format(*lock.details))
+            "Update index lock is acquired by: {}".format(*lock.details))
         return
     with lock:
         try:

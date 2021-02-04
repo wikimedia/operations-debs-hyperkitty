@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2012-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -30,6 +30,7 @@ from email.policy import default
 
 from django.contrib.auth.models import User
 from django.core import mail
+from django.test import override_settings
 from django.utils import timezone
 
 from allauth.account.models import EmailAddress
@@ -158,6 +159,21 @@ class MessageViewsTestCase(TestCase):
             get_gravatar_url("test@example.com", 120).replace("&", "&amp;"),
             result["message_html"])
 
+    @override_settings(HYPERKITTY_ALLOW_WEB_POSTING=False)
+    def test_reply_when_posting_disabled(self):
+        self.user.first_name = "Django"
+        self.user.last_name = "User"
+        self.user.save()
+        url = reverse('hk_message_reply', args=("list@example.com",
+                      get_message_id_hash("msg")))
+        with patch("hyperkitty.views.message.post_to_list") as posting_fn:
+            response = self.client.post(
+                url, {"message": "dummy reply content"})
+            self.assertEqual(response.status_code, 403)
+            self.assertEqual(response.content,
+                             b'Posting via Hyperkitty is disabled')
+            self.assertEqual(posting_fn.call_count, 0)
+
     def test_reply_newthread(self):
         mlist = MailingList.objects.get(name="list@example.com")
         url = reverse('hk_message_reply', args=("list@example.com",
@@ -216,6 +232,12 @@ class MessageViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(mail.outbox), 0)
 
+    @override_settings(HYPERKITTY_ALLOW_WEB_POSTING=False)
+    def test_new_message_page_disabled_posting(self):
+        url = reverse('hk_message_new', args=["list@example.com"])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
     def test_new_message_post(self):
         self.user.first_name = "Django"
         self.user.last_name = "User"
@@ -246,6 +268,21 @@ class MessageViewsTestCase(TestCase):
         self.assertEqual(mail.outbox[0].body, "Test message content")
         self.assertIsNone(mail.outbox[0].message().get("references"))
         self.assertIsNone(mail.outbox[0].message().get("in-reply-to"))
+
+    @override_settings(HYPERKITTY_ALLOW_WEB_POSTING=False)
+    def test_new_message_disabled_posting(self):
+        self.user.first_name = "Django"
+        self.user.last_name = "User"
+        self.user.save()
+        url = reverse('hk_message_new', args=["list@example.com"])
+        with patch("hyperkitty.lib.posting.mailman.subscribe") as sub_fn:
+            response = self.client.post(url, {
+                "subject": "Test subject",
+                "message": "Test message content"})
+            self.assertEqual(response.status_code, 403)
+            self.assertEqual(response.content,
+                             b'Posting via Hyperkitty is disabled')
+            self.assertFalse(sub_fn.called)
 
     def test_new_message_different_sender(self):
         self.user.first_name = "Django"

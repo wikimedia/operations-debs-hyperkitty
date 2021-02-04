@@ -1,3 +1,6 @@
+/* eslint no-undef: "off" */
+/* eslint no-unused-vars: "off" */
+
 /*
  * Copyright (C) 2012-2012 by the Free Software Foundation, Inc.
  *

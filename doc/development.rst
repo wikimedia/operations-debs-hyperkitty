@@ -44,7 +44,7 @@ Then download the components of HyperKitty::
 
     git clone https://gitlab.com/mailman/hyperkitty.git
     cd hyperkitty
-    python setup.py develop
+    pip install -e '.[dev]'
 
 .. include:: _sass.rst
 

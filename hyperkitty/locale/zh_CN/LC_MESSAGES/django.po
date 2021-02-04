@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 15:17+0200\n"
+"POT-Creation-Date: 2020-12-21 19:00+0530\n"
 "PO-Revision-Date: 2020-04-01 23:49+0000\n"
 "Last-Translator: Derek Zhou <derek@3qin.us>\n"
-"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
-"gnu-mailman/hyperkitty/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/gnu-"
+"mailman/hyperkitty/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +73,7 @@ msgstr "读这个线索"
 msgid "(no suggestions)"
 msgstr "(没有建议)"
 
-#: templates/hyperkitty/ajax/temp_message.html:12
+#: templates/hyperkitty/ajax/temp_message.html:11
 msgid "Sent just now, not yet distributed"
 msgstr "刚发送, 尚未分发"
 
@@ -164,65 +164,106 @@ msgstr "标签"
 msgid "Using this address you will be able to retrieve the list of tags."
 msgstr "通过这个地址你能获得所有标签."
 
-#: templates/hyperkitty/base.html:57 templates/hyperkitty/base.html:99
+#: templates/hyperkitty/base.html:56 templates/hyperkitty/base.html:111
 msgid "Account"
 msgstr "账户"
 
-#: templates/hyperkitty/base.html:62 templates/hyperkitty/base.html:104
+#: templates/hyperkitty/base.html:61 templates/hyperkitty/base.html:116
 msgid "Mailman settings"
 msgstr "Mailman的设定"
 
-#: templates/hyperkitty/base.html:67 templates/hyperkitty/base.html:109
-#: templates/hyperkitty/user_profile/base.html:16
+#: templates/hyperkitty/base.html:66 templates/hyperkitty/base.html:121
 #: templates/hyperkitty/user_profile/base.html:17
 msgid "Posting activity"
 msgstr "发表活动"
 
-#: templates/hyperkitty/base.html:72 templates/hyperkitty/base.html:114
+#: templates/hyperkitty/base.html:71 templates/hyperkitty/base.html:126
 msgid "Logout"
 msgstr "退出登录"
 
-#: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:121
+#: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:133
 msgid "Sign In"
 msgstr "登录"
 
-#: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:125
+#: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:137
 msgid "Sign Up"
 msgstr "注册"
 
-#: templates/hyperkitty/base.html:135
+#: templates/hyperkitty/base.html:90
+msgid "Search this list"
+msgstr "在列表里搜索"
+
+#: templates/hyperkitty/base.html:90
+#, fuzzy
+#| msgid "Search this list"
+msgid "Search all lists"
+msgstr "在列表里搜索"
+
+#: templates/hyperkitty/base.html:148
 msgid "Manage this list"
 msgstr "管理这个列表"
 
-#: templates/hyperkitty/base.html:140
+#: templates/hyperkitty/base.html:153
 msgid "Manage lists"
 msgstr "管理所有列表"
 
-#: templates/hyperkitty/base.html:193
+#: templates/hyperkitty/base.html:191
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: templates/hyperkitty/base.html:194
+#, fuzzy
+#| msgid "Thread"
+msgid "Thread View"
+msgstr "线索"
+
+#: templates/hyperkitty/base.html:196
+#, fuzzy
+#| msgid "Delete message(s)"
+msgid "Next unread message"
+msgstr "删除消息"
+
+#: templates/hyperkitty/base.html:197
+msgid "Previous unread message"
+msgstr ""
+
+#: templates/hyperkitty/base.html:198
+#, fuzzy
+#| msgid "All Threads"
+msgid "Jump to all threads"
+msgstr "所有线索"
+
+#: templates/hyperkitty/base.html:199
+#, fuzzy
+#| msgid "List overview"
+msgid "Jump to MailingList overview"
+msgstr "列表概述"
+
+#: templates/hyperkitty/base.html:213
 msgid "Powered by"
 msgstr "基于"
 
-#: templates/hyperkitty/base.html:193
+#: templates/hyperkitty/base.html:213
 msgid "version"
 msgstr "版本"
 
-#: templates/hyperkitty/errors/notimplemented.html:8
+#: templates/hyperkitty/errors/notimplemented.html:7
 msgid "Not implemented yet"
 msgstr "尚未实现"
 
-#: templates/hyperkitty/errors/notimplemented.html:13
+#: templates/hyperkitty/errors/notimplemented.html:12
 msgid "Not implemented"
 msgstr "未实现"
 
-#: templates/hyperkitty/errors/notimplemented.html:15
+#: templates/hyperkitty/errors/notimplemented.html:14
 msgid "This feature has not been implemented yet, sorry."
 msgstr "对不起, 这项功能尚未实现."
 
-#: templates/hyperkitty/errors/private.html:8
+#: templates/hyperkitty/errors/private.html:7
 msgid "Error: private list"
 msgstr "错误: 私有列表"
 
-#: templates/hyperkitty/errors/private.html:20
+#: templates/hyperkitty/errors/private.html:19
 msgid ""
 "This mailing list is private. You must be subscribed to view the archives."
 msgstr "本邮件列表不向公众开放. 想浏览档案需先订阅."
@@ -240,53 +281,37 @@ msgstr "你不喜欢(取消)"
 msgid "You must be logged-in to vote."
 msgstr "你必须先登录才能投票."
 
-#: templates/hyperkitty/fragments/month_list.html:5
-msgid "Go to"
-msgstr "转向"
+#: templates/hyperkitty/fragments/month_list.html:6
+#, fuzzy
+#| msgid "Thread"
+msgid "Threads by"
+msgstr "线索"
 
-#: templates/hyperkitty/fragments/month_list.html:72
-msgid "List overview"
-msgstr "列表概述"
+#: templates/hyperkitty/fragments/month_list.html:6
+#, fuzzy
+#| msgid "This month"
+msgid " month"
+msgstr "这个月"
 
-#: templates/hyperkitty/fragments/month_list.html:78
+#: templates/hyperkitty/fragments/overview_threads.html:12
+msgid "New messages in this thread"
+msgstr "线索中的新消息"
+
+#: templates/hyperkitty/fragments/overview_threads.html:37
+#: templates/hyperkitty/fragments/thread_left_nav.html:18
 #: templates/hyperkitty/overview.html:75
 msgid "All Threads"
 msgstr "所有线索"
 
-#: templates/hyperkitty/fragments/month_list.html:87 views/message.py:74
-#: views/mlist.py:96 views/thread.py:166
-msgid "Download"
-msgstr "下载"
-
-#: templates/hyperkitty/fragments/month_list.html:90
-msgid "Past 30 days"
-msgstr "过去30天"
-
-#: templates/hyperkitty/fragments/month_list.html:91
-msgid "This month"
-msgstr "这个月"
-
-#: templates/hyperkitty/fragments/month_list.html:94
-msgid "Entire archive"
-msgstr "全部档案"
-
-#: templates/hyperkitty/fragments/overview_threads.html:9
-msgid "More..."
-msgstr "更多..."
-
-#: templates/hyperkitty/fragments/overview_threads.html:17
-msgid "New messages in this thread"
-msgstr "线索中的新消息"
-
-#: templates/hyperkitty/fragments/overview_top_posters.html:19
+#: templates/hyperkitty/fragments/overview_top_posters.html:18
 msgid "See the profile"
 msgstr "看基本信息"
 
-#: templates/hyperkitty/fragments/overview_top_posters.html:25
+#: templates/hyperkitty/fragments/overview_top_posters.html:24
 msgid "posts"
 msgstr "贴文"
 
-#: templates/hyperkitty/fragments/overview_top_posters.html:30
+#: templates/hyperkitty/fragments/overview_top_posters.html:29
 msgid "No posters this month (yet)."
 msgstr "本月尚无人发贴."
 
@@ -301,6 +326,32 @@ msgstr "更改发送人"
 #: templates/hyperkitty/fragments/send_as.html:16
 msgid "Link another address"
 msgstr "再链接一个地址"
+
+#: templates/hyperkitty/fragments/send_as.html:20
+msgid ""
+"If you aren't a current list member, sending this message will subscribe you."
+msgstr ""
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:11
+msgid "List overview"
+msgstr "列表概述"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:27 views/message.py:75
+#: views/mlist.py:102 views/thread.py:167
+msgid "Download"
+msgstr "下载"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:30
+msgid "Past 30 days"
+msgstr "过去30天"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:31
+msgid "This month"
+msgstr "这个月"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:34
+msgid "Entire archive"
+msgstr "全部档案"
 
 #: templates/hyperkitty/index.html:9 templates/hyperkitty/index.html:63
 msgid "Available lists"
@@ -373,28 +424,28 @@ msgid "inactive"
 msgstr "非活跃的"
 
 #: templates/hyperkitty/index.html:142 templates/hyperkitty/index.html:232
-#: templates/hyperkitty/overview.html:94 templates/hyperkitty/overview.html:102
-#: templates/hyperkitty/overview.html:114
-#: templates/hyperkitty/overview.html:122
-#: templates/hyperkitty/overview.html:130
-#: templates/hyperkitty/overview.html:142
-#: templates/hyperkitty/overview.html:159 templates/hyperkitty/reattach.html:39
-#: templates/hyperkitty/thread.html:108
+#: templates/hyperkitty/overview.html:91 templates/hyperkitty/overview.html:108
+#: templates/hyperkitty/overview.html:178
+#: templates/hyperkitty/overview.html:185
+#: templates/hyperkitty/overview.html:192
+#: templates/hyperkitty/overview.html:201
+#: templates/hyperkitty/overview.html:209 templates/hyperkitty/reattach.html:39
+#: templates/hyperkitty/thread.html:111
 msgid "Loading..."
 msgstr "正在加载..."
 
 #: templates/hyperkitty/index.html:148 templates/hyperkitty/index.html:221
-#: templates/hyperkitty/overview.html:151
-#: templates/hyperkitty/thread_list.html:40
-#: templates/hyperkitty/threads/right_col.html:45
-#: templates/hyperkitty/threads/right_col.html:98
-#: templates/hyperkitty/threads/summary_thread_large.html:49
+#: templates/hyperkitty/overview.html:100
+#: templates/hyperkitty/thread_list.html:36
+#: templates/hyperkitty/threads/right_col.html:44
+#: templates/hyperkitty/threads/right_col.html:97
+#: templates/hyperkitty/threads/summary_thread_large.html:47
 msgid "participants"
 msgstr "参与者"
 
 #: templates/hyperkitty/index.html:153 templates/hyperkitty/index.html:226
-#: templates/hyperkitty/overview.html:152
-#: templates/hyperkitty/thread_list.html:45
+#: templates/hyperkitty/overview.html:101
+#: templates/hyperkitty/thread_list.html:41
 msgid "discussions"
 msgstr "讨论"
 
@@ -419,16 +470,52 @@ msgstr "描述"
 msgid "Activity in the past 30 days"
 msgstr "过去30天的活动"
 
-#: templates/hyperkitty/message.html:23
+#: templates/hyperkitty/list_delete.html:7
+msgid "Delete MailingList"
+msgstr ""
+
+#: templates/hyperkitty/list_delete.html:20
+msgid "Delete Mailing List"
+msgstr ""
+
+#: templates/hyperkitty/list_delete.html:26
+msgid ""
+"will be deleted along with all the threads and messages. Do you want to "
+"continue?"
+msgstr ""
+
+#: templates/hyperkitty/list_delete.html:33
+#: templates/hyperkitty/message_delete.html:44
+#: templates/hyperkitty/overview.html:78
+msgid "Delete"
+msgstr "删除"
+
+#: templates/hyperkitty/list_delete.html:34
+#: templates/hyperkitty/message_delete.html:45
+#: templates/hyperkitty/message_new.html:53
+#: templates/hyperkitty/messages/message.html:146
+msgid "or"
+msgstr "或"
+
+#: templates/hyperkitty/list_delete.html:36
+#: templates/hyperkitty/message_delete.html:45
+#: templates/hyperkitty/message_new.html:53
+#: templates/hyperkitty/messages/message.html:146
+#: templates/hyperkitty/user_profile/votes.html:36
+#: templates/hyperkitty/user_profile/votes.html:74
+msgid "cancel"
+msgstr "中止"
+
+#: templates/hyperkitty/message.html:22
 msgid "thread"
 msgstr "线索"
 
-#: templates/hyperkitty/message_delete.html:8
-#: templates/hyperkitty/message_delete.html:21
+#: templates/hyperkitty/message_delete.html:7
+#: templates/hyperkitty/message_delete.html:20
 msgid "Delete message(s)"
 msgstr "删除消息"
 
-#: templates/hyperkitty/message_delete.html:26
+#: templates/hyperkitty/message_delete.html:25
 #, python-format
 msgid ""
 "\n"
@@ -439,65 +526,47 @@ msgstr ""
 "        %(count)s个消息将被删除. 是否继续?\n"
 "        "
 
-#: templates/hyperkitty/message_delete.html:45
-msgid "Delete"
-msgstr "删除"
-
-#: templates/hyperkitty/message_delete.html:46
-#: templates/hyperkitty/message_new.html:54
-#: templates/hyperkitty/messages/message.html:145
-msgid "or"
-msgstr "或"
-
-#: templates/hyperkitty/message_delete.html:46
-#: templates/hyperkitty/message_new.html:54
-#: templates/hyperkitty/messages/message.html:145
-#: templates/hyperkitty/user_profile/votes.html:36
-#: templates/hyperkitty/user_profile/votes.html:74
-msgid "cancel"
-msgstr "中止"
-
-#: templates/hyperkitty/message_new.html:9
-#: templates/hyperkitty/message_new.html:22
+#: templates/hyperkitty/message_new.html:8
+#: templates/hyperkitty/message_new.html:21
 msgid "Create a new thread"
 msgstr "创建一个线索"
 
-#: templates/hyperkitty/message_new.html:23
-#: templates/hyperkitty/user_posts.html:23
+#: templates/hyperkitty/message_new.html:22
+#: templates/hyperkitty/user_posts.html:22
 msgid "in"
 msgstr "内"
 
-#: templates/hyperkitty/message_new.html:53
-#: templates/hyperkitty/messages/message.html:144
+#: templates/hyperkitty/message_new.html:52
+#: templates/hyperkitty/messages/message.html:145
 msgid "Send"
 msgstr "发送"
 
-#: templates/hyperkitty/messages/message.html:18
+#: templates/hyperkitty/messages/message.html:17
 #, python-format
 msgid "See the profile for %(name)s"
 msgstr "看%(name)s 的基本信息"
 
-#: templates/hyperkitty/messages/message.html:28
+#: templates/hyperkitty/messages/message.html:27
 msgid "Unread"
 msgstr "未读"
 
-#: templates/hyperkitty/messages/message.html:45
+#: templates/hyperkitty/messages/message.html:44
 msgid "Sender's time:"
 msgstr "发送者的时间:"
 
-#: templates/hyperkitty/messages/message.html:51
+#: templates/hyperkitty/messages/message.html:50
 msgid "New subject:"
 msgstr "新主题:"
 
-#: templates/hyperkitty/messages/message.html:62
+#: templates/hyperkitty/messages/message.html:61
 msgid "Attachments:"
 msgstr "附件:"
 
-#: templates/hyperkitty/messages/message.html:77
+#: templates/hyperkitty/messages/message.html:76
 msgid "Display in fixed font"
 msgstr "用定宽字体显示"
 
-#: templates/hyperkitty/messages/message.html:80
+#: templates/hyperkitty/messages/message.html:79
 msgid "Permalink for this message"
 msgstr "本消息的永久链接"
 
@@ -510,7 +579,7 @@ msgstr "回复"
 msgid "Sign in to reply online"
 msgstr "登录后在线回复"
 
-#: templates/hyperkitty/messages/message.html:104
+#: templates/hyperkitty/messages/message.html:105
 #, python-format
 msgid ""
 "\n"
@@ -525,31 +594,31 @@ msgstr[0] ""
 "                %(email.attachments.count)s个附件\n"
 "                "
 
-#: templates/hyperkitty/messages/message.html:130
+#: templates/hyperkitty/messages/message.html:131
 msgid "Quote"
 msgstr "引用"
 
-#: templates/hyperkitty/messages/message.html:131
+#: templates/hyperkitty/messages/message.html:132
 msgid "Create new thread"
 msgstr "创建新线索"
 
-#: templates/hyperkitty/messages/message.html:134
+#: templates/hyperkitty/messages/message.html:135
 msgid "Use email software"
 msgstr "用邮件软件"
 
-#: templates/hyperkitty/messages/right_col.html:12
+#: templates/hyperkitty/messages/right_col.html:11
 msgid "Back to the thread"
 msgstr "回到线索"
 
-#: templates/hyperkitty/messages/right_col.html:19
+#: templates/hyperkitty/messages/right_col.html:18
 msgid "Back to the list"
 msgstr "回到列表"
 
-#: templates/hyperkitty/messages/right_col.html:28
+#: templates/hyperkitty/messages/right_col.html:27
 msgid "Delete this message"
 msgstr "删除此消息"
 
-#: templates/hyperkitty/messages/summary_message.html:24
+#: templates/hyperkitty/messages/summary_message.html:23
 #, python-format
 msgid ""
 "\n"
@@ -560,106 +629,101 @@ msgstr ""
 "                                %(name)s所写\n"
 "                            "
 
-#: templates/hyperkitty/overview.html:37
+#: templates/hyperkitty/overview.html:35
 msgid "Home"
 msgstr "主页"
 
-#: templates/hyperkitty/overview.html:40 templates/hyperkitty/thread.html:75
+#: templates/hyperkitty/overview.html:38 templates/hyperkitty/thread.html:78
 msgid "Stats"
 msgstr "统计"
 
-#: templates/hyperkitty/overview.html:43
-msgid "Discussions"
-msgstr "讨论"
+#: templates/hyperkitty/overview.html:41
+#, fuzzy
+#| msgid "Thread"
+msgid "Threads"
+msgstr "线索"
 
-#: templates/hyperkitty/overview.html:46
-msgid "most recent"
-msgstr "最新的"
-
-#: templates/hyperkitty/overview.html:49
-msgid "most popular"
-msgstr "最流行的"
-
-#: templates/hyperkitty/overview.html:52
-msgid "most active"
-msgstr "最活跃的"
-
-#: templates/hyperkitty/overview.html:65
-#: templates/hyperkitty/thread_list.html:48
+#: templates/hyperkitty/overview.html:47 templates/hyperkitty/overview.html:58
+#: templates/hyperkitty/thread_list.html:44
 msgid "You must be logged-in to create a thread."
 msgstr "你登录后才能创建线索."
 
-#: templates/hyperkitty/overview.html:67
+#: templates/hyperkitty/overview.html:60
+#: templates/hyperkitty/thread_list.html:48
+#, fuzzy
+#| msgid ""
+#| "<span class=\"hidden-tn hidden-xs\">Start a </span><span class=\"hidden-"
+#| "sm hidden-md hidden-lg\">N</span>ew thread"
 msgid ""
-"<span class=\"hidden-tn hidden-xs\">Start a </span><span class=\"hidden-sm "
-"hidden-md hidden-lg\">N</span>ew thread"
+"<span class=\"d-none d-md-inline\">Start a n</span><span class=\"d-md-none"
+"\">N</span>ew thread"
 msgstr ""
 "<span class=\"hidden-tn hidden-xs\">启用一个</span><span class=\"hidden-sm "
 "hidden-md hidden-lg\"></span>新线索"
 
-#: templates/hyperkitty/overview.html:73
+#: templates/hyperkitty/overview.html:72
+#, fuzzy
+#| msgid ""
+#| "<span class=\"hidden-tn hidden-xs\">Manage s</span><span class=\"hidden-"
+#| "sm hidden-md hidden-lg\">S</span>ubscription"
 msgid ""
-"<span class=\"hidden-tn hidden-xs\">Manage s</span><span class=\"hidden-sm "
-"hidden-md hidden-lg\">S</span>ubscription"
+"<span class=\"d-none d-md-inline\">Manage s</span><span class=\"d-md-none"
+"\">S</span>ubscription"
 msgstr ""
-"<span class=\"hidden-tn hidden-xs\">管理</span><span class=\"hidden-sm hidden-"
-"md hidden-lg\"></span>订阅"
+"<span class=\"hidden-tn hidden-xs\">管理</span><span class=\"hidden-sm "
+"hidden-md hidden-lg\"></span>订阅"
 
-#: templates/hyperkitty/overview.html:80
-msgid "Search this list"
-msgstr "在列表里搜索"
-
-#: templates/hyperkitty/overview.html:90
-msgid "Discussions You've Flagged"
-msgstr "你标记的讨论"
-
-#: templates/hyperkitty/overview.html:98
-msgid "Discussions You've Posted to"
-msgstr "你参与的讨论"
-
-#: templates/hyperkitty/overview.html:112
-msgid "Recently active discussions"
-msgstr "最近活跃的讨论"
-
-#: templates/hyperkitty/overview.html:120
-msgid "Most popular discussions"
-msgstr "最流行的讨论"
-
-#: templates/hyperkitty/overview.html:128
-msgid "Most active discussions"
-msgstr "最活跃的讨论"
-
-#: templates/hyperkitty/overview.html:139
+#: templates/hyperkitty/overview.html:88
 msgid "Activity Summary"
 msgstr "活动概述"
 
-#: templates/hyperkitty/overview.html:141
+#: templates/hyperkitty/overview.html:90
 msgid "Post volume over the past <strong>30</strong> days."
 msgstr "过去<strong>30</strong>天的发贴数."
 
-#: templates/hyperkitty/overview.html:146
+#: templates/hyperkitty/overview.html:95
 msgid "The following statistics are from"
 msgstr "之后的统计数据来自"
 
-#: templates/hyperkitty/overview.html:147
+#: templates/hyperkitty/overview.html:96
 msgid "In"
 msgstr "在"
 
-#: templates/hyperkitty/overview.html:148
+#: templates/hyperkitty/overview.html:97
 msgid "the past <strong>30</strong> days:"
 msgstr "过去<strong>30</strong>天:"
 
-#: templates/hyperkitty/overview.html:157
+#: templates/hyperkitty/overview.html:106
 msgid "Most active posters"
 msgstr "最活跃的发帖人"
 
-#: templates/hyperkitty/overview.html:166
+#: templates/hyperkitty/overview.html:115
 msgid "Prominent posters"
 msgstr "著名发帖人"
 
-#: templates/hyperkitty/overview.html:181
+#: templates/hyperkitty/overview.html:130
 msgid "kudos"
 msgstr "感谢"
+
+#: templates/hyperkitty/overview.html:176
+msgid "Recently active discussions"
+msgstr "最近活跃的讨论"
+
+#: templates/hyperkitty/overview.html:183
+msgid "Most popular discussions"
+msgstr "最流行的讨论"
+
+#: templates/hyperkitty/overview.html:190
+msgid "Most active discussions"
+msgstr "最活跃的讨论"
+
+#: templates/hyperkitty/overview.html:197
+msgid "Discussions You've Flagged"
+msgstr "你标记的讨论"
+
+#: templates/hyperkitty/overview.html:205
+msgid "Discussions You've Posted to"
+msgstr "你参与的讨论"
 
 #: templates/hyperkitty/reattach.html:9
 msgid "Reattach a thread"
@@ -701,53 +765,49 @@ msgstr "(无法撤回!), 或者"
 msgid "go back to the thread"
 msgstr "回到线索"
 
-#: templates/hyperkitty/search_results.html:9
+#: templates/hyperkitty/search_results.html:8
 msgid "Search results for"
 msgstr "搜索结果属于"
 
-#: templates/hyperkitty/search_results.html:31
+#: templates/hyperkitty/search_results.html:30
 msgid "search results"
 msgstr "搜索结果"
 
-#: templates/hyperkitty/search_results.html:33
+#: templates/hyperkitty/search_results.html:32
 msgid "Search results"
 msgstr "搜索结果"
 
-#: templates/hyperkitty/search_results.html:35
+#: templates/hyperkitty/search_results.html:34
 msgid "for query"
 msgstr "为查询"
 
-#: templates/hyperkitty/search_results.html:45
-#: templates/hyperkitty/threads/right_col.html:50
-#: templates/hyperkitty/user_posts.html:35
+#: templates/hyperkitty/search_results.html:44
+#: templates/hyperkitty/threads/right_col.html:49
+#: templates/hyperkitty/user_posts.html:34
 msgid "messages"
 msgstr "消息"
 
-#: templates/hyperkitty/search_results.html:58
+#: templates/hyperkitty/search_results.html:57
 msgid "sort by score"
 msgstr "以打分排序"
 
-#: templates/hyperkitty/search_results.html:61
+#: templates/hyperkitty/search_results.html:60
 msgid "sort by latest first"
 msgstr "以从新到旧排序"
 
-#: templates/hyperkitty/search_results.html:64
+#: templates/hyperkitty/search_results.html:63
 msgid "sort by earliest first"
 msgstr "以从旧到新排序"
 
-#: templates/hyperkitty/search_results.html:66
-msgid "Update"
-msgstr "更新"
-
-#: templates/hyperkitty/search_results.html:86
+#: templates/hyperkitty/search_results.html:84
 msgid "Sorry no email could be found for this query."
 msgstr "对不起, 找不到相应的邮件."
 
-#: templates/hyperkitty/search_results.html:89
+#: templates/hyperkitty/search_results.html:87
 msgid "Sorry but your query looks empty."
 msgstr "对不起, 你的查询为空."
 
-#: templates/hyperkitty/search_results.html:90
+#: templates/hyperkitty/search_results.html:88
 msgid "these are not the messages you are looking for"
 msgstr "这些不是你要找的消息"
 
@@ -759,25 +819,25 @@ msgstr "较新的"
 msgid "older"
 msgstr "较旧的"
 
-#: templates/hyperkitty/thread.html:69
+#: templates/hyperkitty/thread.html:72
 msgid "First Post"
 msgstr "第一贴"
 
-#: templates/hyperkitty/thread.html:72
+#: templates/hyperkitty/thread.html:75
 #: templates/hyperkitty/user_profile/favorites.html:45
 #: templates/hyperkitty/user_profile/last_views.html:50
 msgid "Replies"
 msgstr "回复"
 
-#: templates/hyperkitty/thread.html:94
+#: templates/hyperkitty/thread.html:97
 msgid "Show replies by thread"
 msgstr "显示线索内回复"
 
-#: templates/hyperkitty/thread.html:97
+#: templates/hyperkitty/thread.html:100
 msgid "Show replies by date"
 msgstr "显示某日回复"
 
-#: templates/hyperkitty/thread_list.html:60
+#: templates/hyperkitty/thread_list.html:56
 msgid "Sorry no email threads could be found"
 msgstr "对不起, 找不到你要的邮件线索"
 
@@ -793,76 +853,80 @@ msgstr "你必须先登录才能编辑."
 msgid "no category"
 msgstr "没有组别"
 
-#: templates/hyperkitty/threads/right_col.html:13
+#: templates/hyperkitty/threads/right_col.html:12
 msgid "days inactive"
 msgstr "不活跃天数"
 
-#: templates/hyperkitty/threads/right_col.html:19
+#: templates/hyperkitty/threads/right_col.html:18
 msgid "days old"
 msgstr "活的天数"
 
-#: templates/hyperkitty/threads/right_col.html:41
-#: templates/hyperkitty/threads/summary_thread_large.html:53
+#: templates/hyperkitty/threads/right_col.html:40
+#: templates/hyperkitty/threads/summary_thread_large.html:52
 msgid "comments"
 msgstr "评论"
 
-#: templates/hyperkitty/threads/right_col.html:49
+#: templates/hyperkitty/threads/right_col.html:48
 msgid "unread"
 msgstr "未读"
 
-#: templates/hyperkitty/threads/right_col.html:60
+#: templates/hyperkitty/threads/right_col.html:59
 msgid "You must be logged-in to have favorites."
 msgstr "你必须先登录才能设定喜好."
 
-#: templates/hyperkitty/threads/right_col.html:61
+#: templates/hyperkitty/threads/right_col.html:60
 msgid "Add to favorites"
 msgstr "加入喜好"
 
-#: templates/hyperkitty/threads/right_col.html:63
+#: templates/hyperkitty/threads/right_col.html:62
 msgid "Remove from favorites"
 msgstr "从喜好中去除"
 
-#: templates/hyperkitty/threads/right_col.html:72
+#: templates/hyperkitty/threads/right_col.html:71
 msgid "Reattach this thread"
 msgstr "重连线索"
 
-#: templates/hyperkitty/threads/right_col.html:76
+#: templates/hyperkitty/threads/right_col.html:75
 msgid "Delete this thread"
 msgstr "删除线索"
 
-#: templates/hyperkitty/threads/right_col.html:114
+#: templates/hyperkitty/threads/right_col.html:113
 msgid "Unreads:"
 msgstr "未读:"
 
-#: templates/hyperkitty/threads/right_col.html:116
+#: templates/hyperkitty/threads/right_col.html:115
 msgid "Go to:"
 msgstr "前往:"
 
-#: templates/hyperkitty/threads/right_col.html:116
+#: templates/hyperkitty/threads/right_col.html:115
 msgid "next"
 msgstr "下一个"
 
-#: templates/hyperkitty/threads/right_col.html:117
+#: templates/hyperkitty/threads/right_col.html:116
 msgid "prev"
 msgstr "上一个"
 
-#: templates/hyperkitty/threads/summary_thread_large.html:24
-#: templates/hyperkitty/threads/summary_thread_large.html:26
+#: templates/hyperkitty/threads/summary_thread_large.html:21
+#: templates/hyperkitty/threads/summary_thread_large.html:23
 msgid "Favorite"
 msgstr "喜好"
 
-#: templates/hyperkitty/threads/summary_thread_large.html:32
-#, python-format
+#: templates/hyperkitty/threads/summary_thread_large.html:29
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                                by %(name)s\n"
+#| "                            "
 msgid ""
 "\n"
-"                                        by %(name)s\n"
-"                                    "
+"                    by %(name)s\n"
+"                    "
 msgstr ""
 "\n"
-"                                        由%(name)s\n"
-"                                    "
+"                                %(name)s所写\n"
+"                            "
 
-#: templates/hyperkitty/threads/summary_thread_large.html:42
+#: templates/hyperkitty/threads/summary_thread_large.html:39
 msgid "Most recent thread activity"
 msgstr "最近线索内活动"
 
@@ -878,18 +942,18 @@ msgstr "搜索标签"
 msgid "Remove"
 msgstr "去掉"
 
-#: templates/hyperkitty/user_posts.html:9
-#: templates/hyperkitty/user_posts.html:22
-#: templates/hyperkitty/user_posts.html:26
+#: templates/hyperkitty/user_posts.html:8
+#: templates/hyperkitty/user_posts.html:21
+#: templates/hyperkitty/user_posts.html:25
 msgid "Messages by"
 msgstr "消息来自"
 
-#: templates/hyperkitty/user_posts.html:39
+#: templates/hyperkitty/user_posts.html:38
 #, python-format
 msgid "Back to %(fullname)s's profile"
 msgstr "回到%(fullname)s的用户信息"
 
-#: templates/hyperkitty/user_posts.html:49
+#: templates/hyperkitty/user_posts.html:48
 msgid "Sorry no email could be found by this user."
 msgstr "对不起, 找不到该用户的邮件."
 
@@ -899,30 +963,26 @@ msgid "User posting activity"
 msgstr "用户的发帖活动"
 
 #: templates/hyperkitty/user_profile/base.html:12
-#: templates/hyperkitty/user_public_profile.html:8
-#: templates/hyperkitty/user_public_profile.html:15
+#: templates/hyperkitty/user_public_profile.html:7
+#: templates/hyperkitty/user_public_profile.html:14
 msgid "for"
 msgstr "为了"
 
-#: templates/hyperkitty/user_profile/base.html:20
-#: templates/hyperkitty/user_profile/base.html:21
+#: templates/hyperkitty/user_profile/base.html:22
 msgid "Favorites"
 msgstr "喜好"
 
-#: templates/hyperkitty/user_profile/base.html:24
-#: templates/hyperkitty/user_profile/base.html:25
+#: templates/hyperkitty/user_profile/base.html:26
 msgid "Threads you have read"
 msgstr "你读过的线索"
 
-#: templates/hyperkitty/user_profile/base.html:28
-#: templates/hyperkitty/user_profile/base.html:29
+#: templates/hyperkitty/user_profile/base.html:30
 #: templates/hyperkitty/user_profile/profile.html:18
 #: templates/hyperkitty/user_profile/subscriptions.html:45
 msgid "Votes"
 msgstr "投票"
 
-#: templates/hyperkitty/user_profile/base.html:32
-#: templates/hyperkitty/user_profile/base.html:33
+#: templates/hyperkitty/user_profile/base.html:34
 msgid "Subscriptions"
 msgstr "订阅"
 
@@ -1053,77 +1113,130 @@ msgstr "投票"
 msgid "No vote yet."
 msgstr "尚无投票."
 
-#: templates/hyperkitty/user_public_profile.html:8
+#: templates/hyperkitty/user_public_profile.html:7
 msgid "User Profile"
 msgstr "用户信息"
 
-#: templates/hyperkitty/user_public_profile.html:15
+#: templates/hyperkitty/user_public_profile.html:14
 msgid "User profile"
 msgstr "用户信息"
 
-#: templates/hyperkitty/user_public_profile.html:24
+#: templates/hyperkitty/user_public_profile.html:23
 msgid "Name:"
 msgstr "名字:"
 
-#: templates/hyperkitty/user_public_profile.html:29
+#: templates/hyperkitty/user_public_profile.html:28
 msgid "Creation:"
 msgstr "创建:"
 
-#: templates/hyperkitty/user_public_profile.html:34
+#: templates/hyperkitty/user_public_profile.html:33
 msgid "Votes for this user:"
 msgstr "本用户的投票:"
 
-#: templates/hyperkitty/user_public_profile.html:42
+#: templates/hyperkitty/user_public_profile.html:41
 msgid "Email addresses:"
 msgstr "电子邮件地址:"
 
-#: views/message.py:75
+#: views/message.py:76
 msgid "This message in gzipped mbox format"
 msgstr "gzip后的mbox格式下的本消息"
 
-#: views/message.py:278
+#: views/message.py:200
+msgid "Your reply has been sent and is being processed."
+msgstr ""
+
+#: views/message.py:204
+#, fuzzy
+#| msgid "You have not posted to this list (yet)."
+msgid ""
+"\n"
+"  You have been subscribed to {} list."
+msgstr "你尚未对本列表发帖."
+
+#: views/message.py:287
 #, python-format
 msgid "Could not delete message %(msg_id_hash)s: %(error)s"
 msgstr "无法删除消息%(msg_id_hash)s: %(error)s"
 
-#: views/message.py:287
+#: views/message.py:296
 #, python-format
 msgid "Successfully deleted %(count)s messages."
 msgstr "顺利删除%(count)s个消息."
 
-#: views/mlist.py:82
+#: views/mlist.py:88
 msgid "for this month"
 msgstr "本月的"
 
-#: views/mlist.py:85
+#: views/mlist.py:91
 msgid "for this day"
 msgstr "本日的"
 
-#: views/mlist.py:97
+#: views/mlist.py:103
 msgid "This month in gzipped mbox format"
 msgstr "gzip后的mbox格式下本月全部"
 
-#: views/mlist.py:192 views/mlist.py:216
+#: views/mlist.py:200 views/mlist.py:224
 msgid "No discussions this month (yet)."
 msgstr "本月尚无讨论."
 
-#: views/mlist.py:204
+#: views/mlist.py:212
 msgid "No vote has been cast this month (yet)."
 msgstr "本月尚无投票行动."
 
-#: views/mlist.py:233
+#: views/mlist.py:241
 msgid "You have not flagged any discussions (yet)."
 msgstr "你尚未标记任何讨论."
 
-#: views/mlist.py:256
+#: views/mlist.py:264
 msgid "You have not posted to this list (yet)."
 msgstr "你尚未对本列表发帖."
 
-#: views/search.py:105
+#: views/mlist.py:353
+msgid "You must be a staff member to delete a MailingList"
+msgstr ""
+
+#: views/mlist.py:367
+#, fuzzy
+#| msgid "Successfully deleted %(count)s messages."
+msgid "Successfully deleted {}"
+msgstr "顺利删除%(count)s个消息."
+
+#: views/search.py:115
 #, python-format
 msgid "Parsing error: %(error)s"
 msgstr "语意分析错误: %(error)s"
 
-#: views/thread.py:167
+#: views/thread.py:168
 msgid "This thread in gzipped mbox format"
 msgstr "gzip后的mbox格式下的本线索"
+
+#~ msgid "Go to"
+#~ msgstr "转向"
+
+#~ msgid "More..."
+#~ msgstr "更多..."
+
+#~ msgid "Discussions"
+#~ msgstr "讨论"
+
+#~ msgid "most recent"
+#~ msgstr "最新的"
+
+#~ msgid "most popular"
+#~ msgstr "最流行的"
+
+#~ msgid "most active"
+#~ msgstr "最活跃的"
+
+#~ msgid "Update"
+#~ msgstr "更新"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                                        by %(name)s\n"
+#~ "                                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                                        由%(name)s\n"
+#~ "                                    "

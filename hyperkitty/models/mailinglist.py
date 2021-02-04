@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -19,7 +19,6 @@
 #
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
-
 import datetime
 import logging
 from enum import Enum
@@ -32,6 +31,7 @@ from django.utils.timezone import now, utc
 
 import dateutil.parser
 from django_mailman3.lib.mailman import get_mailman_client
+from django_mailman3.lib.user import get_django_user
 from mailmanclient import MailmanConnectionError
 
 from hyperkitty.lib.utils import pgsql_disable_indexscan
@@ -67,6 +67,12 @@ class MailingList(models.Model):
         choices=[(p.value, p.name) for p in ArchivePolicy],
         default=ArchivePolicy.public.value)
     created_at = models.DateTimeField(default=now)
+
+    owners = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                    related_name='owned_lists')
+
+    moderators = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                        related_name='moderated_lists')
 
     MAILMAN_ATTRIBUTES = (
         "display_name", "description", "subject_prefix",
@@ -201,6 +207,24 @@ class MailingList(models.Model):
                 value = converters[propname](value)
             setattr(self, propname, value)
         self.save()
+        # Update the owners and moderators from Mailman 3 API.
+        self._update_owner_mods_from_mailman(mm_list)
+
+    def _update_owner_mods_from_mailman(self, mm_list):
+        """Update Owners and moderators from Mailman."""
+        for owner in mm_list.owners:
+            user = get_django_user(owner)
+            if user and not bool(self.owners.filter(id=user.id)):
+                logger.debug('Adding %s as owner of MailingList: %s',
+                             user, self.list_id)
+                self.owners.add(user)
+
+        for mod in mm_list.moderators:
+            user = get_django_user(mod)
+            if user and not bool(self.moderators.filter(id=user.id)):
+                logger.debug('Adding %s as moderator of MailingList: %s',
+                             user, self.list_id)
+                self.moderators.add(user)
 
     # Events (signal callbacks)
 
@@ -214,9 +238,8 @@ class MailingList(models.Model):
 
     def on_thread_deleted(self, thread):
         from hyperkitty.tasks import (
-            rebuild_mailinglist_cache_recent,
             rebuild_mailinglist_cache_for_month,
-            )
+            rebuild_mailinglist_cache_recent)
         begin_date, end_date = self.get_recent_dates()
         if thread.date_active >= begin_date and thread.date_active < end_date:
             # It's a recent thread
@@ -231,9 +254,8 @@ class MailingList(models.Model):
             return
         # Rebuild the cached values.
         from hyperkitty.tasks import (
-            rebuild_mailinglist_cache_recent,
             rebuild_mailinglist_cache_for_month,
-            )
+            rebuild_mailinglist_cache_recent)
         rebuild_mailinglist_cache_recent(self.name)
         rebuild_mailinglist_cache_for_month(
             self.name, email.date.year, email.date.month)

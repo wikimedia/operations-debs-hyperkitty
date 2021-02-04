@@ -2,7 +2,6 @@
 
 {% load i18n %}
 {% load hk_generic %}
-{% load gravatar %}
 {% load static %}
 
 
@@ -41,22 +40,26 @@
             <li class="nav-item">
               <a href="{% url 'hk_archives_latest' mlist_fqdn=mlist.name %}" class="nav-link">{% trans "Threads" %}</a>
             </li>
+            {% if posting_enabled %}
             <li class="nav-item">
               <a href="{% url "hk_message_new" mlist_fqdn=mlist.name %}"
                  class=" nav-link{% if not user.is_authenticated %}disabled"
                  title="{% trans 'You must be logged-in to create a thread.' %}{% endif %}"><i class="fa fa-plus"></i> New</a>
             </li>
+            {% endif %}
         </ul>
 
         <!-- Overview page for large screens. -->
-        <div class="row d-none d-md-block">
+        <div class="d-none d-md-block">
             <a id="home"></a>
             <div class="list-actions">
+              {% if posting_enabled %}
                 <a href="{% url "hk_message_new" mlist_fqdn=mlist.name %}"
                     class="btn btn-outline-primary {% if not user.is_authenticated %} disabled" title="{% trans 'You must be logged-in to create a thread.' %}{% endif %}">
                     <i class="fa fa-plus"></i>
                     {% trans '<span class="d-none d-md-inline">Start a n</span><span class="d-md-none">N</span>ew thread' %}
                 </a>
+              {% endif %}
                 </br>
 
                 {% include 'hyperkitty/fragments/month_list.html' with show_dropdown='True' pagename='overview' %}
@@ -71,7 +74,7 @@
                 {% endif %}
                 <a href="{% url 'hk_archives_latest' mlist_fqdn=mlist.name %}" class="btn btn-outline-primary">{% trans "All Threads" %}</a>
                 </br>
-                {% if user.is_staff or user.is_suerperuser %}
+                {% if user.is_staff or user.is_superuser %}
                     <a href="{% url 'hk_list_delete' mlist_fqdn=mlist.name %}" class="btn btn-danger">{% trans "Delete" %}</a>
                 {% endif %}
             </div>
