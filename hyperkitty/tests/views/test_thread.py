@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2012-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -27,6 +27,7 @@ import urllib
 from email.message import EmailMessage
 
 from django.contrib.auth.models import User
+from django.test import override_settings
 
 from bs4 import BeautifulSoup
 from django_mailman3.tests.utils import get_flash_messages
@@ -305,6 +306,22 @@ class ThreadTestCase(TestCase):
         self.assertTrue("reply-mailto" in link["class"])
         check_mailto(link)
 
+    @override_settings(HYPERKITTY_ALLOW_WEB_POSTING=False)
+    def test_reply_button_when_disabled_posting(self):
+        url = reverse('hk_thread', args=["list@example.com", self.threadid])
+        # Authenticated request
+        response = self.client.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        self.assertEqual(len(soup.find_all("a", class_="reply-mailto")), 0)
+        self.assertIsNone(soup.find("a", class_="reply"))
+
+        # Anonymous request.
+        self.client.logout()
+        response = self.client.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        self.assertEqual(len(soup.find_all("a", class_="reply-mailto")), 0)
+        self.assertIsNone(soup.find("a", class_="reply"))
+
     def test_subject_changed(self):
         # Test the detection of subject change
         self._make_msg("msgid2", {"In-Reply-To": "<msgid>",
@@ -428,3 +445,29 @@ class ThreadTestCase(TestCase):
             resp["replies_html"].count('div class="email unread">'), 3)
         self.assertFalse(resp["more_pending"])
         self.assertIsNone(resp["next_offset"])
+
+    def test_replies_have_reply_button(self):
+        msg = self._make_msg('id1', {'Subject': 'Starting email'})
+        threadid = msg.get('Message-ID-Hash')
+        self._make_msg('id2', {
+            'In-Reply-To': '<id1>', 'Subject': 'Re: Starting email'
+        })
+        url = reverse('hk_thread_replies', args=('list@example.com', threadid))
+        response = self.client.get(url)
+        resp = json.loads(response.content.decode(response.charset))
+        self.assertEqual(
+            resp['replies_html'].count('div class="email unread"'), 1)
+        self.assertEqual(
+            resp['replies_html'].count('a class="reply"'), 1)
+
+        # When the web posting is disabled, the reply button shouldn't show up.
+        with override_settings(HYPERKITTY_ALLOW_WEB_POSTING=False):
+            response = self.client.get(url)
+            resp = json.loads(
+                response.content.decode(response.charset))
+            self.assertEqual(
+                resp['replies_html'].count(
+                    'div class="email unread"'), 1)
+            self.assertEqual(
+                resp['replies_html'].count(
+                    'a class="reply"'), 0)

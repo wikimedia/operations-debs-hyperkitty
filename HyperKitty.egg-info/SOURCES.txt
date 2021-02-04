@@ -67,6 +67,7 @@ hyperkitty/lib/incoming.py
 hyperkitty/lib/mailman.py
 hyperkitty/lib/mockup.py
 hyperkitty/lib/posting.py
+hyperkitty/lib/user.py
 hyperkitty/lib/utils.py
 hyperkitty/lib/view_helpers.py
 hyperkitty/locale/af/LC_MESSAGES/django.po
@@ -213,6 +214,7 @@ hyperkitty/migrations/0017_file_attachments.py
 hyperkitty/migrations/0018_threadcategory_color.py
 hyperkitty/migrations/0019_auto_20190127_null_description.py
 hyperkitty/migrations/0020_auto_20190907_1927.py
+hyperkitty/migrations/0021_add_owners_mods.py
 hyperkitty/migrations/__init__.py
 hyperkitty/models/__init__.py
 hyperkitty/models/category.py
@@ -400,7 +402,10 @@ hyperkitty/static/hyperkitty/libs/jquery/smoothness/images/ui-icons_454545_256x2
 hyperkitty/static/hyperkitty/libs/jquery/smoothness/images/ui-icons_888888_256x240.png
 hyperkitty/static/hyperkitty/libs/jquery/smoothness/images/ui-icons_cd0a0a_256x240.png
 hyperkitty/static/hyperkitty/libs/mousetrap/mousetrap.min.js
+hyperkitty/static/hyperkitty/libs/popper/popper.js
+hyperkitty/static/hyperkitty/libs/popper/popper.js.map
 hyperkitty/static/hyperkitty/libs/popper/popper.min.js
+hyperkitty/static/hyperkitty/libs/popper/popper.min.js.map
 hyperkitty/static/hyperkitty/sass/_hyperkitty-base.scss
 hyperkitty/static/hyperkitty/sass/_hyperkitty-common.scss
 hyperkitty/static/hyperkitty/sass/_hyperkitty-index.scss
@@ -502,6 +507,7 @@ hyperkitty/tests/testdata/attachment-1.txt
 hyperkitty/tests/testdata/attachment-2.txt
 hyperkitty/tests/testdata/attachment-3.txt
 hyperkitty/tests/testdata/attachment-4.txt
+hyperkitty/tests/testdata/bad-subject-header.txt
 hyperkitty/tests/testdata/bad_content_type.txt
 hyperkitty/tests/testdata/bad_date_tz.txt
 hyperkitty/tests/testdata/bad_folding.txt
@@ -512,6 +518,8 @@ hyperkitty/tests/testdata/payload-utf8-wrong.txt
 hyperkitty/tests/testdata/resent-date.txt
 hyperkitty/tests/testdata/strange-in-reply-to-header.txt
 hyperkitty/tests/testdata/unconvertable_message.txt
+hyperkitty/tests/testdata/unconvertable_msg-2.txt
+hyperkitty/tests/testdata/unicode_issue.txt
 hyperkitty/tests/testdata/unixfrom-date.txt
 hyperkitty/tests/testdata/unknown-charset.txt
 hyperkitty/tests/testdata/wrong-in-reply-to-header.txt

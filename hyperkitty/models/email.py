@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -177,7 +177,7 @@ class Email(models.Model):
         msg["Date"] = header_date.strftime("%a, %d %b %Y %H:%M:%S %z")
         msg["Message-ID"] = "<%s>" % self.message_id
         if self.in_reply_to:
-            msg["In-Reply-To"] = unfold(self.in_reply_to)
+            msg["In-Reply-To"] = "<%s>" % unfold(self.in_reply_to)
 
         # Body
         content = self.ADDRESS_REPLACE_RE.sub(r"\1(a)\2", self.content)

@@ -1,0 +1,10 @@
+From SENDER@SOME.NET  Thu Jan  2 15:55:51 2014
+MIME-Version: 1.0
+From: FOOBAR <SENDER@SOME.NET>
+To: some@one.net
+Subject: SUBJECT
+Content-Type: %22%22%22%22%22%22%22"application%22%22%22%22%22%22%22/pdf; name\"Newsletter ?ISO-8859-1?Q?D??cembre 2013.pdf""; name="Newsletter D??cembre 2013.pdf"; name="Newsletter D??cembre 2013.pdf"; name="Newsletter D??cembre 2013.pdf"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: d6b148a884a44559_0.1
+
+JVBE

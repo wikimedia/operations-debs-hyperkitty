@@ -1,3 +1,5 @@
+/* eslint no-undef: "off" */
+/* eslint no-unused-vars: "off" */
 /*
  * Copyright (C) 2012-2012 by the Free Software Foundation, Inc.
  *
@@ -26,7 +28,7 @@
 function form_to_json(form) {
     var form_data = form.serializeArray();
     var data = {};
-    for (input in form_data) {
+    for (var input in form_data) {
         data[form_data[input].name] = form_data[input].value;
     }
     return data;

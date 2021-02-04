@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2012-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2012-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -19,8 +19,11 @@
 #
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
+from unittest.mock import patch
 
-from hyperkitty.templatetags.hk_generic import snip_quoted
+from django.test import override_settings
+
+from hyperkitty.templatetags.hk_generic import gravatar, snip_quoted
 from hyperkitty.templatetags.hk_haystack import nolongterms
 from hyperkitty.tests.utils import TestCase
 
@@ -114,3 +117,26 @@ class HaystackTestCase(TestCase):
         long_term = "é" * 121
         text = "dummy %s sentence" % long_term
         self.assertEqual(nolongterms(text), "dummy sentence")
+
+
+class TestGravatar(TestCase):
+
+    def test_gravatar(self):
+        """Test that we call gravatar library."""
+        with patch('hyperkitty''.templatetags.'
+                   'hk_generic.gravatar_orig') as mock_grav:
+            gravatar('aperson@example.com')
+            self.assertTrue(mock_grav.called)
+            mock_grav.assert_called_with('aperson@example.com')
+        html = gravatar('bperson@example.com')
+        self.assertEqual(
+            html,
+            '<img class="gravatar" src="https://secure.gravatar.com/avatar/a100672ae026b5b7a7fb2929ff533e1e.jpg?s=80&amp;d=mm&amp;r=g" width="80" height="80" alt="" />')  # noqa: E501
+
+    @override_settings(HYPERKITTY_ENABLE_GRAVATAR=False)
+    def test_disabled_gravatar(self):
+        with patch('hyperkitty''.templatetags.'
+                   'hk_generic.gravatar_orig') as mock_grav:
+            resp = gravatar('aperson@example.com')
+            self.assertFalse(mock_grav.called)
+            self.assertEqual(resp, '')

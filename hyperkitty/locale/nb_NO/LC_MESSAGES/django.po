@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-17 12:59+0200\n"
-"PO-Revision-Date: 2019-06-19 13:01+0000\n"
+"POT-Creation-Date: 2020-12-21 18:59+0530\n"
+"PO-Revision-Date: 2020-12-11 04:16+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
-"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
-"gnu-mailman/hyperkitty/nb_NO/>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/gnu-"
+"mailman/hyperkitty/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.7\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: forms.py:64
 msgid "Attach a file"
@@ -74,7 +74,7 @@ msgstr "vis denne tråden"
 msgid "(no suggestions)"
 msgstr "(ingen forslag)"
 
-#: templates/hyperkitty/ajax/temp_message.html:12
+#: templates/hyperkitty/ajax/temp_message.html:11
 msgid "Sent just now, not yet distributed"
 msgstr "Sendt akkurat nå, ikke distribuert enda"
 
@@ -133,8 +133,8 @@ msgid ""
 "Using this address you will be able to retrieve the information known about "
 "all the mailing lists."
 msgstr ""
-"Ved bruk av denne adressen vil du kunne motta kjent informasjon om alle "
-"e-postlistene."
+"Ved bruk av denne adressen vil du kunne motta kjent informasjon om alle e-"
+"postlistene."
 
 #: templates/hyperkitty/api.html:32
 msgid "Threads in a mailing list"
@@ -157,8 +157,8 @@ msgid ""
 "Using this address you will be able to retrieve the list of emails in a "
 "mailing list thread."
 msgstr ""
-"Ved bruk av denne adressen vil du kunne motta listen over e-poster i en "
-"e-postlistetråd."
+"Ved bruk av denne adressen vil du kunne motta listen over e-poster i en e-"
+"postlistetråd."
 
 #: templates/hyperkitty/api.html:44
 msgid "An email in a mailing list"
@@ -180,58 +180,98 @@ msgstr "Etiketter"
 msgid "Using this address you will be able to retrieve the list of tags."
 msgstr "Ved bruk av denne adressen vil du kunne motta listen over etiketter."
 
-#: templates/hyperkitty/base.html:57 templates/hyperkitty/base.html:99
+#: templates/hyperkitty/base.html:56 templates/hyperkitty/base.html:111
 msgid "Account"
 msgstr "Konto"
 
-#: templates/hyperkitty/base.html:62 templates/hyperkitty/base.html:104
+#: templates/hyperkitty/base.html:61 templates/hyperkitty/base.html:116
 msgid "Mailman settings"
 msgstr "Mailman-innstillinger"
 
-#: templates/hyperkitty/base.html:67 templates/hyperkitty/base.html:109
-#: templates/hyperkitty/user_profile/base.html:16
+#: templates/hyperkitty/base.html:66 templates/hyperkitty/base.html:121
 #: templates/hyperkitty/user_profile/base.html:17
 msgid "Posting activity"
 msgstr "Postingsaktivitet"
 
-#: templates/hyperkitty/base.html:72 templates/hyperkitty/base.html:114
+#: templates/hyperkitty/base.html:71 templates/hyperkitty/base.html:126
 #, fuzzy
 msgid "Logout"
 msgstr "Logg ut"
 
-#: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:121
+#: templates/hyperkitty/base.html:77 templates/hyperkitty/base.html:133
 msgid "Sign In"
 msgstr "Logg inn"
 
-#: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:125
+#: templates/hyperkitty/base.html:81 templates/hyperkitty/base.html:137
 msgid "Sign Up"
-msgstr "Registrering"
+msgstr "Registrer"
 
-#: templates/hyperkitty/base.html:135
+#: templates/hyperkitty/base.html:90
+msgid "Search this list"
+msgstr "Søk i denne listen"
+
+#: templates/hyperkitty/base.html:90
+msgid "Search all lists"
+msgstr "Søk i alle lister"
+
+#: templates/hyperkitty/base.html:148
 msgid "Manage this list"
 msgstr "Behandle denne listen"
 
-#: templates/hyperkitty/base.html:140
+#: templates/hyperkitty/base.html:153
 msgid "Manage lists"
 msgstr "Behandle lister"
 
-#: templates/hyperkitty/errors/notimplemented.html:8
+#: templates/hyperkitty/base.html:191
+msgid "Keyboard Shortcuts"
+msgstr "Tastatursnarveier"
+
+#: templates/hyperkitty/base.html:194
+msgid "Thread View"
+msgstr "Trådvisning"
+
+#: templates/hyperkitty/base.html:196
+msgid "Next unread message"
+msgstr "Neste uleste melding"
+
+#: templates/hyperkitty/base.html:197
+msgid "Previous unread message"
+msgstr "Forrige uleste melding"
+
+#: templates/hyperkitty/base.html:198
+msgid "Jump to all threads"
+msgstr "Gå til alle tråder"
+
+#: templates/hyperkitty/base.html:199
+msgid "Jump to MailingList overview"
+msgstr "Gå til e-postlisteoversikten"
+
+#: templates/hyperkitty/base.html:213
+#, fuzzy
+msgid "Powered by"
+msgstr "Drevet av"
+
+#: templates/hyperkitty/base.html:213
+msgid "version"
+msgstr "versjon"
+
+#: templates/hyperkitty/errors/notimplemented.html:7
 msgid "Not implemented yet"
 msgstr "Ikke implementert enda"
 
-#: templates/hyperkitty/errors/notimplemented.html:13
+#: templates/hyperkitty/errors/notimplemented.html:12
 msgid "Not implemented"
 msgstr "Ikke implementert"
 
-#: templates/hyperkitty/errors/notimplemented.html:15
+#: templates/hyperkitty/errors/notimplemented.html:14
 msgid "This feature has not been implemented yet, sorry."
 msgstr "Denne funksjonen har ikke blitt implementert enda, beklager."
 
-#: templates/hyperkitty/errors/private.html:8
+#: templates/hyperkitty/errors/private.html:7
 msgid "Error: private list"
 msgstr "Feil: Privat liste"
 
-#: templates/hyperkitty/errors/private.html:20
+#: templates/hyperkitty/errors/private.html:19
 msgid ""
 "This mailing list is private. You must be subscribed to view the archives."
 msgstr "Denne e-postlisten er privat. Du må abonnere for å vise arkivene."
@@ -251,50 +291,36 @@ msgstr "Du misliker (avbryt)"
 msgid "You must be logged-in to vote."
 msgstr "Du må være innlogget for å stemme."
 
-#: templates/hyperkitty/fragments/month_list.html:5
-msgid "Go to"
-msgstr "Gå til"
+#: templates/hyperkitty/fragments/month_list.html:6
+msgid "Threads by"
+msgstr "Tråder av"
 
-#: templates/hyperkitty/fragments/month_list.html:72
-msgid "List overview"
-msgstr "Listeoversikt"
-
-#: templates/hyperkitty/fragments/month_list.html:81 views/message.py:74
-#: views/mlist.py:96 views/thread.py:166
-msgid "Download"
-msgstr "Nedlasting"
-
-#: templates/hyperkitty/fragments/month_list.html:84
-msgid "Past 30 days"
-msgstr "Siste 30 dager"
-
-#: templates/hyperkitty/fragments/month_list.html:85
-msgid "This month"
-msgstr "Denne måneden"
-
-#: templates/hyperkitty/fragments/month_list.html:88
-msgid "Entire archive"
-msgstr "Hele arkivet"
-
-#: templates/hyperkitty/fragments/overview_threads.html:9
+#: templates/hyperkitty/fragments/month_list.html:6
 #, fuzzy
-msgid "More..."
-msgstr "Mer…"
+#| msgid "This month"
+msgid " month"
+msgstr " måned"
 
-#: templates/hyperkitty/fragments/overview_threads.html:17
+#: templates/hyperkitty/fragments/overview_threads.html:12
 msgid "New messages in this thread"
 msgstr "Nye meldinger i denne tråden"
 
-#: templates/hyperkitty/fragments/overview_top_posters.html:19
+#: templates/hyperkitty/fragments/overview_threads.html:37
+#: templates/hyperkitty/fragments/thread_left_nav.html:18
+#: templates/hyperkitty/overview.html:75
+msgid "All Threads"
+msgstr "Alle tråder"
+
+#: templates/hyperkitty/fragments/overview_top_posters.html:18
 msgid "See the profile"
 msgstr "Vis profilen"
 
-#: templates/hyperkitty/fragments/overview_top_posters.html:25
+#: templates/hyperkitty/fragments/overview_top_posters.html:24
 #, fuzzy
 msgid "posts"
 msgstr "poster"
 
-#: templates/hyperkitty/fragments/overview_top_posters.html:30
+#: templates/hyperkitty/fragments/overview_top_posters.html:29
 msgid "No posters this month (yet)."
 msgstr "Ingen postere denne måneden (enda)."
 
@@ -307,9 +333,35 @@ msgid "Change sender"
 msgstr "Endre avsender"
 
 #: templates/hyperkitty/fragments/send_as.html:16
-#, fuzzy
 msgid "Link another address"
-msgstr "Lenk sammen en annen adresse"
+msgstr "Tilknytt en annen adresse"
+
+#: templates/hyperkitty/fragments/send_as.html:20
+msgid ""
+"If you aren't a current list member, sending this message will subscribe you."
+msgstr ""
+"Hvis du ikke er et medlem, vil sending av denne meldingen melde deg på."
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:11
+msgid "List overview"
+msgstr "Listeoversikt"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:27 views/message.py:75
+#: views/mlist.py:102 views/thread.py:167
+msgid "Download"
+msgstr "Nedlasting"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:30
+msgid "Past 30 days"
+msgstr "Siste 30 dager"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:31
+msgid "This month"
+msgstr "Denne måneden"
+
+#: templates/hyperkitty/fragments/thread_left_nav.html:34
+msgid "Entire archive"
+msgstr "Hele arkivet"
 
 #: templates/hyperkitty/index.html:9 templates/hyperkitty/index.html:63
 msgid "Available lists"
@@ -388,29 +440,29 @@ msgid "inactive"
 msgstr "inaktiv"
 
 #: templates/hyperkitty/index.html:142 templates/hyperkitty/index.html:232
-#: templates/hyperkitty/overview.html:94 templates/hyperkitty/overview.html:102
-#: templates/hyperkitty/overview.html:114
-#: templates/hyperkitty/overview.html:122
-#: templates/hyperkitty/overview.html:130
-#: templates/hyperkitty/overview.html:142
-#: templates/hyperkitty/overview.html:159 templates/hyperkitty/reattach.html:39
-#: templates/hyperkitty/thread.html:108
+#: templates/hyperkitty/overview.html:91 templates/hyperkitty/overview.html:108
+#: templates/hyperkitty/overview.html:178
+#: templates/hyperkitty/overview.html:185
+#: templates/hyperkitty/overview.html:192
+#: templates/hyperkitty/overview.html:201
+#: templates/hyperkitty/overview.html:209 templates/hyperkitty/reattach.html:39
+#: templates/hyperkitty/thread.html:111
 #, fuzzy
 msgid "Loading..."
 msgstr "Laster…"
 
 #: templates/hyperkitty/index.html:148 templates/hyperkitty/index.html:221
-#: templates/hyperkitty/overview.html:151
-#: templates/hyperkitty/thread_list.html:40
-#: templates/hyperkitty/threads/right_col.html:45
-#: templates/hyperkitty/threads/right_col.html:98
-#: templates/hyperkitty/threads/summary_thread_large.html:49
+#: templates/hyperkitty/overview.html:100
+#: templates/hyperkitty/thread_list.html:36
+#: templates/hyperkitty/threads/right_col.html:44
+#: templates/hyperkitty/threads/right_col.html:97
+#: templates/hyperkitty/threads/summary_thread_large.html:47
 msgid "participants"
 msgstr "deltagere"
 
 #: templates/hyperkitty/index.html:153 templates/hyperkitty/index.html:226
-#: templates/hyperkitty/overview.html:152
-#: templates/hyperkitty/thread_list.html:45
+#: templates/hyperkitty/overview.html:101
+#: templates/hyperkitty/thread_list.html:41
 msgid "discussions"
 msgstr "diskusjoner"
 
@@ -435,16 +487,55 @@ msgstr "Beskrivelse"
 msgid "Activity in the past 30 days"
 msgstr "Aktivitet de siste 30 dager"
 
-#: templates/hyperkitty/message.html:23
+#: templates/hyperkitty/list_delete.html:7
+#, fuzzy
+msgid "Delete MailingList"
+msgstr "Slett e-postliste"
+
+#: templates/hyperkitty/list_delete.html:20
+#, fuzzy
+msgid "Delete Mailing List"
+msgstr "Slett e-postliste"
+
+#: templates/hyperkitty/list_delete.html:26
+msgid ""
+"will be deleted along with all the threads and messages. Do you want to "
+"continue?"
+msgstr ""
+"vil bli slettet, sammen med alle tråder og meldinger. Ønsker du å fortsette?"
+
+#: templates/hyperkitty/list_delete.html:33
+#: templates/hyperkitty/message_delete.html:44
+#: templates/hyperkitty/overview.html:78
+msgid "Delete"
+msgstr "Slett"
+
+#: templates/hyperkitty/list_delete.html:34
+#: templates/hyperkitty/message_delete.html:45
+#: templates/hyperkitty/message_new.html:53
+#: templates/hyperkitty/messages/message.html:146
+msgid "or"
+msgstr "eller"
+
+#: templates/hyperkitty/list_delete.html:36
+#: templates/hyperkitty/message_delete.html:45
+#: templates/hyperkitty/message_new.html:53
+#: templates/hyperkitty/messages/message.html:146
+#: templates/hyperkitty/user_profile/votes.html:36
+#: templates/hyperkitty/user_profile/votes.html:74
+msgid "cancel"
+msgstr "avbryt"
+
+#: templates/hyperkitty/message.html:22
 msgid "thread"
 msgstr "tråd"
 
-#: templates/hyperkitty/message_delete.html:8
-#: templates/hyperkitty/message_delete.html:21
+#: templates/hyperkitty/message_delete.html:7
+#: templates/hyperkitty/message_delete.html:20
 msgid "Delete message(s)"
 msgstr "Slett melding(er)"
 
-#: templates/hyperkitty/message_delete.html:26
+#: templates/hyperkitty/message_delete.html:25
 #, python-format
 msgid ""
 "\n"
@@ -455,65 +546,47 @@ msgstr ""
 "        %(count)s melding(er) vil bli settet. Ønsker du å fortsette?\n"
 "        "
 
-#: templates/hyperkitty/message_delete.html:45
-msgid "Delete"
-msgstr "Slett"
-
-#: templates/hyperkitty/message_delete.html:46
-#: templates/hyperkitty/message_new.html:54
-#: templates/hyperkitty/messages/message.html:145
-msgid "or"
-msgstr "eller"
-
-#: templates/hyperkitty/message_delete.html:46
-#: templates/hyperkitty/message_new.html:54
-#: templates/hyperkitty/messages/message.html:145
-#: templates/hyperkitty/user_profile/votes.html:36
-#: templates/hyperkitty/user_profile/votes.html:74
-msgid "cancel"
-msgstr "avbryt"
-
-#: templates/hyperkitty/message_new.html:9
-#: templates/hyperkitty/message_new.html:22
+#: templates/hyperkitty/message_new.html:8
+#: templates/hyperkitty/message_new.html:21
 msgid "Create a new thread"
 msgstr "Opprett en ny tråd"
 
-#: templates/hyperkitty/message_new.html:23
-#: templates/hyperkitty/user_posts.html:23
+#: templates/hyperkitty/message_new.html:22
+#: templates/hyperkitty/user_posts.html:22
 msgid "in"
 msgstr "i"
 
-#: templates/hyperkitty/message_new.html:53
-#: templates/hyperkitty/messages/message.html:144
+#: templates/hyperkitty/message_new.html:52
+#: templates/hyperkitty/messages/message.html:145
 msgid "Send"
 msgstr "Send"
 
-#: templates/hyperkitty/messages/message.html:18
+#: templates/hyperkitty/messages/message.html:17
 #, python-format
 msgid "See the profile for %(name)s"
 msgstr "Vis profilen for %(name)s"
 
-#: templates/hyperkitty/messages/message.html:28
+#: templates/hyperkitty/messages/message.html:27
 msgid "Unread"
 msgstr "Ulest"
 
-#: templates/hyperkitty/messages/message.html:45
+#: templates/hyperkitty/messages/message.html:44
 msgid "Sender's time:"
 msgstr "Avsenders tid:"
 
-#: templates/hyperkitty/messages/message.html:51
+#: templates/hyperkitty/messages/message.html:50
 msgid "New subject:"
 msgstr "Nytt emne:"
 
-#: templates/hyperkitty/messages/message.html:62
+#: templates/hyperkitty/messages/message.html:61
 msgid "Attachments:"
 msgstr "Vedlegg:"
 
-#: templates/hyperkitty/messages/message.html:77
+#: templates/hyperkitty/messages/message.html:76
 msgid "Display in fixed font"
 msgstr "Vis i fastbreddeskrift"
 
-#: templates/hyperkitty/messages/message.html:80
+#: templates/hyperkitty/messages/message.html:79
 #, fuzzy
 msgid "Permalink for this message"
 msgstr "Permalenke for denne meldingen"
@@ -527,7 +600,7 @@ msgstr "Svar"
 msgid "Sign in to reply online"
 msgstr "Logg inn for å svare på nett"
 
-#: templates/hyperkitty/messages/message.html:104
+#: templates/hyperkitty/messages/message.html:105
 #, python-format
 msgid ""
 "\n"
@@ -546,31 +619,31 @@ msgstr[1] ""
 "                %(email.attachments.count)s vedlegg\n"
 "                "
 
-#: templates/hyperkitty/messages/message.html:130
+#: templates/hyperkitty/messages/message.html:131
 msgid "Quote"
 msgstr "Sitat"
 
-#: templates/hyperkitty/messages/message.html:131
+#: templates/hyperkitty/messages/message.html:132
 msgid "Create new thread"
 msgstr "Opprett ny tråd"
 
-#: templates/hyperkitty/messages/message.html:134
+#: templates/hyperkitty/messages/message.html:135
 msgid "Use email software"
 msgstr "Bruk e-postprogramvare"
 
-#: templates/hyperkitty/messages/right_col.html:12
+#: templates/hyperkitty/messages/right_col.html:11
 msgid "Back to the thread"
 msgstr "Tilbake til tråden"
 
-#: templates/hyperkitty/messages/right_col.html:19
+#: templates/hyperkitty/messages/right_col.html:18
 msgid "Back to the list"
 msgstr "Tilbake til listen"
 
-#: templates/hyperkitty/messages/right_col.html:28
+#: templates/hyperkitty/messages/right_col.html:27
 msgid "Delete this message"
 msgstr "Slett denne meldingen"
 
-#: templates/hyperkitty/messages/summary_message.html:24
+#: templates/hyperkitty/messages/summary_message.html:23
 #, python-format
 msgid ""
 "\n"
@@ -581,98 +654,93 @@ msgstr ""
 "                                av %(name)s\n"
 "                            "
 
-#: templates/hyperkitty/overview.html:37
+#: templates/hyperkitty/overview.html:35
 msgid "Home"
 msgstr "Hjem"
 
-#: templates/hyperkitty/overview.html:40 templates/hyperkitty/thread.html:75
+#: templates/hyperkitty/overview.html:38 templates/hyperkitty/thread.html:78
 msgid "Stats"
 msgstr "Statistikk"
 
-#: templates/hyperkitty/overview.html:43
-msgid "Discussions"
-msgstr "Diskusjoner"
+#: templates/hyperkitty/overview.html:41
+msgid "Threads"
+msgstr "Tråder"
 
-#: templates/hyperkitty/overview.html:46
-#, fuzzy
-msgid "most recent"
-msgstr "nyligst"
-
-#: templates/hyperkitty/overview.html:49
-#, fuzzy
-msgid "most popular"
-msgstr "popularitet"
-
-#: templates/hyperkitty/overview.html:52
-#, fuzzy
-msgid "most active"
-msgstr "aktivitet"
-
-#: templates/hyperkitty/overview.html:65
-#: templates/hyperkitty/thread_list.html:48
+#: templates/hyperkitty/overview.html:47 templates/hyperkitty/overview.html:58
+#: templates/hyperkitty/thread_list.html:44
 msgid "You must be logged-in to create a thread."
 msgstr "Du må være innlogget for å lage en tråd."
 
-#: templates/hyperkitty/overview.html:75
-msgid "All Threads"
-msgstr "Alle tråder"
+#: templates/hyperkitty/overview.html:60
+#: templates/hyperkitty/thread_list.html:48
+msgid ""
+"<span class=\"d-none d-md-inline\">Start a n</span><span class=\"d-md-none"
+"\">N</span>ew thread"
+msgstr ""
+"<span class=\"d-none d-md-inline\">Start en n</span><span class=\"d-md-none"
+"\">N</span>n tråd"
 
-#: templates/hyperkitty/overview.html:80
-msgid "Search this list"
-msgstr "Søk i denne listen"
+#: templates/hyperkitty/overview.html:72
+#, fuzzy
+msgid ""
+"<span class=\"d-none d-md-inline\">Manage s</span><span class=\"d-md-none"
+"\">S</span>ubscription"
+msgstr ""
+"<span class=\"d-none d-md-inline\">Håndter a</span><span class=\"d-md-none"
+"\">A</span>bonnement"
 
-#: templates/hyperkitty/overview.html:90
-msgid "Discussions You've Flagged"
-msgstr "Diskusjoner du har flagget"
-
-#: templates/hyperkitty/overview.html:98
-msgid "Discussions You've Posted to"
-msgstr "Diskusjoner du har postet i"
-
-#: templates/hyperkitty/overview.html:112
-msgid "Recently active discussions"
-msgstr "Nylig aktive diskusjoner"
-
-#: templates/hyperkitty/overview.html:120
-msgid "Most popular discussions"
-msgstr "Mest populære diskusjoner"
-
-#: templates/hyperkitty/overview.html:128
-msgid "Most active discussions"
-msgstr "Mest aktive diskusjoner"
-
-#: templates/hyperkitty/overview.html:139
+#: templates/hyperkitty/overview.html:88
 msgid "Activity Summary"
 msgstr "Aktivitetssammendrag"
 
-#: templates/hyperkitty/overview.html:141
+#: templates/hyperkitty/overview.html:90
 msgid "Post volume over the past <strong>30</strong> days."
 msgstr "Postvolum de siste <strong>30</strong> dagene."
 
-#: templates/hyperkitty/overview.html:146
+#: templates/hyperkitty/overview.html:95
 msgid "The following statistics are from"
 msgstr "Følgende statistikk er fra"
 
-#: templates/hyperkitty/overview.html:147
+#: templates/hyperkitty/overview.html:96
 msgid "In"
 msgstr "I løpet av"
 
-#: templates/hyperkitty/overview.html:148
+#: templates/hyperkitty/overview.html:97
 msgid "the past <strong>30</strong> days:"
 msgstr "de siste <strong>30</strong> dagene:"
 
-#: templates/hyperkitty/overview.html:157
+#: templates/hyperkitty/overview.html:106
 msgid "Most active posters"
 msgstr "Mest aktive postere"
 
-#: templates/hyperkitty/overview.html:166
+#: templates/hyperkitty/overview.html:115
 msgid "Prominent posters"
 msgstr "Framhevede postere"
 
-#: templates/hyperkitty/overview.html:181
+#: templates/hyperkitty/overview.html:130
 #, fuzzy
 msgid "kudos"
 msgstr "Kudos"
+
+#: templates/hyperkitty/overview.html:176
+msgid "Recently active discussions"
+msgstr "Nylig aktive diskusjoner"
+
+#: templates/hyperkitty/overview.html:183
+msgid "Most popular discussions"
+msgstr "Mest populære diskusjoner"
+
+#: templates/hyperkitty/overview.html:190
+msgid "Most active discussions"
+msgstr "Mest aktive diskusjoner"
+
+#: templates/hyperkitty/overview.html:197
+msgid "Discussions You've Flagged"
+msgstr "Diskusjoner du har flagget"
+
+#: templates/hyperkitty/overview.html:205
+msgid "Discussions You've Posted to"
+msgstr "Diskusjoner du har postet i"
 
 #: templates/hyperkitty/reattach.html:9
 #, fuzzy
@@ -714,58 +782,54 @@ msgid "(there's no undoing!), or"
 msgstr "(kan ikke angres!), eller"
 
 #: templates/hyperkitty/reattach.html:52
-msgid "go back to the thread</a>."
-msgstr "gå tilbake til tråden</a>."
+msgid "go back to the thread"
+msgstr "gå tilbake til tråden"
 
-#: templates/hyperkitty/search_results.html:9
+#: templates/hyperkitty/search_results.html:8
 msgid "Search results for"
 msgstr "Søk etter resultater for"
 
-#: templates/hyperkitty/search_results.html:31
+#: templates/hyperkitty/search_results.html:30
 msgid "search results"
 msgstr "søkeresultater"
 
-#: templates/hyperkitty/search_results.html:33
+#: templates/hyperkitty/search_results.html:32
 msgid "Search results"
 msgstr "Søkeresultater"
 
-#: templates/hyperkitty/search_results.html:35
+#: templates/hyperkitty/search_results.html:34
 msgid "for query"
 msgstr "for spørring"
 
-#: templates/hyperkitty/search_results.html:45
-#: templates/hyperkitty/threads/right_col.html:50
-#: templates/hyperkitty/user_posts.html:35
+#: templates/hyperkitty/search_results.html:44
+#: templates/hyperkitty/threads/right_col.html:49
+#: templates/hyperkitty/user_posts.html:34
 msgid "messages"
 msgstr "meldinger"
 
-#: templates/hyperkitty/search_results.html:58
+#: templates/hyperkitty/search_results.html:57
 msgid "sort by score"
 msgstr "sorter etter poengsum"
 
-#: templates/hyperkitty/search_results.html:61
+#: templates/hyperkitty/search_results.html:60
 msgid "sort by latest first"
 msgstr "siste først"
 
-#: templates/hyperkitty/search_results.html:64
+#: templates/hyperkitty/search_results.html:63
 msgid "sort by earliest first"
 msgstr "tidligste først"
 
-#: templates/hyperkitty/search_results.html:66
-msgid "Update"
-msgstr "Oppdater"
-
-#: templates/hyperkitty/search_results.html:86
+#: templates/hyperkitty/search_results.html:84
 #, fuzzy
 msgid "Sorry no email could be found for this query."
 msgstr "Fant ingen slik e-post."
 
-#: templates/hyperkitty/search_results.html:89
+#: templates/hyperkitty/search_results.html:87
 #, fuzzy
 msgid "Sorry but your query looks empty."
 msgstr "Skriv inn noe å søke etter."
 
-#: templates/hyperkitty/search_results.html:90
+#: templates/hyperkitty/search_results.html:88
 msgid "these are not the messages you are looking for"
 msgstr "dette er ikke de meldingene du ser etter"
 
@@ -777,25 +841,25 @@ msgstr "nyere"
 msgid "older"
 msgstr "eldre"
 
-#: templates/hyperkitty/thread.html:69
+#: templates/hyperkitty/thread.html:72
 msgid "First Post"
 msgstr "Første post"
 
-#: templates/hyperkitty/thread.html:72
+#: templates/hyperkitty/thread.html:75
 #: templates/hyperkitty/user_profile/favorites.html:45
 #: templates/hyperkitty/user_profile/last_views.html:50
 msgid "Replies"
 msgstr "Svar"
 
-#: templates/hyperkitty/thread.html:94
+#: templates/hyperkitty/thread.html:97
 msgid "Show replies by thread"
 msgstr "Vis svar trådvist"
 
-#: templates/hyperkitty/thread.html:97
+#: templates/hyperkitty/thread.html:100
 msgid "Show replies by date"
 msgstr "Vis svar etter dato"
 
-#: templates/hyperkitty/thread_list.html:60
+#: templates/hyperkitty/thread_list.html:56
 msgid "Sorry no email threads could be found"
 msgstr "Fant ingen slike e-posttråder"
 
@@ -811,78 +875,78 @@ msgstr "Du må være innlogget for å redigere."
 msgid "no category"
 msgstr "ingen kategori"
 
-#: templates/hyperkitty/threads/right_col.html:13
+#: templates/hyperkitty/threads/right_col.html:12
 msgid "days inactive"
 msgstr "dager inaktiv"
 
-#: templates/hyperkitty/threads/right_col.html:19
+#: templates/hyperkitty/threads/right_col.html:18
 msgid "days old"
 msgstr "dager gammel"
 
-#: templates/hyperkitty/threads/right_col.html:41
-#: templates/hyperkitty/threads/summary_thread_large.html:53
+#: templates/hyperkitty/threads/right_col.html:40
+#: templates/hyperkitty/threads/summary_thread_large.html:52
 msgid "comments"
 msgstr "kommentarer"
 
-#: templates/hyperkitty/threads/right_col.html:49
+#: templates/hyperkitty/threads/right_col.html:48
 msgid "unread"
 msgstr "ulest"
 
-#: templates/hyperkitty/threads/right_col.html:60
+#: templates/hyperkitty/threads/right_col.html:59
 msgid "You must be logged-in to have favorites."
 msgstr "Du må være innlogget for å ha favoritter."
 
-#: templates/hyperkitty/threads/right_col.html:61
+#: templates/hyperkitty/threads/right_col.html:60
 msgid "Add to favorites"
 msgstr "Legg til i favoritter"
 
-#: templates/hyperkitty/threads/right_col.html:63
+#: templates/hyperkitty/threads/right_col.html:62
 msgid "Remove from favorites"
 msgstr "Fjern fra favoritter"
 
-#: templates/hyperkitty/threads/right_col.html:72
+#: templates/hyperkitty/threads/right_col.html:71
 #, fuzzy
 msgid "Reattach this thread"
 msgstr "Flett inn denne tråden"
 
-#: templates/hyperkitty/threads/right_col.html:76
+#: templates/hyperkitty/threads/right_col.html:75
 msgid "Delete this thread"
 msgstr "Slett denne tråden"
 
-#: templates/hyperkitty/threads/right_col.html:114
+#: templates/hyperkitty/threads/right_col.html:113
 msgid "Unreads:"
 msgstr "Uleste:"
 
-#: templates/hyperkitty/threads/right_col.html:116
+#: templates/hyperkitty/threads/right_col.html:115
 msgid "Go to:"
 msgstr "Gå til:"
 
-#: templates/hyperkitty/threads/right_col.html:116
+#: templates/hyperkitty/threads/right_col.html:115
 msgid "next"
 msgstr "neste"
 
-#: templates/hyperkitty/threads/right_col.html:117
+#: templates/hyperkitty/threads/right_col.html:116
 msgid "prev"
 msgstr "forrige"
 
-#: templates/hyperkitty/threads/summary_thread_large.html:24
-#: templates/hyperkitty/threads/summary_thread_large.html:26
+#: templates/hyperkitty/threads/summary_thread_large.html:21
+#: templates/hyperkitty/threads/summary_thread_large.html:23
 #, fuzzy
 msgid "Favorite"
 msgstr "Favoritt"
 
-#: templates/hyperkitty/threads/summary_thread_large.html:32
+#: templates/hyperkitty/threads/summary_thread_large.html:29
 #, python-format
 msgid ""
 "\n"
-"                                        by %(name)s\n"
-"                                    "
+"                    by %(name)s\n"
+"                    "
 msgstr ""
 "\n"
-"                                        av %(name)s\n"
-"                                    "
+"                    av %(name)s\n"
+"                    "
 
-#: templates/hyperkitty/threads/summary_thread_large.html:42
+#: templates/hyperkitty/threads/summary_thread_large.html:39
 msgid "Most recent thread activity"
 msgstr "Nyligst trådaktivitet"
 
@@ -898,18 +962,18 @@ msgstr "Søk etter etikett"
 msgid "Remove"
 msgstr "Fjern"
 
-#: templates/hyperkitty/user_posts.html:9
-#: templates/hyperkitty/user_posts.html:22
-#: templates/hyperkitty/user_posts.html:26
+#: templates/hyperkitty/user_posts.html:8
+#: templates/hyperkitty/user_posts.html:21
+#: templates/hyperkitty/user_posts.html:25
 msgid "Messages by"
 msgstr "Meldinger etter"
 
-#: templates/hyperkitty/user_posts.html:39
+#: templates/hyperkitty/user_posts.html:38
 #, python-format
 msgid "Back to %(fullname)s's profile"
 msgstr "Tilbake til %(fullname)s sin profil"
 
-#: templates/hyperkitty/user_posts.html:49
+#: templates/hyperkitty/user_posts.html:48
 msgid "Sorry no email could be found by this user."
 msgstr "Fant ingen slik e-post fra denne brukeren."
 
@@ -919,30 +983,26 @@ msgid "User posting activity"
 msgstr "Brukerpostingsaktivitet"
 
 #: templates/hyperkitty/user_profile/base.html:12
-#: templates/hyperkitty/user_public_profile.html:8
-#: templates/hyperkitty/user_public_profile.html:15
+#: templates/hyperkitty/user_public_profile.html:7
+#: templates/hyperkitty/user_public_profile.html:14
 msgid "for"
 msgstr "for"
 
-#: templates/hyperkitty/user_profile/base.html:20
-#: templates/hyperkitty/user_profile/base.html:21
+#: templates/hyperkitty/user_profile/base.html:22
 msgid "Favorites"
 msgstr "Favoritter"
 
-#: templates/hyperkitty/user_profile/base.html:24
-#: templates/hyperkitty/user_profile/base.html:25
+#: templates/hyperkitty/user_profile/base.html:26
 msgid "Threads you have read"
 msgstr "Tråder du har lest"
 
-#: templates/hyperkitty/user_profile/base.html:28
-#: templates/hyperkitty/user_profile/base.html:29
+#: templates/hyperkitty/user_profile/base.html:30
 #: templates/hyperkitty/user_profile/profile.html:18
 #: templates/hyperkitty/user_profile/subscriptions.html:45
 msgid "Votes"
 msgstr "Stemmer"
 
-#: templates/hyperkitty/user_profile/base.html:32
-#: templates/hyperkitty/user_profile/base.html:33
+#: templates/hyperkitty/user_profile/base.html:34
 msgid "Subscriptions"
 msgstr "Abonnementer"
 
@@ -1077,84 +1137,140 @@ msgstr "Stem"
 msgid "No vote yet."
 msgstr "Ingen stemmer enda."
 
-#: templates/hyperkitty/user_public_profile.html:8
+#: templates/hyperkitty/user_public_profile.html:7
 msgid "User Profile"
 msgstr "Brukerprofil"
 
-#: templates/hyperkitty/user_public_profile.html:15
+#: templates/hyperkitty/user_public_profile.html:14
 msgid "User profile"
 msgstr "Brukerprofil"
 
-#: templates/hyperkitty/user_public_profile.html:24
+#: templates/hyperkitty/user_public_profile.html:23
 msgid "Name:"
 msgstr "Navn:"
 
-#: templates/hyperkitty/user_public_profile.html:29
+#: templates/hyperkitty/user_public_profile.html:28
 msgid "Creation:"
 msgstr "Opprettet:"
 
-#: templates/hyperkitty/user_public_profile.html:34
+#: templates/hyperkitty/user_public_profile.html:33
 msgid "Votes for this user:"
 msgstr "Stemmer for denne brukeren:"
 
-#: templates/hyperkitty/user_public_profile.html:42
+#: templates/hyperkitty/user_public_profile.html:41
 msgid "Email addresses:"
 msgstr "E-postadresser:"
 
-#: views/message.py:75
+#: views/message.py:76
 #, fuzzy
 msgid "This message in gzipped mbox format"
 msgstr "Denne meldingen i gzippet MBOX-format"
 
-#: views/message.py:278
+#: views/message.py:200
+msgid "Your reply has been sent and is being processed."
+msgstr ""
+
+#: views/message.py:204
+#, fuzzy
+msgid ""
+"\n"
+"  You have been subscribed to {} list."
+msgstr "Du har ikke postet i denne listen (enda)."
+
+#: views/message.py:287
 #, python-format
 msgid "Could not delete message %(msg_id_hash)s: %(error)s"
 msgstr "Kunne ikke slette melding %(msg_id_hash)s: %(error)s"
 
-#: views/message.py:287
+#: views/message.py:296
 #, fuzzy, python-format
 msgid "Successfully deleted %(count)s messages."
 msgstr "Slettet %(count)s meldinger."
 
-#: views/mlist.py:82
+#: views/mlist.py:88
 msgid "for this month"
 msgstr "for denne måneden"
 
-#: views/mlist.py:85
+#: views/mlist.py:91
 #, fuzzy
 msgid "for this day"
 msgstr "for denne dagen"
 
-#: views/mlist.py:97
+#: views/mlist.py:103
 #, fuzzy
 msgid "This month in gzipped mbox format"
 msgstr "Denne måneden i gzippet MBOX-format"
 
-#: views/mlist.py:192 views/mlist.py:216
+#: views/mlist.py:200 views/mlist.py:224
 msgid "No discussions this month (yet)."
 msgstr "Ingen diskusjoner denne måneden (enda)."
 
-#: views/mlist.py:204
+#: views/mlist.py:212
 #, fuzzy
 msgid "No vote has been cast this month (yet)."
 msgstr "Ingen stemmer avgitt denne måneden (enda)."
 
-#: views/mlist.py:233
+#: views/mlist.py:241
 #, fuzzy
 msgid "You have not flagged any discussions (yet)."
 msgstr "Du har ikke flagget noen diskusjon (enda)."
 
-#: views/mlist.py:256
+#: views/mlist.py:264
 #, fuzzy
 msgid "You have not posted to this list (yet)."
 msgstr "Du har ikke postet i denne listen (enda)."
 
-#: views/search.py:105
+#: views/mlist.py:353
+#, fuzzy
+msgid "You must be a staff member to delete a MailingList"
+msgstr "Du må være et stabsmedlem for å slette en e-postliste"
+
+#: views/mlist.py:367
+#, fuzzy
+msgid "Successfully deleted {}"
+msgstr "Slettet %(count)s meldinger."
+
+#: views/search.py:115
 #, python-format
 msgid "Parsing error: %(error)s"
 msgstr "Tolkningsfeil: %(error)s"
 
-#: views/thread.py:167
+#: views/thread.py:168
 #, fuzzy
 msgid "This thread in gzipped mbox format"
 msgstr "Denne tråden i gzippet MBOX-format"
+
+#~ msgid "Go to"
+#~ msgstr "Gå til"
+
+#, fuzzy
+#~ msgid "More..."
+#~ msgstr "Mer…"
+
+#~ msgid "Discussions"
+#~ msgstr "Diskusjoner"
+
+#, fuzzy
+#~ msgid "most recent"
+#~ msgstr "nyligst"
+
+#, fuzzy
+#~ msgid "most popular"
+#~ msgstr "popularitet"
+
+#, fuzzy
+#~ msgid "most active"
+#~ msgstr "aktivitet"
+
+#~ msgid "Update"
+#~ msgstr "Oppdater"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                                        by %(name)s\n"
+#~ "                                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                                        av %(name)s\n"
+#~ "                                    "

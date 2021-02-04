@@ -107,6 +107,11 @@ After having made these changes, you must restart Mailman. Check its log files
 to make sure the emails are correctly archived. You should not see "``Broken
 archiver: hyperkitty``" messages.
 
+.. note::
+    Make sure you installed the ``mailman_hyperkitty`` module
+    in the same environment in which Mailman's daemon is executed
+    otherwise it will raise an exception.
+
 
 Initial setup
 =============
@@ -152,8 +157,8 @@ Make sure that the user running the Django process (for example, ``apache`` or
 
 
 If you want to disable support for gravatars_ in Hyperkitty, you can set
-``GRAVATAR_SECURE_URL = ''``. This will prevent Hyperkitty to go out to
-gravatar to load images for email senders.
+``HYPERKITTY_ENABLE_GRAVATAR = False``.  This prevents loading and displaying
+gravatar images.
 
 .. _gravatars: https://en.gravatar.com/
 

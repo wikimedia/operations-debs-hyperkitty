@@ -16,10 +16,35 @@ class MailingListPrimaryKey(migrations.AlterField):
             )
 
     def state_forwards(self, app_label, state):
-        state.models[app_label, self.model_name_lower].fields.insert(0, (
-            "id", models.AutoField(
-                name="id", auto_created=True, primary_key=True, serialize=False,
-                verbose_name='ID')))
+        # django < 3.1
+        if type(state.models[app_label, self.model_name_lower].fields) is list:
+            state.models[app_label, self.model_name_lower].fields.insert(
+                0,
+                (
+                    "id",
+                    models.AutoField(
+                        name="id",
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                )
+            )
+        # django >= 3.1
+        else:
+            state.models[app_label, self.model_name_lower].fields.update(
+                {
+                    "id":
+                    models.AutoField(
+                        name="id",
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    )
+                }
+            )
         super(MailingListPrimaryKey, self).state_forwards(app_label, state)
 
     def database_forwards(self, app_label, schema_editor, from_state, to_state):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -19,7 +19,6 @@
 #
 # Author: Aurelien Bompard <abompard@fedoraproject.org>
 #
-
 from django.core.cache import cache
 
 
@@ -78,8 +77,8 @@ class VotesCachedValue(ModelCachedValue):
     cache_key = "votes"
 
     def get_value(self):
-        from .thread import Thread
         from .email import Email
+        from .thread import Thread
         from .vote import Vote
         if isinstance(self.instance, Thread):
             filters = {"email__thread_id": self.instance.id}

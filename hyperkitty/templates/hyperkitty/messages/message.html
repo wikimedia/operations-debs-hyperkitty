@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load gravatar %}
 {% load hk_generic %}
 {% load tz %}
 
@@ -84,6 +83,7 @@
         </div>
 
         <!-- Reply link -->
+        {% if posting_enabled %}
         {% if user.is_authenticated %}
         <a class="reply" href="#">
             <i class="fa fa-reply"></i>
@@ -96,6 +96,7 @@
             {% trans "Reply" %}
         </a>
         {% endif %}
+        {% endif  %}
 
         <!-- Attachments -->
         {% if not unfolded and email.attachments.count %}
@@ -121,7 +122,7 @@
         </div>
         {% endif %}
         <!-- Reply form -->
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and posting_enabled %}
         <div class="reply-form dropdown">
             <form method="post" enctype="multipart/form-data"
                   action="{% url 'hk_message_reply' mlist_fqdn=email.mailinglist.name message_id_hash=email.message_id_hash %}">

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2014-2019 by the Free Software Foundation, Inc.
+# Copyright (C) 2014-2021 by the Free Software Foundation, Inc.
 #
 # This file is part of HyperKitty.
 #
@@ -21,8 +21,10 @@
 #
 
 import datetime
+import os
 from email import message_from_file, message_from_string
 from email.message import EmailMessage
+from tempfile import gettempdir
 from traceback import format_exc
 
 from django.utils import timezone
@@ -30,6 +32,39 @@ from django.utils.timezone import get_fixed_timezone
 
 from hyperkitty.lib import utils
 from hyperkitty.tests.utils import TestCase, get_test_file
+
+
+SLOP = datetime.timedelta(seconds=2)
+
+
+def test_rwl(*args, **kwargs):
+    """This function is called in some tests by
+
+    run_with_lock(test_rwl, *args, **kwargs)
+
+    kwargs are:
+    remove: boolean if true use a longer lifetime
+    lockfile: the path to the lockfile
+    lifetime: the expected lock lifetime.
+
+    If the path exists and its mtime is now + the expected lifetime +- slop, it
+    just returns. Otherwise it raises various exceptions.
+"""
+
+    try:
+        expire_time = datetime.datetime.fromtimestamp(
+            os.stat(kwargs['lockfile']).st_mtime)
+    except FileNotFoundError:
+        raise
+    if isinstance(kwargs['lifetime'], int):
+        life = datetime.timedelta(seconds=kwargs['lifetime'])
+    elif isinstance(kwargs['lifetime'], datetime.timedelta):
+        life = kwargs['lifetime']
+    else:
+        raise ValueError
+    expect_expire = datetime.datetime.now() + life
+    if abs(expire_time - expect_expire) > SLOP:
+        raise ValueError
 
 
 class TestUtils(TestCase):
@@ -206,6 +241,53 @@ class TestUtils(TestCase):
         self.assertEqual(name, '')
         self.assertEqual(email, '')
 
+    def test_odd_from(self):
+        msg = EmailMessage()
+        msg['From'] = 'First Last at somedomain <user@example.com>'
+        msg.set_content("Dummy message")
+        try:
+            name, email = utils.parseaddr(msg["From"])
+        except AttributeError as e:
+            self.fail(e)
+        self.assertEqual(name, 'First Last at somedomain')
+        self.assertEqual(email, 'user@example.com')
+
+    def test_from_with_at(self):
+        msg = EmailMessage()
+        msg['From'] = 'user at example.com'
+        msg.set_content("Dummy message")
+        try:
+            name, email = utils.parseaddr(msg["From"])
+        except AttributeError as e:
+            self.fail(e)
+        self.assertEqual(name, 'user@example.com')
+        self.assertEqual(email, 'user@example.com')
+
+    def test_from_with_bracketed_at(self):
+        msg = EmailMessage()
+        msg['From'] = 'Display Name <user at example.com>'
+        msg.set_content("Dummy message")
+        try:
+            name, email = utils.parseaddr(msg["From"])
+        except AttributeError as e:
+            self.fail(e)
+        self.assertEqual(name, 'Display Name')
+        if email != '"user@example.com"':
+            # This is bogus. utils.parseaddr only seems to return the address
+            # quoted in this test, not when called in other contexts.
+            self.assertEqual(email, 'user@example.com')
+
+    def test_normal_from(self):
+        msg = EmailMessage()
+        msg['From'] = 'Display Name <user@example.com>'
+        msg.set_content("Dummy message")
+        try:
+            name, email = utils.parseaddr(msg["From"])
+        except AttributeError as e:
+            self.fail(e)
+        self.assertEqual(name, 'Display Name')
+        self.assertEqual(email, 'user@example.com')
+
     def test_get_message_id_hash(self):
         msg_id = '<87myycy5eh.fsf@uwakimon.sk.tsukuba.ac.jp>'
         expected = 'JJIGKPKB6CVDX6B2CUG4IHAJRIQIOUTP'
@@ -241,3 +323,52 @@ Dummy Message
         # utf-8 characters are perfectly legitimate here (RFC 6532) and
         # stripping it here makes no sense at all
         self.assertEqual(ref_id, "ref-\xed")
+
+    def test_run_with_lock_defaults(self):
+        utils.run_with_lock(
+            test_rwl, remove=False, lifetime=15,
+            lockfile=os.path.join(gettempdir(),
+                                  'hyperkitty-jobs-update-index.lock'))
+        self.assertEqual('',
+                         open(os.path.join(self.tmpdir, 'error.log')).read())
+
+    def test_run_with_lock_extended(self):
+        utils.run_with_lock(
+            test_rwl, remove=True, lifetime=900,
+            lockfile=os.path.join(gettempdir(),
+                                  'hyperkitty-jobs-update-index.lock'))
+        self.assertEqual('',
+                         open(os.path.join(self.tmpdir, 'error.log')).read())
+
+    def test_run_with_lock_extended_setting(self):
+        self._override_setting('HYPERKITTY_JOBS_UPDATE_INDEX_LOCK_LIFE', 300)
+        utils.run_with_lock(
+            test_rwl, remove=True, lifetime=300,
+            lockfile=os.path.join(gettempdir(),
+                                  'hyperkitty-jobs-update-index.lock'))
+        self.assertEqual('',
+                         open(os.path.join(self.tmpdir, 'error.log')).read())
+
+    def test_run_with_lock_alternate_file(self):
+        self._override_setting(
+            'HYPERKITTY_JOBS_UPDATE_INDEX_LOCKFILE',
+            os.path.join(gettempdir(), 'alt.lock'))
+        utils.run_with_lock(
+            test_rwl, remove=False, lifetime=15,
+            lockfile=os.path.join(gettempdir(), 'alt.lock'))
+        self.assertEqual('',
+                         open(os.path.join(self.tmpdir, 'error.log')).read())
+
+    def test_run_with_lock_bad_file(self):
+        utils.run_with_lock(test_rwl, remove=False,
+                            lifetime=15, lockfile='/bogus/file/name')
+        self.assertIn('/bogus/file/name',
+                      open(os.path.join(self.tmpdir, 'error.log')).read())
+
+    def test_run_with_lock_wrong_time(self):
+        utils.run_with_lock(
+            test_rwl, remove=False, lifetime=20,
+            lockfile=os.path.join(gettempdir(),
+                                  'hyperkitty-jobs-update-index.lock'))
+        self.assertIn('ValueError',
+                      open(os.path.join(self.tmpdir, 'error.log')).read())

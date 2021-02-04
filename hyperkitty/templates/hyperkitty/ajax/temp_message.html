@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load gravatar %}
 {% load hk_generic %}
 
 <div class="temporary"
@@ -19,8 +18,9 @@
             </div>
         </div>
 
-        <div class="email-body {% if email.display_fixed %}fixed{% endif %}"
-         >{{ email.content|snip_quoted|wordwrap:90|urlizetrunc:76|escapeemaillinks }}</div>
+        <div class="email-body">
+            {{ email.content|snip_quoted|wordwrap:90|urlizetrunc:76|escapeemaillinks }}
+        </div>
 
         <div class="email-info">
         </div>
