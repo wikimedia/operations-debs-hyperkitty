@@ -1,24 +1,25 @@
 From: Jonas Meurer <jonas@freesources.org>
 Date: Fri, 22 Feb 2019 21:21:55 +0100
-Description: README.rst: remove embedded images
- The documentation files shipped with Debian packages should not embed
- remote images, especially not from sources that are known to track
- users (like shields.io).
+Subject: README.rst: remove embedded images
+
 Forwarded: not-needed
 
+The documentation files shipped with Debian packages should not embed
+remote images, especially not from sources that are known to track
+users (like shields.io).
 ---
  README.rst | 15 ---------------
  1 file changed, 15 deletions(-)
 
 diff --git a/README.rst b/README.rst
-index f056ae6..3f6cda3 100644
+index f2aa137..3f6cda3 100644
 --- a/README.rst
 +++ b/README.rst
 @@ -2,21 +2,6 @@
  HyperKitty - Archiver for GNU Mailman v3
  ========================================
  
--.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/build.svg
+-.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/pipeline.svg?ignore_skipped=true&key_text=build&key_width=42
 -    :target: https://gitlab.com/mailman/hyperkitty/commits/master
 -
 -.. image:: https://gitlab.com/mailman/hyperkitty/badges/master/coverage.svg?job=coverage
