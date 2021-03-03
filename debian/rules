@@ -50,6 +50,9 @@ override_dh_python3:
 	# Compile scss + css files using sassc
 	sassc hyperkitty/static/hyperkitty/sass/hyperkitty.scss \
 		debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty/static/hyperkitty/libs/hyperkitty.css
+	#
+	# Compile django LC messages
+	cd debian/python3-django-hyperkitty/usr/lib/python3/dist-packages/hyperkitty && django-admin compilemessages
 
 override_dh_installchangelogs:
 	dh_installchangelogs doc/news.rst
