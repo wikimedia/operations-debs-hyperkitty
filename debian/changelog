@@ -1,3 +1,9 @@
+hyperkitty (1.3.4-2) unstable; urgency=medium
+
+  * Replace bootstrap3 usage with bootstrap4.
+
+ -- Pierre-Elliott Bécue <peb@debian.org>  Wed, 03 Mar 2021 15:26:58 +0100
+
 hyperkitty (1.3.4-1) unstable; urgency=medium
 
   * New upstream release

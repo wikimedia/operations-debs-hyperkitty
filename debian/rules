@@ -44,9 +44,9 @@ override_dh_python3:
 	done
 	# Don't embed bootstrap JS scripts
 	find debian/python3-django-hyperkitty -name 'bootstrap.js' -type f -exec \
-		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.js {} \;
+		ln -sf /usr/share/javascript/bootstrap4/js/bootstrap.js {} \;
 	find debian/python3-django-hyperkitty -name 'bootstrap.min.js' -type f -exec \
-		ln -sf /usr/share/javascript/bootstrap/js/bootstrap.min.js {} \;
+		ln -sf /usr/share/javascript/bootstrap4/js/bootstrap.min.js {} \;
 	# Compile scss + css files using sassc
 	sassc hyperkitty/static/hyperkitty/sass/hyperkitty.scss \
 		debian/python3-django-hyperkitty/usr/share/python3-django-hyperkitty/static/hyperkitty/libs/hyperkitty.css
