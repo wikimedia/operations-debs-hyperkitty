@@ -1,0 +1,177 @@
+From: Kunal Mehta <legoktm@debian.org>
+Date: Wed, 24 Mar 2021 23:56:32 -0700
+Subject: Patch out gravatar
+
+This avoids having ugly broken images until we can upgrade to 1.3.4 where
+this is properly disablable.
+
+The same approach as <https://gitlab.com/mailman/hyperkitty/-/merge_requests/273>
+is taken in that the {% gravatar ... %} tag is entirely replaced with an empty
+string. There will still be gravatar CSS classes, etc. but no images.
+
+Bug: T256541
+---
+ hyperkitty/templates/hyperkitty/ajax/temp_message.html         |  1 -
+ hyperkitty/templates/hyperkitty/base.html                      |  2 --
+ .../templates/hyperkitty/fragments/overview_top_posters.html   |  1 -
+ hyperkitty/templates/hyperkitty/messages/message.html          |  1 -
+ hyperkitty/templates/hyperkitty/messages/summary_message.html  |  1 -
+ hyperkitty/templates/hyperkitty/overview.html                  |  1 -
+ hyperkitty/templates/hyperkitty/threads/right_col.html         |  2 +-
+ .../templates/hyperkitty/threads/summary_thread_large.html     |  1 -
+ hyperkitty/templates/hyperkitty/user_public_profile.html       |  1 -
+ hyperkitty/tests/views/test_message.py                         | 10 ----------
+ 10 files changed, 1 insertion(+), 20 deletions(-)
+
+diff --git a/hyperkitty/templates/hyperkitty/ajax/temp_message.html b/hyperkitty/templates/hyperkitty/ajax/temp_message.html
+index 22e37b6..06195ac 100644
+--- a/hyperkitty/templates/hyperkitty/ajax/temp_message.html
++++ b/hyperkitty/templates/hyperkitty/ajax/temp_message.html
+@@ -12,7 +12,6 @@
+                 <span class="date">{% trans "Sent just now, not yet distributed" %}</span>
+             </div>
+             <div class="gravatar">
+-                {% gravatar email.sender_address 120 %}
+             </div>
+             <div class="email-author inline-block">
+                 <span class="name">{{email.sender_name|default:email.sender_address|escapeemail}}</span>
+diff --git a/hyperkitty/templates/hyperkitty/base.html b/hyperkitty/templates/hyperkitty/base.html
+index b2319aa..709fb6a 100644
+--- a/hyperkitty/templates/hyperkitty/base.html
++++ b/hyperkitty/templates/hyperkitty/base.html
+@@ -45,7 +45,6 @@
+                 <div class="nav navbar-nav navbar-right auth dropdown navbar-form hidden-tn hidden-xs hidden-md hidden-lg">
+                     <button type="button" class="btn dropdown-toggle" id="loginDropdownMenu" data-toggle="dropdown">
+                         {% if user.is_authenticated %}
+-                            {% gravatar user.email 20 %}
+                         {% else %}
+                             <span class="fa fa-bars"></span>
+                         {% endif %}
+@@ -89,7 +88,6 @@
+                         <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                role="button" aria-haspopup="true" aria-expanded="false">
+-                                {% gravatar user.email 20 %}
+                                 {{ user.username|truncatechars:"35" }}
+                                 <span class="caret"></span>
+                             </a>
+diff --git a/hyperkitty/templates/hyperkitty/fragments/overview_top_posters.html b/hyperkitty/templates/hyperkitty/fragments/overview_top_posters.html
+index 20633f2..74c72eb 100644
+--- a/hyperkitty/templates/hyperkitty/fragments/overview_top_posters.html
++++ b/hyperkitty/templates/hyperkitty/fragments/overview_top_posters.html
+@@ -8,7 +8,6 @@
+         #{{forloop.counter}}
+     </div>
+     <div class="inline-block gravatar col-tn-3 col-xs-4 col-md-3">
+-        {% gravatar poster.address 120 %}
+         <br />
+     </div>
+     <div class="gravatar-details inline-block col-tn-7 col-xs-6 col-md-7">
+diff --git a/hyperkitty/templates/hyperkitty/messages/message.html b/hyperkitty/templates/hyperkitty/messages/message.html
+index d40c1ec..d60d99f 100644
+--- a/hyperkitty/templates/hyperkitty/messages/message.html
++++ b/hyperkitty/templates/hyperkitty/messages/message.html
+@@ -9,7 +9,6 @@
+     <div id="{{email.message_id_hash}}" class="email-header">
+         <div class="gravatar-wrapper">
+             <div class="gravatar">
+-                {% gravatar email.sender.address 120 %}
+             </div>
+             <div class="email-author">
+                 <span class="name">
+diff --git a/hyperkitty/templates/hyperkitty/messages/summary_message.html b/hyperkitty/templates/hyperkitty/messages/summary_message.html
+index ae2fa6f..2a10b29 100644
+--- a/hyperkitty/templates/hyperkitty/messages/summary_message.html
++++ b/hyperkitty/templates/hyperkitty/messages/summary_message.html
+@@ -7,7 +7,6 @@
+                 <div class="thread-email row">
+                     <div class="hidden-tn hidden-xxs hidden-xs col-sm-1 sender gravatar">
+                         {% if email.sender.address %}
+-                        {% gravatar email.sender.address 120 %}
+                             <br />
+                         {% else %}
+                                 <div class="gravatar-placeholder">&nbsp;</div>
+diff --git a/hyperkitty/templates/hyperkitty/overview.html b/hyperkitty/templates/hyperkitty/overview.html
+index a8030d5..e4b9572 100644
+--- a/hyperkitty/templates/hyperkitty/overview.html
++++ b/hyperkitty/templates/hyperkitty/overview.html
+@@ -170,7 +170,6 @@
+                 </div>
+                 <div class="inline-block gravatar col-tn-3 col-xs-4 col-md-3">
+                     {% if author.email %}
+-                    {% gravatar author.email 120 %}
+                     <br />
+                     {% endif %}
+                 </div>
+diff --git a/hyperkitty/templates/hyperkitty/threads/right_col.html b/hyperkitty/templates/hyperkitty/threads/right_col.html
+index f3ed3dc..ce929a3 100644
+--- a/hyperkitty/templates/hyperkitty/threads/right_col.html
++++ b/hyperkitty/templates/hyperkitty/threads/right_col.html
+@@ -99,7 +99,7 @@
+         <ul class="list-unstyled">
+             {% for participant in thread.participants|sort_by_name %}
+             <li class="row">
+-                <div class="participant-gravatar col-tn-2 col-sm-4 col-md-2">{% gravatar participant.address 48 %}</div>
++                <div class="participant-gravatar col-tn-2 col-sm-4 col-md-2"></div>
+                 <div class="participant-name col-tn-8">{{ participant.name|default:participant.address|escapeemail }}</div>
+             </li>
+             {% endfor %}
+diff --git a/hyperkitty/templates/hyperkitty/threads/summary_thread_large.html b/hyperkitty/templates/hyperkitty/threads/summary_thread_large.html
+index bf47693..df66c6a 100644
+--- a/hyperkitty/templates/hyperkitty/threads/summary_thread_large.html
++++ b/hyperkitty/templates/hyperkitty/threads/summary_thread_large.html
+@@ -9,7 +9,6 @@
+                 <div class="thread-email row">
+                         <div class="hidden-tn hidden-xxs hidden-xs col-sm-1 sender gravatar">
+                                 {% if starting_email.sender.address %}
+-                                {% gravatar starting_email.sender.address 120 %}
+                                         <br />
+                                 {% else %}
+                                         <div class="gravatar-placeholder">&nbsp;</div>
+diff --git a/hyperkitty/templates/hyperkitty/user_public_profile.html b/hyperkitty/templates/hyperkitty/user_public_profile.html
+index ff2558d..0ab5600 100644
+--- a/hyperkitty/templates/hyperkitty/user_public_profile.html
++++ b/hyperkitty/templates/hyperkitty/user_public_profile.html
+@@ -54,7 +54,6 @@
+ 
+     {% if addresses %}
+     <div class="gravatar">
+-        {% gravatar addresses.0 100 %}
+     </div>
+     {% endif %}
+ 
+diff --git a/hyperkitty/tests/views/test_message.py b/hyperkitty/tests/views/test_message.py
+index f22947f..77d96c3 100644
+--- a/hyperkitty/tests/views/test_message.py
++++ b/hyperkitty/tests/views/test_message.py
+@@ -125,9 +125,6 @@ class MessageViewsTestCase(TestCase):
+         self.assertContains(response, "Dummy Sender", count=1)
+         self.assertContains(response, "Dummy Subject", count=2)
+         self.assertNotContains(response, "dummy@example.com")
+-        self.assertContains(
+-            response,
+-            get_gravatar_url("dummy@example.com", 120).replace("&", "&amp;"))
+         self.assertContains(response, "list@example.com")
+         self.assertContains(response, url)
+         sender_time = ('<span title="Sender\'s time: 2015-02-02 '
+@@ -153,9 +150,6 @@ class MessageViewsTestCase(TestCase):
+         result = json.loads(response.content.decode(response.charset))
+         self.assertIn("Django User", result["message_html"])
+         self.assertIn("dummy reply content", result["message_html"])
+-        self.assertIn(
+-            get_gravatar_url("test@example.com", 120).replace("&", "&amp;"),
+-            result["message_html"])
+ 
+     def test_reply_newthread(self):
+         mlist = MailingList.objects.get(name="list@example.com")
+@@ -204,10 +198,6 @@ class MessageViewsTestCase(TestCase):
+         result = json.loads(response.content.decode(response.charset))
+         self.assertIn("Django User", result["message_html"])
+         self.assertIn("dummy reply content", result["message_html"])
+-        self.assertIn(
+-            get_gravatar_url("otheremail@example.com", 120).replace(
+-                "&", "&amp;"),
+-            result["message_html"])
+ 
+     def test_new_message_page(self):
+         url = reverse('hk_message_new', args=["list@example.com"])
